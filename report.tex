@@ -5,8 +5,8 @@
 
 \documentclass[12pt,oneside,final,a4paper]{report}
 \usepackage{generators/imports}
-\include{generators/glossary}
 \begin{document}
+\include{generators/glossary}
 \include{generators/frontpage} % This is the titlepage
 \include{generators/abstract}
 \include{generators/tableOfContentsAndListings}
@@ -15,6 +15,12 @@
 \setlength{\parskip}{0.5cm plus4mm minus3mm}  
 
 \include{chapter/introduction}
+\include{chapter/preliminaries}
+\include{chapter/algorithm_shortest_odd_path}
+\include{chapter/analysis_shortest_odd_path}
+\include{chapter/algorithm_network_diversion}
+\include{chapter/analysis_network_diversion}
+\include{chapter/conclusion}
 
 % Include more chapters as required.
 %%=========================================
