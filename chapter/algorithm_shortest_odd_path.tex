@@ -4,4 +4,217 @@
 
 \section{Psuedocode}
 
+\begin{lstlisting}[caption={Main},label=Listing,mathescape=true]
+fn main(Graph input_graph, int s, int t) -> Option<(int, List<Edge>)> {
+    init(input_graph, s, t);
+
+    while ! control() {}
+
+    if d_minus[t] == $\infty$ {
+        // The graph is a no-instance, no odd s-t-paths exist
+        return None;
+    }
+
+    Edge current_edge = pred[t];
+    List<Edge> path = [current_edge];
+    while from(current_edge) != s {
+        current_edge = pred[mirror(from(current_edge))];
+        if from(current_edge) < input_graph.n() {
+            path.push(current_edge);
+        }
+        else {
+            path.push(shift_edge_by(current_edge, -input_graph.n()));
+        }
+    }
+    return Some(d_minus[t], path);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Initialization},label=Listing,mathescape=true]
+fn init(Graph input_graph, int s, int t) {
+    graph = create_mirror_graph(input_graph);
+
+    for u in 0..n {
+        d_plus[u] = $\infty$;
+        d_minus[u] = $\infty$;
+        pred[u] = null;
+        completed[u] = false;
+    }
+    d_plus[s] = 0;
+    completed[s] = true;
+
+    for edge in graph[s] {
+        pq.push(Vertex(weight(edge), to(edge)));
+        d_minus[to(edge)] = weight(edge);
+        pred[to(edge)] = e;
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Control, the main loop},label=Listing,mathescape=true]
+fn control() -> bool {
+    while ! pq.is_empty() {
+        match pq.top() {
+            Vertex(_, u) => {
+                if completed[u] {
+                    pq.pop();
+                }
+                else {
+                    break;
+                }
+            },
+            Blossom(_, edge) => {
+                if base_of(from(edge)) == base_of(to(edge)) {
+                    pq.pop();
+                }
+                else {
+                    break;
+                }
+            }
+        }
+    }
+
+    if pq.is_empty() {
+        // No odd s-t-paths in G exist :(
+        return true;
+    }
+    match pq.pop() {
+        Vertex(delta, l) => {
+            if l == t {
+                // We have found a shortest odd s-t-path has been found :)
+                return true;
+            }
+            grow(l, delta)
+        }
+        Blossom(delta, edge) => {
+            blossom(e);
+        }
+    }
+    return false;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Grow},label=Listing,mathescape=true]
+fn grow(int l, int delta) {
+    int k = mirror(l);
+    d_plus[k] = delta;
+    scan(k);
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Scan},label=Listing,mathescape=true]
+fn scan(int u) {
+    completed[u] = true;
+    int dist_u = d_plus[u];
+    for edge in graph[u] {
+        int v = to(edge);
+        int new_dist_v = dist_u + weight(edge);
+
+        if ! completed[v] {
+            if new_dist_v < d_minus[v] {
+                d_minus[v] = new_dist_v;
+                pred[v] = edge;
+                pq.push(Vertex(new_dist_v, v));
+            }
+        }
+        else if d_plus[v] < $\infty$ and base_of(u) != base_of(v) {
+            pq.push(Blossom(d_plus[u] + d_plus[v] + weight(edge)));
+            if new_dist_v < d_minus[v] {
+                d_minus[v] = new_dist_v;
+                pred[v] = e;
+            }
+        }
+    }
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Blossom},label=Listing,mathescape=true]
+fn blossom(Edge edge) {
+    (int, List<Edge>, List<Edge>) (b, p1, p2) = backtrack_blossom(edge);
+
+    List<int> to_scan1 = set_blossom_values(p1);
+    List<int> to_scan2 = set_blossom_values(p2);
+
+    set_edge_bases(b, p1);
+    set_edge_bases(b, p2);
+
+    for u in to_scan1 {
+        scan(u);
+    }
+    for v in to_scan2 {
+        scan(v);
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Backtrack blossom},label=Listing,mathescape=true]
+fn backtrack_blossom(Edge edge) -> (int, List<Edge>, List<Edge>){
+    // TODO
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption={Set blossom values},label=Listing,mathescape=true]
+fn set_blossom_values(List<Edge> path) -> List<int> {
+    List<int> to_scan = [];
+
+    for edge in path {
+        int u = from(edge);
+        int v = to(edge);
+        int w = weight(edge);
+        in_current_cycle[u] = false;
+        in_current_cycle[v] = false;
+
+        // We can set a d_minus
+        if d_plus[v] + w < d_minus[u] {
+            d_minus[u] = d_plus[v] + w;
+            pred[u] = reverse(edge);
+        }
+
+        int m = mirror(u);
+        // We can set a d_plus, and scan it
+        if d_minus[u] < d_plus[m] {
+            d_plus[m] = d_minus[u];
+            to_scan.push(m);
+        }
+    }
+
+    return to_scan;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Set edge bases},label=Listing,mathescape=true]
+fn set_edge_bases(int b, List<Edge> path) {
+    for edge in path {
+        let u = from(edge);
+        let m = mirror(edge);
+        set_base(u, b);
+        set_base(m, b);
+    }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption={Basis},label=Listing,mathescape=true]
+fn init(Graph input_graph, int s, int t) {
+    // omitted
+    Graph graph = create_mirror_graph(input_graph, s, t);
+    for u in 0..graph.n() {
+        basis[u] = u;
+    }
+    // omitted
+}
+fn set_base(int b, int u) {
+    basis[u] = b;
+}
+fn get_base(int u) -> int {
+    if u != basis[u] {
+        basis[u] = get_base(basis[u]);
+    }
+    return basis[u];
+}
+
+\end{lstlisting}
+
 \section{Notes on implementing the psuedocode}
