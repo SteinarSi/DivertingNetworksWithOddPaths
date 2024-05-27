@@ -1,20 +1,77 @@
 \chapter{Preliminaries}
 
 \section{Graphs}
+In algorithms, we often use graphs as an abstract structure to represent the fundamental problem behind an algorithms problem without distractions. For example, when you want to find the fastest route to walk to the study hall, or if you want the cheapest combination of flights to take you to Kuala Lumphur, then both questions are really the same problem. If we remove all the details that are unnecessary to solve the problem, like the names of the airports and whether we are walking or flying, then we end up with a graph.
 
-A \emph{graph} $G = (V, E, from^G, to^G)$ is given by
+\begin{definition}[Graph]
+    A \emph{graph} $G := (V, E, from, to)$ is given by
 \begin{itemize}
     \item $V$, a collection of \emph{vertices}
     \item $E$, a collection of \emph{edges}
-    \item $from^G : E \rightarrow V$, a mapping from each edge to its source vertex
-    \item $to^G : E \rightarrow V$, a mapping from each edge to its target vertex 
+    \item $from : E \rightarrow V$, a mapping from each edge to its source vertex
+    \item $to : E \rightarrow V$, a mapping from each edge to its target vertex 
 \end{itemize}
+\end{definition}
 
-In algorithms, we often use graphs as an abstract structure to represent the fundamental problem behind an algorithms problem without distractions.
+\begin{definition}[Weighted graph]
+    A \emph{weighted graph} $G := (V, E, from, to, w)$ is a graph, where $w : E \rightarrow \mathbb{R}$ is the \emph{weight} of each edge. If a graph is not weighted, we often treat it like it is weighted with all edges having unit weight, a weight of 1. An algorithm intended for weighted graphs will therefore often work on unweighted graph as well.
+\end{definition}
 
-TODO: Omskriv, dette er elendig
-TODO: Hva er det som egentlig er nødvendig å ha med her? Er det noen som noensinne kommer til å lese dette uten å vite hva en graf er?
-TODO: rettede grafer vs urettede grafer
-TODO: vektede grafer
+\begin{definition}[Directed and undirected graphs]
+    Let $G$ be a graph. $G$ is said to be an \emph{undirected graph} if each edge has an opposite: $\forall e \in E \exists e' \in E : reverse(e) == e'$.
+    If $G$ is not undirected, we say that $G$ is a \emph{directed graph}.
+    Edges in directed graphs are often drawn as arrows, while edges in undirected graphs can be drawn using just a line.
+
+    TODO figures for graphs
+\end{definition}
+
+\begin{definition}[Neighbourhood]
+    Let $G$ be a graph, and let $u \in V$ be a vertex in the graph. The \emph{neighbourhood} of $u$, commonly denoted as either $N(u)$ or $G[u]$, is defined as the vertices in $G$ that are reachable from $u$ using just a single edge: $N(u) := \{ to(e)  ~|~  e \in E, ~ from(e) == u\}$.
+\end{definition}
+
+\begin{definition}[Walk]
+    A \emph{walk} $P := [p_1, p_2, ..., p_k]$ in a graph $G$ is a sequence of edges where each edge ends where the next one starts: $\forall i \in \{1,2,..,k-1\} : to(p_i) = from(p_{i+1})$.
+    If $s := from(p_1)$ and $t := to(p_k)$, we say that $P$ is an \emph{$s$-$t$-walk} in $G$.
+\end{definition}
+
+\begin{definition}[Path]
+    A \emph{path} $P := [p_1, p_2, ..., p_k]$ in a graph $G$ is a walk with the extra requirement that each vertex is used more than once: $\forall i, j \in \{1,2,..,k\} : j \neq {i+1} \rightarrow to(p_i) \neq from(p_j)$.
+    If $s := from(p_1)$ and $t := to(p_k)$, we say that $P$ is an \emph{$s$-$t$-path} in $G$.
+    Note that in some literature, a walk is referred to as a path, and a path is referred to as a \emph{simple} path. In this thesis, when we refer to paths they are always simple, meaning that they never repeat any vertices. If any vertices are repeated, we will refer to it as a walk.    
+\end{definition}
+
+\begin{definition}[The cost of a path (/walk)]
+    Let $P := [p_1, p_2, ..., p_k]$ be a path (/walk) in a weighted graph $G$. The \emph{cost} of $P$ is defined as the sum of its edges: $\sum_{i=1}^k w(p_i)$. In a collection of paths (/walks), we say that the \emph{shortest} path (/walk) is the \emph{cheapest} one, the one with the lowest cost. Likewise for the longest and most expensive path (/walk). Note that in some literature, \emph{shortest} may instead mean \emph{fewest edges}, and the term \emph{length} could mean both the number of edges or the cost of a path. For that ambiguous reason, we will from now on avoid the word \emph{length}, and \emph{shortest} will always mean \emph{cheapest}.
+\end{definition}
+
+Now we are ready to define the underlying problem of the example we started with. Both problems can be represented by an abstract graph, where we want to find the shortest path from one vertex to another. From a computational perspective, it does not matter whether the edges are roads or flights, or whether the vertices are crossroads or airports. Vertices and edges can therefore represent whatever we want them to.
+
+\fbox{\parbox{0.94\textwidth}{\textsc{Shortest Path}\\
+    \textbf{Input:} A graph $G$, two vertices $s,t \in V$\\
+    \textbf{Output:} the shortest $s$-$t$-path in $G$
+}}
+
+This thesis will focus on a curious variant of the Shortest Path problem, called Shortest Odd Path:
+
+\fbox{\parbox{0.94\textwidth}{\textsc{Shortest Odd Path}\\
+    \textbf{Input:} A graph $G$, two vertices $s,t \in V$\\
+    \textbf{Output:} the shortest $s$-$t$-path in $G$ that uses an odd number of edges
+}}
 
 \section{Planarity}
+
+TODO little introduction here, why do we care
+
+\begin{definition}[Planar graph]
+    Let $G$ be a graph. We say that $G$ is a \emph{planar graph} if it is possible to draw the graph on the plane such that none of the edges intersect each other. Such a drawing is referred to as an \emph{embedding} of $G$.
+\end{definition}
+
+TODO figures of planar and non-planar graphs.
+
+\begin{definition}[Duality of planar graphs]
+    Let $G$ be a planar graph, and choose any embedding of $G$ in the plane.
+    
+    
+    TODO contiue the definition. WTF is a face?
+    What \emph{is} the dual graph?
+\end{definition}
