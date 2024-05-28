@@ -36,7 +36,7 @@ In algorithms, we often use graphs as an abstract structure to represent the fun
 
 \begin{definition}[Path]
     A \emph{path} $P := [p_1, p_2, ..., p_k]$ in a graph $G$ is a walk with the extra requirement that each vertex is used more than once: $\forall i, j \in \{1,2,..,k\} : j \neq {i+1} \rightarrow to(p_i) \neq from(p_j)$.
-    If $s := from(p_1)$ and $t := to(p_k)$, we say that $P$ is an \emph{$s$-$t$-path} in $G$.
+    If $s := from(p_1)$ and $t := to(p_k)$, we say that $P$ is path from $s$ to $t$, or an \emph{$s$-$t$-path} in $G$.
     Note that in some literature, a walk is referred to as a path, and a path is referred to as a \emph{simple} path. In this thesis, when we refer to paths they are always simple, meaning that they never repeat any vertices. If any vertices are repeated, we will refer to it as a walk.    
 \end{definition}
 

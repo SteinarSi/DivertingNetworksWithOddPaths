@@ -1,0 +1,28 @@
+\section{Analysis}
+
+\begin{figure}
+    \centering
+    \def\svgwidth{\columnwidth}
+    \scalebox{0.7}{\includesvg{figures/graphs/small2.svg}}
+    \caption{No odd $s$-$t$-path exist, but we still have many odd $s$-$t$-walks}
+    \label{small2}
+\end{figure}
+
+Consider ~\ref{small2}. There are no odd paths from $s$ to $t$, yet we have an infinite amount of odd walks. Our algorithm would first find an odd walk to $a$, then an even walk to $b$, then an odd walk to $c$, then an even walk to $a$, and lastly an odd walk to $t$. However, the algorithm would search $a$ twice, once for each parity, and the resulting walk is not a path. Therefore this algorithm cannot be used to solve \textsc{Shortest Odd Path}.
+
+\subsection{Correctness}
+TODO.
+Is this necessary?
+
+\subsection{Complexity}
+Because of our \pyth{odd_done} and \pyth{even_done} arrays, we can guarantee that each vertex is scanned at most twice, once for each parity. 
+For each scan, we loop through each of the neighbours in linear time, and consider putting them in the queue. A vertex may be put into the queue many times before it is scanned, in the worst case once for each of its neighbours. That means that we put vertices in the queue at most $O(m)$ times, for a total running time of $O(m)$, and removing all of them takes a total of $O(m \cdot log ~ m)$. 
+
+In total, the algorithm runs in $O(m \cdot log ~ m)$.
+
+TODO: er dette i det hele tatt riktig? Det føles feil. Wikipedia gir at Dijkstra kjører på $O((n+m) \cdot log ~ n)$.
+
+\subsection{Benchmarking}
+TODO
+
+\subsection{Discussion}

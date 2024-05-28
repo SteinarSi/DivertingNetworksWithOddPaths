@@ -5,12 +5,14 @@
 \usepackage{thmtools}
 \usepackage{amsthm}
 \usepackage{amssymb}
+\usepackage{svg}
+\usepackage{pythonhighlight}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 
 \begin{document}
 \include{generators/glossary}
-\include{generators/frontpage} % This is the titlepage
+\include{generators/frontpage}
 \include{generators/abstract}
 \include{generators/tableOfContentsAndListings}
 \pagenumbering{arabic}
@@ -19,7 +21,11 @@
 
 \include{chapter/introduction}
 \include{chapter/preliminaries}
-\include{chapter/shortest_odd_walk}
+
+\chapter{Shortest Odd Walk}
+\include{chapter/shortest_odd_walk/intuition}
+\include{chapter/shortest_odd_walk/psuedocode}
+\include{chapter/shortest_odd_walk/analysis}
 
 \chapter{Shortest Odd Path}
 \include{chapter/shortest_odd_path/intuition}

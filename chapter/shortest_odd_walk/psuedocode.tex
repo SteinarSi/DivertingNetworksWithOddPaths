@@ -1,0 +1,50 @@
+\section{Psuedocode}
+
+\begin{lstlisting}[caption={Shortest Odd Walk},label=Listing,mathescape=true]
+def shortest_odd_walk(graph, s, t) {
+    for u in 0..n {
+        even_dist[u] = $\infty$
+        odd_dist[u] = $\infty$
+        even_done[u] = false;
+        odd_done[u] = false;
+    }
+    even_dist[s] = 0
+
+    queue = priority_queue([(0, true, s)]);
+    while queue is not empty {
+        (dist_u, even, u) = queue.pop()
+        if even {
+            if even_done[u] continue;
+            even_done[u] = true;
+
+            for edge in graph[u] {
+                v = to(edge);
+                dist_v = dist_u + weight(edge);
+                if dist_v < odd_dist[v] {
+                    odd_dist[v] = dist_v;
+                    queue.push((dist_v, false, v));
+                }
+            }
+        }
+        else {
+            if odd_done[u] continue;
+            odd_done[u] = true;
+
+            for edge in graph[u] {
+                v = to(edge);
+                dist_v = dist_u + weight(edge);
+                if dist_v < even_dist[v] {
+                    even_dist[v] = dist_v;
+                    queue.push((dist_v, true, v));
+                }
+            }
+        }
+        if odd_dist[t] < $\infty$ {
+            return odd_dist[y];
+        }
+    }
+    return None;
+}
+\end{lstlisting}
+
+In the psuedocode we show how to find the best odd walk from the source vertex to the target vertex. If we instead want to find the best odd or even walks to all vertices, we can simply remove the if-clause around the target, and return the arrays instead.

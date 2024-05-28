@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+    "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg contentScriptType="text/ecmascript" width="607.0"
+     xmlns:xlink="http://www.w3.org/1999/xlink" zoomAndPan="magnify"
+     contentStyleType="text/css"
+     viewBox="-497.000000 -312.000000 607.000000 312.000000" height="312.0"
+     preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"
+     version="1.1">
+    <g id="edges">
+        <path fill="none" stroke-width="2.5"
+              d="M -467.412354,-277.005920 L -215.192490,-284.130402"
+              class="id_6 id_7" stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="2.5"
+              d="M -312.367676,-87.145782 L -207.608887,-271.512268"
+              class="id_8 id_7" stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="2.5"
+              d="M -304.778442,-73.997711 L -109.968048,-72.616150"
+              class="id_8 id_9" stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="2.5"
+              d="M -101.636452,-85.946198 L -193.530441,-271.117523"
+              class="id_9 id_7" stroke-opacity="1.0" stroke="#999999"/>
+        <path fill="none" stroke-width="2.5"
+              d="M -185.212479,-285.201965 L 79.778549,-296.660461"
+              class="id_7 id_10" stroke-opacity="1.0" stroke="#999999"/>
+    </g>
+    <g id="nodes">
+        <circle fill-opacity="1.0" fill="#999999" r="14.5" cx="-482.40637"
+                class="id_6" cy="-276.58237" stroke="#6b6b6b"
+                stroke-opacity="1.0" stroke-width="1.0"/>
+        <circle fill-opacity="1.0" fill="#999999" r="14.5" cx="-200.19847"
+                class="id_7" cy="-284.55396" stroke="#6b6b6b"
+                stroke-opacity="1.0" stroke-width="1.0"/>
+        <circle fill-opacity="1.0" fill="#999999" r="14.5" cx="-319.77808"
+                class="id_8" cy="-74.10409" stroke="#6b6b6b"
+                stroke-opacity="1.0" stroke-width="1.0"/>
+        <circle fill-opacity="1.0" fill="#999999" r="14.5" cx="-94.96843"
+                class="id_9" cy="-72.50977" stroke="#6b6b6b"
+                stroke-opacity="1.0" stroke-width="1.0"/>
+        <circle fill-opacity="1.0" fill="#999999" r="14.5" cx="94.76454"
+                class="id_10" cy="-297.30847" stroke="#6b6b6b"
+                stroke-opacity="1.0" stroke-width="1.0"/>
+    </g>
+    <g id="node-labels">
+        <text font-size="12" x="-482.40637" y="-274.38022" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Dialog" class="id_6">
+            S
+        </text>
+        <text font-size="12" x="-200.19847" y="-282.4026" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Dialog" class="id_7">
+            A
+        </text>
+        <text font-size="12" x="-319.77808" y="-71.96249" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Dialog" class="id_8">
+            B
+        </text>
+        <text font-size="12" x="-94.96843" y="-70.307625" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Dialog" class="id_9">
+            C
+        </text>
+        <text font-size="12" x="94.76454" y="-295.16687" fill="#000000"
+              style="text-anchor: middle; dominant-baseline: central;"
+              font-family="Dialog" class="id_10">
+            T
+        </text>
+    </g>
+</svg>
