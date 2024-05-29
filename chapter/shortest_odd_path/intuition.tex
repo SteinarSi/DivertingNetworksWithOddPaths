@@ -1,5 +1,5 @@
 \section{Intuition}
-Now that we have tried out some algorithms for \textsc{Shortest Odd Walk}, we are finally ready to add the restriction that each vertex is used at most once, and thus solve \textsc{Shortest Odd Path}. The algorithm we are about to present is heavily based on Ulrich Derig's algorithm from 1985, though with some improvements.
+Now that we have tried out some algorithms for \textsc{Shortest Odd Walk}, we are finally ready to add the restriction that each vertex is used at most once, and thus solve \textsc{Shortest Odd Path}. The algorithm we are about to present is based on Ulrich Derigs' algorithm from 1985 \cite{derigs_shortest_odd_path}, though with some improvements.
 
 \subsection{Reduction to \textsc{Shortest Alternating Path}}
 Consider first another related problem:
@@ -45,13 +45,12 @@ For example, if our input $G$ for \textsc{Shortest Odd Path} is Figure ~\ref{sma
 
 TODO dette kan kanskje formuleres bedre?
 
-To see why the reduction works, simply observe that for each step we take in the graph, we have to go to the other side of the mirror. If we take another step, we get back to the same side again. It is only when we reach the target vertex $t$ that we do not have to go to the other side. Therefore, to reach a neighbour of $t$, we must have used an even number of mirror edges and an even number of non-mirror edges, and when we take the last step to reach $t$ we have used an odd number of edges and thus found an odd path. If this alternating $s$-$t$-path in $H$ is the shortest such path, then the corresponding path in $G$ must also be the shortest odd $s$-$t$-path in $G$. The reduction works also in the weighted case, as long as each edge $(u',v')$ on the mirror side get the same weight as their real counterpart, and all the mirror edges get the same (usually 0) weight.
-
-TODO refer to Derig for fewer and more convoluted details
+To see why the reduction works, simply observe that for each step we take in the graph, we have to go to the other side of the mirror. If we take another step, we get back to the same side again. It is only when we reach the target vertex $t$ that we do not have to go to the other side. Therefore, to reach a neighbour of $t$, we must have used an even number of mirror edges and an even number of non-mirror edges, and when we take the last step to reach $t$ we have used an odd number of edges and thus found an odd path. If this alternating $s$-$t$-path in $H$ is the shortest such path, then the corresponding path in $G$ must also be the shortest odd $s$-$t$-path in $G$. The reduction works also in the weighted case, as long as each edge $(u',v')$ on the mirror side get the same weight as their real counterpart, and all the mirror edges get the same (usually 0) weight. The interested reader may see \cite{derigs_shortest_odd_path} for more details on this reduction.
 
 \subsection{Adapting previous work}
-TODO refer to M.O. Ball and U. Derigs, An analysis of alternate strategies for implementing matching algorithms
+Ball and Derigs \cite{shortest_alternating_path} have shown how to efficiently solve \textsc{Shortest Alternating Path}. In their algorithms, subgraphs are shrunk into psuedonodes whenever possible, to make the graph smaller. The drawback is that certain psuedonodes must later be expanded again, which is the most complicated and expensive part of their algorithms. In our case, however, we have a special case of \textsc{Shortest Alternating Path}. The set $F$ is, with the exception of $s$ and $t$, a perfect matching of $H$, and we will therefore never have to expand psuedonodes after shrinking them. The curious reader may visit \cite{shortest_alternating_path} for more on these algorithms and why our almost-perfect matching is a simpler case.
+
+TODO siter \cite{blossom} her et sted
 
 
 
-TODO
