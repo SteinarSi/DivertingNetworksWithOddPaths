@@ -2,11 +2,13 @@
 
 \documentclass[12pt,oneside,final,a4paper]{report}
 \usepackage{generators/imports}
-\usepackage{thmtools}
 \usepackage{amsthm}
+\usepackage{thmtools}
 \usepackage{amssymb}
 \usepackage{svg}
 \usepackage{pythonhighlight}
+\usepackage{newunicodechar}
+\newunicodechar{∞}{$\infty$}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 
@@ -70,5 +72,5 @@
   {20pt}
   {\large}% <- font for title, default \Huge
 
-\include{generators/appendix-a}
+% \include{generators/appendix-a}
 \end{document}
