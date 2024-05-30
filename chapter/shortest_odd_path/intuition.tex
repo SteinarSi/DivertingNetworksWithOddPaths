@@ -51,8 +51,6 @@ To see why the reduction works, simply observe that for each step we take in the
 
 Ball and Derigs \cite{shortest_alternating_path} have shown how to efficiently solve \textsc{Shortest Alternating Path}. In their algorithms, subgraphs are shrunk into psuedonodes whenever possible, to make the graph smaller. The drawback is that certain psuedonodes must later be expanded again, which is the most complicated and expensive part of their algorithms. In our case, however, we have a special case of \textsc{Shortest Alternating Path}. The set $F$ is, with the exception of $s$ and $t$, a perfect matching of $H$, and we will therefore never have to expand psuedonodes after shrinking them. The curious reader may visit \cite{shortest_alternating_path} for more on these algorithms and why our almost-perfect matching is a simpler case.
 
-TODO siter \cite{blossom} her et sted
-
 \subsection{The idea for our \textsc{Shortest Alternating Path} algorithm}
 We will explain the general idea of our algorithm by following an example, and solve for the graph in figure \ref{small5}. First we construct the mirror graph like explained in \ref{reduction}, to produce the graph in figure \ref{small5-2}. Then we initialize an empty priority queue of vertices and edges to be scanned. For each vertex $u \in V(H)$, we denote
 \begin{itemize}
@@ -94,12 +92,10 @@ After all these values have been set, we immedeately scan all the vertices in $\
 \includesvg[width=12cm]{figures/example_story/example-story6.svg}
 
 % TODO føler dette kan skrives bedre
-The second reason we compute the blossom is that we no longer care much about the individual vertices in $\mathbb{B}$, and can shrink it into just the base $A'$. We will still scan vertices like $C$ from the queue as before, but whenever we are backtracking to compute blossoms we can skip the verties in $\mathbb{B}$ entirely and go straight to the base $A'$ instead. In this example, in a few iterations the algorithm will find either $(D',A')$ or $(D,A')$ as a blossom edge, with just $\{D,D'\}$ as its blossom and $A'$ as the base here as well. If we didn't contract the previous blossom, this new blossom would instead consist of $\{C',C,B,B',D,D'\}$, but we are already completely done with most of those vertices and computing all of it again would be a waste. Therefore we shrink them. If the reader is familiar with the more general \textsc{Shortest Alternating Path} algorithm \cite{shortest_alternating_path} or the original blossom algorithm \cite{blossom}, and worry that such psuedonodes often have to be expanded again, then remember that in our case the set $F$ is an almost-perfect matching and those cases never happen. % TODO trenger vi si dette? Droppe det? Formulere det annerledes?
+The second reason we compute the blossom is that we no longer care much about the individual vertices in $\mathbb{B}$, and can shrink it into just the base $A'$. We will still scan vertices like $C$ from the queue as before, but whenever we are backtracking to compute blossoms we can skip the verties in $\mathbb{B}$ entirely and go straight to the base $A'$ instead. In this example, in a few iterations the algorithm will find either $(D',A')$ or $(D,A')$ as a blossom edge, with just $\{D,D'\}$ as its blossom and $A'$ as the base here as well. If we didn't contract the previous blossom, this new blossom would instead consist of $\{C',C,B,B',D,D'\}$, but we are already completely done with most of those vertices and computing all of it again would be a waste. Therefore we shrink them. 
+
+If the reader is familiar with the more general \textsc{Shortest Alternating Path} algorithm \cite{shortest_alternating_path} or the original blossom algorithm \cite{blossom}, and worry that such psuedonodes often have to be expanded again, then remember that in our case the set $F$ is an almost-perfect matching and those cases never happen. % TODO trenger vi si dette? Droppe det? Formulere det annerledes?
 
 \includesvg[width=12cm]{figures/example_story/example-story7.svg}
 
-Let us now skip a few steps, until $T$ eventually reaches the front of the queue. At that point we have that $d^-_T = 5$, and that is also the cost of the shortest odd path in our original input graph. To compute the exact path we can backtrack from $T$ to $S$ and then translate that path as described in step \ref{translate_alternating_path} of our reduction in \ref{reduction}.
-
-\subsection{Differences from Derigs' algorithm}
-TODO: tree vs completed, sum types, easier comparison and better queue priority to avoid floats, union-find, 
-
+Let us now skip a few steps, until $T$ eventually reaches the front of the queue. At that point we have that $d^-_T = 5$, and that is also the cost of the shortest odd path in our original input graph. To compute the exact path we can backtrack from $T$ to $S$ and then translate that path as described in step \ref{translate_alternating_path} of our reduction in \ref{reduction}. We end up with the path [$(S,A),(A,B),(B,C),(C,D),(D,T)$], which is the shortest odd $S$-$T$-path in the graph.
