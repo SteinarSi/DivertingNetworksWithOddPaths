@@ -25,6 +25,7 @@ In algorithms, we often use graphs as an abstract structure to represent the fun
 
 \begin{definition}[Neighbourhood]
     Let $G$ be a graph, and let $u \in V$ be a vertex in the graph. The \emph{neighbourhood} of $u$, commonly denoted as either $N(u)$ or $G[u]$, is defined as the vertices in $G$ that are reachable from $u$ using just a single edge: $N(u) := \{ to(e)  ~|~  e \in E, ~ from(e) == u\}$.
+    % TODO si noe om at det kanskje er kanter, kanskje noder vi får
 \end{definition}
 
 \begin{definition}[Walk]
@@ -36,6 +37,10 @@ In algorithms, we often use graphs as an abstract structure to represent the fun
     A \emph{path} $P := [p_1, p_2, ..., p_k]$ in a graph $G$ is a walk with the extra requirement that each vertex is used more than once: $\forall i, j \in \{1,2,..,k\} : j \neq {i+1} \rightarrow to(p_i) \neq from(p_j)$.
     If $s := from(p_1)$ and $t := to(p_k)$, we say that $P$ is path from $s$ to $t$, or an \emph{$s$-$t$-path} in $G$.
     Note that in some literature, a walk is referred to as a path, and a path is referred to as a \emph{simple} path. In this thesis, when we refer to paths they are always simple, meaning that they never repeat any vertices. If any vertices are repeated, we will refer to it as a walk.    
+\end{definition}
+
+\begin{definition}[Cycle]
+    A \emph{cycle} in a graph is a walk that ends in the same vertex it started. If it does not repeat any vertices other than the start and end vertex, then we call is a \emph{simple cycle}.
 \end{definition}
 
 \begin{definition}[The cost of a path (/walk)]
@@ -55,3 +60,19 @@ This thesis will focus on a curious variant of the Shortest Path problem, called
     \textbf{Input:} A graph $G$, two vertices $s,t \in V$\\
     \textbf{Output:} the shortest $s$-$t$-path in $G$ that uses an odd number of edges
 }}
+
+% TODO definere selve Dijkstra's algoritme? Den er jo relevant både for Shortest Odd Path og Shortest Odd Walk.
+
+% TODO kanskje skrive litt til her før vi kommer med flere definisjoner? Hvorfor bryr vi oss?
+
+\begin{definition}[Components of a graph]
+    Let $G$ be an undirected graph. A component in $G$ is a set of vertices of $G$ where all vertices in the component have paths to all other vertices in the component. Moreover, this must be a \emph{maximal} set: no other vertices in the graph can be added to the component and keep this property.
+\end{definition}
+
+\begin{definition}[Connected graph]
+    We say that an undirected graph is a \emph{connected} graph if it has only one component.
+\end{definition}
+
+\begin{definition}[Cut]
+    Let $G = (V, E)$ be an connected and undirected graph. A \emph{cut} $\mathbb{C} \subseteq E$ of $G$ is a subset of edges such that $(V, E \setminus \mathbb{C})$ is an unconnected graph of exactly two components. If $s,t \in V$ end up in separate components after the cut, we denote $\mathbb{C}$ as an $s$-$t$-\emph{cut} in $G$.
+\end{definition}
