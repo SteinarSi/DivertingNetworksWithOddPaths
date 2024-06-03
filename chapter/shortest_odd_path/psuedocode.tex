@@ -195,6 +195,7 @@ fn set_blossom_values(path) {
     \end{lstlisting}
 
 \subsection{Setting the base of blossoms and psuedonodes}
+\label{basis-code}
 When we have found and computed a blossom, we shrink it into a psuedonode by setting the base of all its vertices to the base of the blossom. Whenever we consider a potential blossom edge, we see if the two vertices have the same base, and if they do, they are in fact already in the same psuedonode and the edge can be disregarded. Whenever we set $u$ to have the base $b$, we also have to see if any other vertices have $u$ as their base and set their bases to $b$ as well. Derigs never specified any data structure to update these bases efficiently.
 
 The naïve solution would be to do something like this:
@@ -226,7 +227,7 @@ fn set_base(b, u) {
 
 Now we only go through the vertices that have $u$ as their base, in time linear to the count of vertices that need to be updated.
 
-The second version is to use a structure resembling union-find, where each disjoint set and its representative is a blossom and its base. To update the base of $u$ we simply set the new base and do nothing else. When we require the base of a vertex we recursively query its representative's base and contract the path along the way in the style of union-find. 
+The second version is to use a structure resembling UnionFind, where each disjoint set and its representative is a blossom and its base. To update the base of $u$ we simply set the new base and do nothing else. When we require the base of a vertex we recursively query its representative's base and contract the path along the way in the style of UnionFind. 
 
 \begin{lstlisting}[caption={UF-like basis},label=Listing,mathescape=true]
 fn set_base(b, u) {
@@ -241,8 +242,4 @@ fn get_base(u) -> int {
 
 \end{lstlisting}
 
-Now we can update a base in constant time, with the tradeoff of potentially slower queries.
-
-TODO gjør eksperimenter.
-
-\section{Notes on implementing the psuedocode}
+Now we can update a base in constant time, with the tradeoff of potentially slower queries. Is this faster? Sometimes it is. We benchmark both versions and discuss the results in \ref{testing-basis}.

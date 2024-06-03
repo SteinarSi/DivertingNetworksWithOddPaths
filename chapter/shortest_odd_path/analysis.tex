@@ -5,5 +5,29 @@
 \subsection{Benchmarking methodology}
 
 \subsection{Results}
+\subsubsection{Testing different data structures for the Basis}
+\label{testing-basis}
+As shown and discussed in \ref{basis-code}, we have implemented multiple data structures to keep track of the basis of each vertex. One of them is based on the Observer pattern, the other on the well-known UnionFind structure. We have tested both on 6 different graphs, and we show the results below. We ran our shortest odd path algorithm on each graph 40 times, 20 for each structure, and noted the fastest times for each.
+% TODO: cite the rest of the graphs
+\begin{center}
+    \begin{tabular}{|l | r | r | r | r | c|} 
+     \hline
+     Graph & n & m & Observer & UF & Change \\ [0.5ex] 
+     \hline\hline
+     Oldenburg & 6105 & 7035 & 5.1555 ms & 4.6955 ms & -11.277\%\\ 
+     \hline
+     San Joaquin County & 18263 & 23874 & 6.7046 ms & 5.7347 ms & -14.212\%\\
+     \hline
+     Cali Road Network & 21048 & 21693 & 19.280 ms & 19.119 ms & +0.1590\%\\
+     \hline
+     Musae Github \cite{musae-github} & 37700 & 289003 & 21.375 ms & 19.438 ms & -2.4708\%\\
+     \hline
+     SF Road Network & 174956 & 223001 & 93.494 ms & 87.570 ms & -6.3364\%\\ [1ex] 
+     \hline
+     Pokec Social Network \cite{soc-pokec} & 1632804 & 30622565 & 13.225 s & 13.774 s & +4.1543\%\\ [1ex] 
+     \hline
+    \end{tabular}
+\end{center}
+The results are a little mixed. The UnionFind-based structure spends $4.2\%$ more time on the huge Pokec Social Network graph. However, it also either outperforms or does as good as the Observer-based structure on all the other graphs, at best shaving off $14.2\%$ of the time spent on the San Joaquin County graph. Since the UnionFind-based structure outperforms the Observer-based structure on average, we have chosen to use that one for the remainder of this thesis.
 
 \subsection{Discussion}

@@ -5,6 +5,4 @@ First of all, the original algorithm used the idea of building up an tree $T$ of
 
 Secondly, we have chosen to utilize sum types to have one priority queue with both vertices and blossom edges in one. The old algorithm used two priority queues that it always had to query together, which was difficult to read and debug. We find that combining them into one queue simplifies the code greatly. The way we compare their priorities is also different: vertices have a priority of \emph{twice} its $d^-$, so that blossom edges can have a priority of the sum of its two $d^+$'s and its edge weight without dividing by two. Again do we find this simpler, and we no longer have to convert integer weights to floating points just to prioritize them correctly.
 
-Thirdly, union-find. TODO.
-
-TODO: tree vs completed, sum types, easier comparison and better queue priority to avoid floats, union-find, 
+Thirdly, we came up with a new data structure to keep and update the basis of each vertex. See \ref{basis_code} for a discussion of different structures, and TODO for a comparison with TODO big numbers.
