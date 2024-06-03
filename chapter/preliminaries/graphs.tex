@@ -1,5 +1,6 @@
 \section{Graphs}
-In algorithms, we often use graphs as an abstract structure to represent the fundamental problem behind an algorithms problem without distractions. For example, when you want to find the fastest route to walk to the study hall, or if you want the cheapest combination of flights to take you to Kuala Lumphur, then both questions are really the same problem. If we remove all the details that are unnecessary to solve the problem, like the names of the airports and whether we are walking or flying, then we end up with a graph.
+\label{graphs}
+In algorithms, we often use graphs as an abstract structure to represent the fundamental algorithmic problem without distractions. For example, when you want to find the fastest route to walk to the study hall, or if you want the cheapest combination of flights to take you to Kuala Lumphur, then both questions are really the same problem. If we remove all the details that are unnecessary to solve the problem, like the names of the airports and whether we are walking or flying, then we end up with a graph. This section will define various concepts related to graphs, and section \ref{graph-problems} will define the underlying problem of this example as well as some other graph problems.
 
 \begin{definition}[Graph]
     A \emph{graph} $G := (V, E, from, to)$ is given by
@@ -46,24 +47,6 @@ In algorithms, we often use graphs as an abstract structure to represent the fun
 \begin{definition}[The cost of a path (/walk)]
     Let $P := [p_1, p_2, ..., p_k]$ be a path (/walk) in a weighted graph $G$. The \emph{cost} of $P$ is defined as the sum of its edges: $\sum_{i=1}^k w(p_i)$. In a collection of paths (/walks), we say that the \emph{shortest} path (/walk) is the \emph{cheapest} one, the one with the lowest cost. Likewise for the longest and most expensive path (/walk). Note that in some literature, \emph{shortest} may instead mean \emph{fewest edges}, and the term \emph{length} could mean both the number of edges or the cost of a path. For that ambiguous reason, we will from now on avoid the word \emph{length}, and \emph{shortest} will always mean \emph{cheapest}.
 \end{definition}
-
-Now we are ready to define the underlying problem of the example we started with. Both problems can be represented by an abstract graph, where we want to find the shortest path from one vertex to another. From a computational perspective, it does not matter whether the edges are roads or flights, or whether the vertices are crossroads or airports. Vertices and edges can therefore represent whatever we want them to.
-
-\fbox{\parbox{0.94\textwidth}{\textsc{Shortest Path}\\
-    \textbf{Input:} A graph $G$, two vertices $s,t \in V$\\
-    \textbf{Output:} the shortest $s$-$t$-path in $G$
-}}
-
-This thesis will focus on a curious variant of the Shortest Path problem, called Shortest Odd Path:
-
-\fbox{\parbox{0.94\textwidth}{\textsc{Shortest Odd Path}\\
-    \textbf{Input:} A graph $G$, two vertices $s,t \in V$\\
-    \textbf{Output:} the shortest $s$-$t$-path in $G$ that uses an odd number of edges
-}}
-
-% TODO definere selve Dijkstra's algoritme? Den er jo relevant både for Shortest Odd Path og Shortest Odd Walk.
-
-% TODO kanskje skrive litt til her før vi kommer med flere definisjoner? Hvorfor bryr vi oss?
 
 \begin{definition}[Components of a graph]
     Let $G$ be an undirected graph. A component in $G$ is a set of vertices of $G$ where all vertices in the component have paths to all other vertices in the component. Moreover, this must be a \emph{maximal} set: no other vertices in the graph can be added to the component and keep this property.
