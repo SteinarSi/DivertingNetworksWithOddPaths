@@ -44,8 +44,7 @@ Our reduction from \textsc{Shortest Odd Path} to \textsc{Shortest Alternating Pa
 \end{figure}
 
 For example, if our input $G$ for \textsc{Shortest Odd Path} is Figure ~\ref{small5}, then $H$ and $F$ could look like Figure ~\ref{small5-2}. One of the two possible alternating paths is $P' := [(s,a), (a, a'), (a',b'), (b',b)$, $(b,c), (c,c'), (c',d'), (d',d), (d,t)]$. When we filter out mirror edges and replace edges from the mirror side with their real counterparts, we end up with $P := [(s,a),(a,b),(b,c),(c,d),(d,t)]$, which is one of the two possible odd paths of $G$. 
-
-TODO dette kan kanskje formuleres bedre?
+\todo{dette kan kanskje formuleres bedre?}
 
 To see why the reduction works, simply observe that for each step we take in the graph, we have to go to the other side of the mirror. If we take another step, we get back to the same side again. It is only when we reach the target vertex $t$ that we do not have to go to the other side. Therefore, to reach a neighbour of $t$, we must have used an even number of mirror edges and an even number of non-mirror edges, and when we take the last step to reach $t$ we have used an odd number of edges and thus found an odd path. If this alternating $s$-$t$-path in $H$ is the shortest such path, then the corresponding path in $G$ must also be the shortest odd $s$-$t$-path in $G$. The reduction works also in the weighted case, as long as each edge $(u',v')$ on the mirror side get the same weight as their real counterpart, and all the mirror edges get the same (usually 0) weight. The interested reader may see \cite{derigs_shortest_odd_path} for more details on this reduction.
 
@@ -91,10 +90,10 @@ After all these values have been set, we immedeately scan all the vertices in $\
 
 \includesvg[width=12cm]{figures/example_story/example-story6.svg}
 
-% TODO føler dette kan skrives bedre
+\todo{føler dette kan skrives bedre}
 The second reason we compute the blossom is that we no longer care much about the individual vertices in $\mathbb{B}$, and can shrink it into just the base $A'$. We will still scan vertices like $C$ from the queue as before, but whenever we are backtracking to compute blossoms we can skip the verties in $\mathbb{B}$ entirely and go straight to the base $A'$ instead. In this example, in a few iterations the algorithm will find either $(D',A')$ or $(D,A')$ as a blossom edge, with just $\{D,D'\}$ as its blossom and $A'$ as the base here as well. If we didn't contract the previous blossom, this new blossom would instead consist of $\{C',C,B,B',D,D'\}$, but we are already completely done with most of those vertices and computing all of it again would be a waste. Therefore we shrink them. 
 
-If the reader is familiar with the more general \textsc{Shortest Alternating Path} algorithm \cite{shortest_alternating_path} or the original blossom algorithm \cite{blossom}, and worry that such psuedonodes often have to be expanded again, then remember that in our case the set $F$ is an almost-perfect matching and those cases never happen. % TODO trenger vi si dette? Droppe det? Formulere det annerledes?
+If the reader is familiar with the more general \textsc{Shortest Alternating Path} algorithm \cite{shortest_alternating_path} or the original blossom algorithm \cite{blossom}, and worry that such psuedonodes often have to be expanded again, then remember that in our case the set $F$ is an almost-perfect matching and those cases never happen. \todo{trenger vi si dette? Droppe det? Formulere det annerledes?}
 
 \includesvg[width=12cm]{figures/example_story/example-story7.svg}
 

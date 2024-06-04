@@ -20,13 +20,12 @@ In algorithms, we often use graphs as an abstract structure to represent the fun
     Let $G$ be a graph. $G$ is said to be an \emph{undirected graph} if each edge has an opposite: $\forall e \in E \exists e' \in E : reverse(e) == e'$.
     If $G$ is not undirected, we say that $G$ is a \emph{directed graph}.
     Edges in directed graphs are often drawn as arrows, while edges in undirected graphs can be drawn using just a line.
-
-    TODO figures for graphs
 \end{definition}
+\todo[inline]{figures for graphs}
 
 \begin{definition}[Neighbourhood]
     Let $G$ be a graph, and let $u \in V$ be a vertex in the graph. The \emph{neighbourhood} of $u$, commonly denoted as either $N(u)$ or $G[u]$, is defined as the vertices in $G$ that are reachable from $u$ using just a single edge: $N(u) := \{ to(e)  ~|~  e \in E, ~ from(e) == u\}$.
-    % TODO si noe om at det kanskje er kanter, kanskje noder vi får
+    \todo{Burde si noe om at det kanskje er kanter, kanskje noder vi får}
 \end{definition}
 
 \begin{definition}[Walk]

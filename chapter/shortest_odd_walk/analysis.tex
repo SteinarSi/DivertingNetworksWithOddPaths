@@ -3,15 +3,33 @@
 \begin{figure}
     \centering
     \includesvg[width=10cm]{figures/graphs/small2.svg}
-    \caption{No odd $s$-$t$-path exist, but we still have many odd $s$-$t$-walks}
+    \caption{No odd $S$-$T$-path exist, but we still have many odd $S$-$T$-walks}
     \label{small2}
 \end{figure}
 
-Consider ~\ref{small2}. There are no odd paths from $s$ to $t$, yet we have an infinite amount of odd walks. Our algorithm would first find an odd walk to $a$, then an even walk to $b$, then an odd walk to $c$, then an even walk to $a$, and lastly an odd walk to $t$. However, the algorithm would search $a$ twice, once for each parity, and the resulting walk is not a path. Therefore this algorithm cannot be used to solve \textsc{Shortest Odd Path}.
+Consider ~\ref{small2}. There are no odd paths from $S$ to $T$, yet we have an infinite amount of odd walks by utilizing the loop $ABC$ to offset the parity. Our algorithm would first find an odd walk to $A$, then an even walk to $B$, then an odd walk to $C$, then an even walk to $A$, and lastly an odd walk to $T$. However, the algorithm would search $A$ twice, once for each parity, and the resulting walk is not a path. Therefore this algorithm cannot be used to solve \textsc{Shortest Odd Path}.
 
 \subsection{Correctness}
-TODO.
-Is this necessary?
+Let \pyth{(priority, even, u)} be the triple at the front of the queue at any point in the execution of our algorithm.
+Claim: If \pyth{even} is true and \pyth{even_done[u]} is false, then \pyth{priority} is the cost of the shortest even path from the source to \pyth{u}.
+
+\begin{proof}
+By induction. 
+
+The source vertex \pyth{s} has a best possible even cost of \pyth{0}, and initially we have just \pyth{(0, true, s)} in the queue. When that triple is popped the property holds in the base case.
+
+\todo[inline]{
+    Burde yoinke beviset herfra: https://web.engr.oregonstate.edu/~glencora/wiki/uploads/dijkstra-proof.pdf
+
+    Eller herfra: https://community.wvu.edu/~krsubramani/courses/fa05/gaoa/qen/dijk.pdf
+
+    Eller fra INF234
+
+    Også si det samme når det er odd, kanskje
+}
+
+\end{proof}
+
 
 \subsection{Complexity}
 Because of our \pyth{odd_done} and \pyth{even_done} arrays, we can guarantee that each vertex is scanned at most twice, once for each parity. 
@@ -19,9 +37,8 @@ For each scan, we loop through each of the neighbours in linear time, and consid
 
 In total, the algorithm runs in $O(m \cdot log ~ m)$.
 
-TODO: er dette i det hele tatt riktig? Det føles feil. Wikipedia gir at Dijkstra kjører på $O((n+m) \cdot log ~ n)$.
+\todo[inline]{er dette i det hele tatt riktig? Det føles feil. Wikipedia gir at Dijkstra kjører på $O((n+m) \cdot log ~ n)$.}
 
 \subsection{Benchmarking}
-TODO
 
 \subsection{Discussion}
