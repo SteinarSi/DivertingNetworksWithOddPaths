@@ -60,7 +60,10 @@ It is generally difficult to verify whether a given graph is a planar graph, and
     The dual graph is always planar, and the dual of the dual is the original graph. See Figure \ref{k4-with-dual} for an example of a dual graph.
 \end{definition}
 
+For a planar graph $G$, we denote $dual(G)$ as the dual graph of $G$. Likewise, for an edge $e$ in a planar graph, we denote $dual(e)$ as the corresponding edge in the dual graph, the one that crosses $e$.
+
 \begin{fact}[A cycle in a dual graph is a cut in the original graph]
+\label{dual-cycle-is-real-cut}
     Let $G = (V, E)$ be a connected and planar graph, let $G^{dual}$ be its dual graph, and let $C$ be a simple cycle in $G^{dual}$. Then $C$ will always correspond to a cut of $G$. If we define $C'$ as the edges that correspond to edges in $C$, or equivalently as the the edges that cross edges in $C$, then $(V,E \setminus C')$ is an unconnected graph of exactly two components.
 
     See Figure \ref{cycle-cut} for an example. In \ref{dual-with-cycle} we have found a simple cycle in the dual graph, and if we delete all of edges in the original graph that cross the cycle we end up with the disconnected graph in \ref{k4-cut}.
