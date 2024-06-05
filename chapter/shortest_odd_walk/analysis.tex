@@ -7,7 +7,7 @@
     \label{small2}
 \end{figure}
 
-Consider ~\ref{small2}. There are no odd paths from $S$ to $T$, yet we have an infinite amount of odd walks by utilizing the loop $ABC$ to offset the parity. Our algorithm would first find an odd walk to $A$, then an even walk to $B$, then an odd walk to $C$, then an even walk to $A$, and lastly an odd walk to $T$. However, the algorithm would search $A$ twice, once for each parity, and the resulting walk is not a path. Therefore this algorithm cannot be used to solve \textsc{Shortest Odd Path}.
+Consider ~\ref{small2}. There are no odd paths from $S$ to $T$, yet we have an infinite amount of odd walks by utilizing the cycle $[A,B,C]$ to offset the parity. Our algorithm would first find an odd walk to $A$, then an even walk to $B$, then an odd walk to $C$, then an even walk to $A$, and lastly an odd walk to $T$. However, the algorithm would search $A$ twice, once for each parity, and the resulting walk is not a path. Therefore this algorithm cannot be used to solve \textsc{Shortest Odd Path}.
 
 \subsection{Correctness}
 Let \pyth{(priority, even, u)} be the triple at the front of the queue at any point in the execution of our algorithm.
@@ -30,14 +30,15 @@ The source vertex \pyth{s} has a best possible even cost of \pyth{0}, and initia
 
 \end{proof}
 
-
 \subsection{Complexity}
-Because of our \pyth{odd_done} and \pyth{even_done} arrays, we can guarantee that each vertex is scanned at most twice, once for each parity. 
-For each scan, we loop through each of the neighbours in linear time, and consider putting them in the queue. A vertex may be put into the queue many times before it is scanned, in the worst case once for each of its neighbours. That means that we put vertices in the queue at most $O(m)$ times, for a total running time of $O(m)$, and removing all of them takes a total of $O(m \cdot log ~ m)$. 
-
-In total, the algorithm runs in $O(m \cdot log ~ m)$.
-
-\todo[inline]{er dette i det hele tatt riktig? Det føles feil. Wikipedia gir at Dijkstra kjører på $O((n+m) \cdot log ~ n)$.}
+Claim: the algorithm runs in time at most $O(m \cdot \log m)$ on graphs in general, and $O(m \cdot \log n)$ on simple graphs.
+\begin{proof}
+    Because of our \pyth{odd_done} and \pyth{even_done} arrays, we can guarantee that each vertex is scanned at most twice, once for each parity. For each scan, we loop through each of the neighbours in linear time, and consider putting them in the queue. The total cost of the scans is therefore at most $O(m)$. A vertex may be put into the queue many times before it is scanned, in the worst case once for each of its neighbours. That means that we put vertices in the queue at most $O(m)$ times, for a total cost of $O(m)$, and removing all of them takes a total of $O(m \cdot \log m)$. 
+    
+    The algorithm runs in time at most $O(m) + O(m \cdot \log m) = O(m \cdot \log m)$, which shows the first part of the claim.
+    
+    If the graph is simple we may simplify the complexity further: $O(m \cdot \log m) \subseteq (m \cdot \log n^2) = O(m \cdot 2 \cdot \log n) = O(m \cdot \log n)$, which shows the second part of the claim.
+\end{proof}
 
 \subsection{Benchmarking}
 
