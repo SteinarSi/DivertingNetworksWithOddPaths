@@ -1,6 +1,6 @@
 \section{Graphs}
 \label{graphs}
-In algorithms, we often use graphs as an abstract structure to represent the fundamental algorithmic problem without distractions. For example, when you want to find the fastest route to walk to the study hall, or if you want the cheapest combination of flights to take you to Kuala Lumphur, then both questions are really the same problem. If we remove all the details that are unnecessary to solve the problem, like the names of the airports and whether we are walking or flying, then we end up with a graph. This section will define various concepts related to graphs, and section \ref{graph-problems} will define the underlying problem of this example as well as some other graph problems.
+In the study of algorithms, we often use graphs as an abstract structure to represent the fundamental algorithmic problem without distractions. For example, when you want to find the fastest route to walk to the study hall, or if you want the cheapest combination of flights to take you to Kuala Lumpur, then both questions are really the same problem. If we remove all the details that are unnecessary to solve the problem, like the names of the airports and whether we are walking or flying, then we end up with a graph. This section defines various concepts related to graphs, and Section \ref{graph-problems} will formalize the underlying problem of this example as well as some other graph problems. Later, Section \ref{planar-graphs} defines the concept of \emph{planar} graphs.
 
 \begin{definition}[Graph]
     A \emph{graph} $G := (V, E, from, to)$ is given by
@@ -12,43 +12,54 @@ In algorithms, we often use graphs as an abstract structure to represent the fun
 \end{itemize}
 \end{definition}
 
+We also define the convenience function $reverse : E \rightarrow E$. For an edge $e \in E$, $reverse(e)$ is the edge going in the opposite direction, where $from(e) = to(reverse(e))$, and $to(e) = from(reverse(e))$.
+
+If we are working with multiple graphs at once, say two graphs $G$ and $H$, then writing just $V$ is ambiguous. In such cases do we instead denote $V(G)$ and $V(H)$ as $G$'s and $H$'s vertices, respectively. The same goes for $E(G)$ and $E(H)$ for their edges.
+
 \begin{definition}[Weighted graph]
-    A \emph{weighted graph} $G := (V, E, from, to, w)$ is a graph, where $w : E \rightarrow \mathbb{R}$ is the \emph{weight} of each edge. If a graph is not weighted, we often treat it like it is weighted with all edges having unit weight, a weight of 1. An algorithm intended for weighted graphs will therefore often work on unweighted graph as well.
+    A \emph{weighted graph} $G := (V, E, from, to, weight)$ is a graph, where $weight : E \rightarrow \mathbb{R}$ is the \emph{weight} of each edge. If a graph is not weighted, we often treat it as if all edges have unit weight, a weight of 1. Algorithms intended for weighted graphs will therefore often work on unweighted graphs as well.
 \end{definition}
 
 \begin{definition}[Directed and undirected graphs]
-    Let $G$ be a graph. $G$ is said to be an \emph{undirected graph} if each edge has an opposite: $\forall e \in E \exists e' \in E : reverse(e) == e'$.
+    Let $G$ be a graph. $G$ is said to be an \emph{undirected graph} if each edge has an opposite: $\forall e \in E ~ \exists e' \in E : reverse(e) = e'$.
     If $G$ is not undirected, we say that $G$ is a \emph{directed graph}.
     Edges in directed graphs are often drawn as arrows, while edges in undirected graphs can be drawn using just a line.
 \end{definition}
-\todo[inline]{figures for graphs}
+% \todo[inline]{figures for graphs}
 
 \begin{definition}[Neighbourhood]
-    Let $G$ be a graph, and let $u \in V$ be a vertex in the graph. The \emph{neighbourhood} of $u$, commonly denoted as either $N(u)$ or $G[u]$, is defined as the vertices in $G$ that are reachable from $u$ using just a single edge: $N(u) := \{ to(e)  ~|~  e \in E, ~ from(e) == u\}$.
-    \todo{Burde si noe om at det kanskje er kanter, kanskje noder vi får}
+    Let $G$ be a graph, and let $u \in V$ be a vertex in the graph. The \emph{neighbourhood} of $u$, denoted as $N(u)$, is defined as the vertices in $G$ that are reachable from $u$ using just a single edge: $N(u) := \{ to(e)  ~|~  e \in E, ~ from(e) = u\}$. 
+    In code, it is usually more useful to consider neighbourhoods in terms of edges. We will therefore denote $G[u]$ as the edges in $G$ that start in $u$: $G[u] := \{e ~ | ~ e \in E, ~ from(e) = u\}$
+\end{definition}
+
+\begin{definition}[Simple graph]
+    Let $G$ be a graph. $G$ is said to be a \emph{simple} graph if for each pair of vertices $u,v \in V$, there exists \emph{at most} one edge $e$ such that $from(e) = u$ and $to(e) = v$. If two or more edges have the same endpoints, we say the edges are \emph{parallel} to each other, and that the graph has \emph{parallel} edges and is thus not simple.
 \end{definition}
 
 \begin{definition}[Walk]
-    A \emph{walk} $P := [p_1, p_2, ..., p_k]$ in a graph $G$ is a sequence of edges where each edge ends where the next one starts: $\forall i \in \{1,2,..,k-1\} : to(p_i) = from(p_{i+1})$.
-    If $s := from(p_1)$ and $t := to(p_k)$, we say that $P$ is an \emph{$s$-$t$-walk} in $G$.
+    A \emph{walk} $P := [e_1, e_2, ..., e_k]$ in a graph $G$, for $e_i \in E$, is a sequence of edges where each edge ends where the next one starts: $\forall i \in \{1,2,..,k-1\} : to(e_i) = from(e_{i+1})$.
+    If $s := from(e_1)$ and $t := to(e_k)$, we say that $P$ is an \emph{$s$-$t$-walk} in $G$.
+    Another way to denote a walk is to give a sequence of vertices in the order they are visited: $[u_1, u_2, ..., u_n]$, for $u_i \in V$. This works as long as the graph is simple, if there are multiple edges from $u_i$ to $u_{i+1}$, then the walk is ambiguous.
 \end{definition}
 
 \begin{definition}[Path]
-    A \emph{path} $P := [p_1, p_2, ..., p_k]$ in a graph $G$ is a walk with the extra requirement that each vertex is used more than once: $\forall i, j \in \{1,2,..,k\} : j \neq {i+1} \rightarrow to(p_i) \neq from(p_j)$.
-    If $s := from(p_1)$ and $t := to(p_k)$, we say that $P$ is path from $s$ to $t$, or an \emph{$s$-$t$-path} in $G$.
+    A \emph{path} $P := [e_1, e_2, ..., e_k]$ in a graph $G$ is a walk with the extra requirement that each vertex is used at most once: $\forall i, j \in \{1,2,..,k\} : j \neq {i+1} \rightarrow to(e_i) \neq from(e_j)$.
+    If $s := from(e_1)$ and $t := to(e_k)$, we say that $P$ is path from $s$ to $t$, or an \emph{$s$-$t$-path} in $G$.
     Note that in some literature, a walk is referred to as a path, and a path is referred to as a \emph{simple} path. In this thesis, when we refer to paths they are always simple, meaning that they never repeat any vertices. If any vertices are repeated, we will refer to it as a walk.    
 \end{definition}
 
 \begin{definition}[Cycle]
-    A \emph{cycle} in a graph is a walk that ends in the same vertex it started. If it does not repeat any vertices other than the start and end vertex, then we call is a \emph{simple cycle}.
+    A \emph{cycle} in a graph is a walk that starts and ends in the same vertex. If it does not repeat any vertices except in the last verex, then we call is a \emph{simple cycle}.
 \end{definition}
 
 \begin{definition}[The cost of a path (/walk)]
-    Let $P := [p_1, p_2, ..., p_k]$ be a path (/walk) in a weighted graph $G$. The \emph{cost} of $P$ is defined as the sum of its edges: $\sum_{i=1}^k w(p_i)$. In a collection of paths (/walks), we say that the \emph{shortest} path (/walk) is the \emph{cheapest} one, the one with the lowest cost. Likewise for the longest and most expensive path (/walk). Note that in some literature, \emph{shortest} may instead mean \emph{fewest edges}, and the term \emph{length} could mean both the number of edges or the cost of a path. For that ambiguous reason, we will from now on avoid the word \emph{length}, and \emph{shortest} will always mean \emph{cheapest}.
+    Let $P := [e_1, e_2, ..., e_k]$ be a path (/walk) in a weighted graph $G$. The \emph{cost} of $P$ is defined as the sum of the weights of its edges: $\sum_{i=1}^k w(e_i)$. In a collection of paths (/walks), we say that the \emph{shortest} path (/walk) is the \emph{cheapest} one, the one with the lowest cost. Likewise for the longest and most expensive path (/walk). 
 \end{definition}
 
+Note that in some literature, \emph{shortest} may instead mean \emph{fewest edges}, and the term \emph{length} could mean both the number of edges or the cost of a path. For that ambiguous reason, we will from now on avoid the word \emph{length}, and \emph{shortest} will always mean \emph{cheapest}. If a graph is unweighted, we pretend that all the edges have a unit weight of 1, and in that case the cost is the same as the number of edges.
+
 \begin{definition}[Components of a graph]
-    Let $G$ be an undirected graph. A component in $G$ is a set of vertices of $G$ where all vertices in the component have paths to all other vertices in the component. Moreover, this must be a \emph{maximal} set: no other vertices in the graph can be added to the component and keep this property.
+    Let $G$ be an undirected graph. A component in $G$ is a set of vertices of $G$ where all vertices in the component have paths to all other vertices in the component. Moreover, this must be a \emph{maximal} set: no other vertices in the graph can be added to the component without giving up this property.
 \end{definition}
 
 \begin{definition}[Connected graph]
@@ -56,5 +67,5 @@ In algorithms, we often use graphs as an abstract structure to represent the fun
 \end{definition}
 
 \begin{definition}[Cut]
-    Let $G = (V, E)$ be an connected and undirected graph. A \emph{cut} $\mathbb{C} \subseteq E$ of $G$ is a subset of edges such that $(V, E \setminus \mathbb{C})$ is an unconnected graph of exactly two components. If $s,t \in V$ end up in separate components after the cut, we denote $\mathbb{C}$ as an $s$-$t$-\emph{cut} in $G$.
+    Let $G = (V, E, from, to)$ be a connected and undirected graph. A \emph{cut} $\mathbb{C} \subseteq E$ of $G$ is a subset of edges such that $(V, E \setminus \mathbb{C}, from, to)$ is an unconnected graph of exactly two components. If two vertices $s,t \in V$ end up in separate components after the cut, we denote $\mathbb{C}$ as an $s$-$t$-\emph{cut} in $G$.
 \end{definition}

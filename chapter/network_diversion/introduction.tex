@@ -1,3 +1,10 @@
 \section{Introduction to Network Diversion}
 
 \todo[inline]{What is Network Diversion? Find out}
+
+\fbox{\parbox{0.94\textwidth}{\textsc{Network Diversion}\\
+    \textbf{Input:} A weighted graph $G := (V, E, from, to, weight)$, two vertices $s,t \in V$, a \emph{diversion edge} $d \in E$\\
+    \textbf{Output:} A \emph{diversion set} $D \subseteq E$ of minimum weight such that all $s$-$t$-paths in $(V, E \setminus D, from, to, weight)$ must go through $d$.
+}}
+
+A diversion set may also equivalently be defined as a minimal $s$-$t$-cut that includes $d$. If all edges from the diversion set are deleted except $d$, then $d$ is the bridge between what would otherwise be two separate components and all $s$-$t$-paths must go through $d$. \textsc{Network Diversion} can then be restated as the quest to find a \emph{minimum} minimal $s$-$t$-cut that includes $d$. Both definitions are equivalent and yield the same optimum results, but being able to switch between formulations of the problem makes it easier to solve them.

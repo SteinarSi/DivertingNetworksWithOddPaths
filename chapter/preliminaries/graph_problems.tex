@@ -1,7 +1,7 @@
 \section{Graph problems}
 \label{graph-problems}
 
-Now that we know what a graph is, we are ready to define the underlying problem of the example we started with the previos section \ref{graphs}. Both problems can be represented by an abstract graph, where we want to find the shortest path from one vertex to another. From a computational perspective, it does not matter whether the edges are roads or flights, or whether the vertices are crossroads or airports. Vertices and edges can therefore represent whatever we want them to. 
+Now that we know what a graph is, we are ready to formalize the underlying problem of the example we started with in the previous Section \ref{graphs}. Both problems can be represented by an abstract graph, where we want to find the shortest path from one vertex to another. From a computational perspective, it does not matter whether the edges are roads or flights, or whether the vertices are crossroads or airports. Vertices and edges can represent whatever we want them to. 
 
 The problem is called \textsc{Shortest Path}:
 
@@ -24,45 +24,35 @@ We will also give an algorithm in Chapter \ref{odd-walk} for the less restrictiv
     \textbf{Output:} the shortest $s$-$t$-walk in $G$ that uses an odd number of edges
 }}
 
-We show in \ref{reduction} that \textsc{Shortest Odd Path} in undirected graphs of non-negative weights can be solved efficiently by reducing it to another problem called \textsc{Shortest Alternating Path}:
-
-\fbox{\parbox{0.94\textwidth}{\textsc{Shortest Alternating Path}\\
-    \textbf{Input:} A weighted graph $G := (V, E)$, two vertices $s,t \in V$, and a set $F \subseteq E$\\
-    \textbf{Output:} the shortest $s$-$t$-path in $G$ where every other edge used is in $F$.
-}}
-
-Later, in Chapter \ref{network-diversion}, we use our \textsc{Shortest Odd Path} algorithm to tackle a much more useful problem called \textsc{Network Diversion}:
-
-\fbox{\parbox{0.94\textwidth}{\textsc{Network Diversion}\\
-    \textbf{Input:} A weighted graph $G := (V, E)$, two vertices $s,t \in V$, a \emph{diversion edge} $d \in E$\\
-    \textbf{Output:} A \emph{diversion set} $D \subseteq E$ of minimum weight such that all $s$-$t$-paths in $(V, E \setminus D)$ must go through $d$.
-}}
-
-A diversion set may also equivalently be defined as a minimal $s$-$t$-cut that includes $d$. If all edges from the diversion set are deleted except $d$, then $d$ is the bridge between what would otherwise be two components and all $s$-$t$-paths must go through $d$. \textsc{Network Diversion} can then be restated as the quest to find a \emph{minimum} minimal $s$-$t$-cut that includes $d$. Both definitions are equivalent and yield the same optimum results, but being able to switch between formulations of the problem makes it easier to solve them.
-
+\subsection{Dijkstra's Algorithm}
 Both our algorithms for \textsc{Shortest Odd Path} and \textsc{Shortest Odd Walk} borrow ideas from the famous Dijkstra's Algorithm. The algorithm solves \textsc{Shortest Path} on graphs with non-negative weights, and handles both directed and undirected graphs. We show it here for reference.
 
 \begin{lstlisting}[caption={Dijkstra's Algorithm for Shortest Path},label=Listing,mathescape=true]
-def dijkstras_shortest_path(graph, s, t):
-    for u in V(graph):
+def dijkstras_shortest_path(graph, s, t) {
+    for u in V(graph) {
         dist[u] = $\infty$;
         done[u] = false;
+    }
     dist[s] = 0;
     queue = priority_queue((0, s));
 
-    while queue is not empty:
+    while queue is not empty {
         (dist_u, u) = queue.pop();
-        if not done[u]:
+        if not done[u] {
             done[u] = true;
-            for edge in graph[u]:
+            for edge in graph[u] {
                 dist_v = dist_u + weight(edge);
-                if dist_v < dist[v]:
-                    dist[v] = dist_v
+                if dist_v < dist[v] {
+                    dist[v] = dist_v;
                     queue.push((dist_v, v));
-        if done[t]:
-            break;
+                }
+            }
+        }
+        if done[t] { 
+            break; 
+        }
+    }
 
     return dist[t];
+}
 \end{lstlisting}
-
-\todo[inline]{flere problemer her?}
