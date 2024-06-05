@@ -31,7 +31,8 @@ The source vertex \pyth{s} has a best possible even cost of \pyth{0}, and initia
 \end{proof}
 
 \subsection{Complexity}
-Claim: the algorithm runs in time at most $O(m \cdot \log m)$ on graphs in general, and $O(m \cdot \log n)$ on simple graphs.
+Let $(G,s,t)$ be an instance of \textsc{Shortest Odd Walk}, let $n := |V|$ and let $m := |E|$.\\
+Claim: the algorithm runs in time at most $O(m \cdot \log m)$, or $O(m \cdot \log n)$ if the graph is simple.
 \begin{proof}
     Because of our \pyth{odd_done} and \pyth{even_done} arrays, we can guarantee that each vertex is scanned at most twice, once for each parity. For each scan, we loop through each of the neighbours in linear time, and consider putting them in the queue. The total cost of the scans is therefore at most $O(m)$. A vertex may be put into the queue many times before it is scanned, in the worst case once for each of its neighbours. That means that we put vertices in the queue at most $O(m)$ times, for a total cost of $O(m)$, and removing all of them takes a total of $O(m \cdot \log m)$. 
     

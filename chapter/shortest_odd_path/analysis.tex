@@ -1,6 +1,20 @@
 \section{Analysis}
 
 \subsection{Complexity}
+Let $(G,s,t)$ be an instance of \textsc{Shortest Odd Path}, let $n := |V|$ and let $m := |E|$. \\
+Claim: the algorithm runs in time at most $O(m \cdot \log n)$, or $O(m \cdot \log n)$ of the graph is simple.
+\begin{proof}  
+    First of all, we construct the mirror graph $H$ with $2n-2 \in O(n)$ vertices and $2m - deg(s) - deg(t) \in O(m)$ edges, in time $O(n+m)$.
+    
+    With our \pyth{completed} array we can guarantee that each vertex is scanned at most once, and the scanning operation just loops through all the neighbours. Therefore, the total cost of all the scans is $O(n + \sum_{u \in V}) deg(u) = O(n + 2m) = O(n + m)$.
+
+    The blossom operation is a little more complicated. Thanks to the overly complicated code in our \pyth{backtrack_blossom} procedure, we can backtrack from a blossom edge and determine the vertices in the blossom in time linear to the size of the blossom. Setting their values for $d^+$ and $d^-$ can also be done in linear time, and the potential scans have already been accounted for above. The key point here is that we shrink the blossom into a psuedonode afterwards: each vertex can then only be part of such a blossom procedure at most once. Even though we may compute many blossom edges, the total amount of work will therefore never exceed $O(n)$.
+
+    Lastly, we have the main loop, which iteratively pop vertices and blossom edges from the queue. Each of the $O(n)$ vertices may be put into the priority queue many times, at most once for each of its neighbours. That is a total of $O(m)$ vertices in the queue, for a total cost of $O(m)$. Though it is unlikely, in the extreme case all edges may be put in the queue as blossom edges as well, again for a total cost of $O(m)$. In total, enqueueing everything costs $O(m)$, and dequeueing everything costs $O(m \cdot \log m)$.
+
+    In total, the algorithm runs in time $O(n+m) + O(n+m) + O(n) + O(m) + O(m \cdot \log m) = O(m \cdot \log m)$.
+    If the graph is simple, then we can simplify it further to $O(m \cdot \log n^2) = O(m \cdot 2 \cdot \log n) = O(m \cdot \log n)$.
+\end{proof}
 
 \subsection{Benchmarking methodology}
 
