@@ -28,7 +28,7 @@ We will also give an algorithm in Chapter \ref{odd-walk} for the less restrictiv
 Both our algorithms for \textsc{Shortest Odd Path} and \textsc{Shortest Odd Walk} borrow ideas from the famous Dijkstra's Algorithm. The algorithm solves \textsc{Shortest Path} on graphs with non-negative weights, and handles both directed and undirected graphs. We show it here for reference.
 
 \begin{lstlisting}[caption={Dijkstra's Algorithm for Shortest Path},label=Listing,mathescape=true]
-def dijkstras_shortest_path(graph, s, t) {
+fn dijkstras_shortest_path(graph, s, t) {
     for u in V(graph) {
         dist[u] = $\infty$;
         done[u] = false;
