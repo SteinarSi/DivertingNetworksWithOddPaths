@@ -4,10 +4,10 @@
     \centering
     \includesvg[width=10cm]{figures/graphs/small2.svg}
     \caption{No odd $S$-$T$-path exist, but we still have many odd $S$-$T$-walks}
-    \label{small2}
+    \label{figure:small2}
 \end{figure}
 
-Consider ~\ref{small2}. There are no odd paths from $S$ to $T$, yet we have an infinite amount of odd walks by utilizing the cycle $[A,B,C]$ to offset the parity. Our algorithm would first find an odd walk to $A$, then an even walk to $B$, then an odd walk to $C$, then an even walk to $A$, and lastly an odd walk to $T$. However, the algorithm would search $A$ twice, once for each parity, and the resulting walk is not a path. Therefore this algorithm cannot be used to solve \textsc{Shortest Odd Path}.
+Consider Figure ~\ref{figure:small2}. There are no odd paths from $S$ to $T$, yet we have an infinite amount of odd walks by utilizing the cycle $[A,B,C]$ to offset the parity. Our algorithm would first find an odd walk to $A$, then an even walk to $B$, then an odd walk to $C$, then an even walk to $A$, and lastly an odd walk to $T$. However, the algorithm would search $A$ twice, once for each parity, and the resulting walk is not a path. Therefore this algorithm cannot be used to solve \textsc{Shortest Odd Path}.
 
 \subsection{Correctness}
 Let \pyth{(priority, even, u)} be the triple at the front of the queue at any point in the execution of our algorithm.

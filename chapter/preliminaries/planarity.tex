@@ -1,6 +1,6 @@
 \section{Planarity}
-\label{planar-graphs}
-A fascinating class of graphs that we will focus on in Chapter \ref{network-diversion} are \emph{planar graphs}. We will give the most important definitions and facts about planar graphs here, and refer the reader to \cite{planar_graphs} if they wish to read more.
+\label{section:planar-graphs}
+A fascinating class of graphs that we will focus on in Chapter \ref{chapter:network-diversion} are \emph{planar graphs}. We will give the most important definitions and facts about planar graphs here, and refer the reader to \cite{source:planar_graphs} if they wish to read more.
 
 \subsection{Planar embeddings}
 \begin{definition}[Embedding]
@@ -15,7 +15,7 @@ A fascinating class of graphs that we will focus on in Chapter \ref{network-dive
     Let $G$ be a graph. A \emph{straight-line embedding} of $G$ is a planar embedding of where each edge can be drawn as a line segment between its endpoint vertices and still not cross any other edge. In a straight line embedding we can forgo the mappings of the edges altogether and consider the mapping of vertices only. Such embeddings always exist: if $G$ is planar then there is a straight-line embedding of $G$.
 \end{definition}
 
-See Figure \ref{k4-a} and Figure \ref{k4-b} for an example of a planar graph. Figure \ref{k4-a} also shows a planar embedding. Figure \ref{k33} shows a graph that is dnot planar, since no planar embeddings of the graph exist. Note that in all these examples we have drawn all the edges as straight line segments, but that is not necessary: as long as a curve does not cross any other curves it can be as curved as we want.
+See Figure \ref{figure:k4-a} and Figure \ref{figure:k4-b} for an example of a planar graph. Figure \ref{figure:k4-a} also shows a planar embedding. Figure \ref{figure:k33} shows a graph that is dnot planar, since no planar embeddings of the graph exist. Note that in all these examples we have drawn all the edges as straight line segments, but that is not necessary: as long as a curve does not cross any other curves it can be as curved as we want.
 
 \begin{figure}
     \centering
@@ -23,25 +23,25 @@ See Figure \ref{k4-a} and Figure \ref{k4-b} for an example of a planar graph. Fi
         \centering
         \includesvg{figures/k33.svg}
         \caption{Not planar}
-        \label{k33}
+        \label{figure:k33}
     \end{subfigure}\hfill%
     \begin{subfigure}{.23\textwidth}
         \centering
         \includesvg{figures/k4-a.svg}
         \caption{Planar}
-        \label{k4-a}
+        \label{figure:k4-a}
     \end{subfigure}\hfill%
     \begin{subfigure}{.23\textwidth}
         \centering
         \includesvg{figures/k4-b.svg}
-        \caption{Planar, it is the same graph as in Figure \ref{k4-a}}
-        \label{k4-b}
+        \caption{Planar, it is the same graph as in Figure \ref{figure:k4-a}}
+        \label{figure:k4-b}
     \end{subfigure}\hfill%
     \begin{subfigure}{.23\textwidth}
         \centering
         \includesvg{figures/k4-c.svg}
         \caption{Planar, with colored faces}
-        \label{k4-c}
+        \label{figure:k4-c}
     \end{subfigure}
     \caption{Examples of planar and non-planar graphs}
 \end{figure}
@@ -49,7 +49,7 @@ See Figure \ref{k4-a} and Figure \ref{k4-b} for an example of a planar graph. Fi
 It is generally difficult to determine whether a given graph is planar, and to compute an appropriate embedding if it is. For all the algorithms we have implemented in this paper, if they take a planar graph as input, we have for simplicity assumed that we are also given a planar embedding of the graph. Furthermore, since all planar graphs also have straight-line embeddings, we have assumed that the given embeddings are straight-line embeddings. Our theoretical results hold for planar graphs in general, but in practice these assumptions make implementing the algorithms less tedious.
 
 \subsection{Duality}
-The next topic is easy to visualize and understand, but difficult to give formal definitions for. Imagine loading a drawing of a planar graph like the one in Figure \ref{k4-a} into an image editing program, and using the fill tool to cover each region in a different color, like in Figure \ref{k4-c}. Each such region is called a \emph{face} of the graph, including the region 'outside' the graph called the \emph{outer} face. Two faces are adjacent if they are separated by just a single edge: if we were to delete the edge our fill tool would give both the same color.
+The next topic is easy to visualize and understand, but difficult to give formal definitions for. Imagine loading a drawing of a planar graph like the one in Figure \ref{figure:k4-a} into an image editing program, and using the fill tool to cover each region in a different color, like in Figure \ref{figure:k4-c}. Each such region is called a \emph{face} of the graph, including the region 'outside' the graph called the \emph{outer} face. Two faces are adjacent if they are separated by just a single edge: if we were to delete the edge our fill tool would give both the same color.
 
 We will now formalize this concept.
 
@@ -67,13 +67,13 @@ We will now formalize this concept.
     \end{itemize}
 \end{definition}
 
-Each edge in $e \in E(G)$ will always have a face on either side, and thus have a corresponding edge $e^\star \in E(G^\star)$ in the dual graph. We can therefore define two convenience functions $left, right : E(G) \rightarrow V(G^\star)$ to get the left and right faces of an edge, respectively. If $G$ is weighted, we usually set the weights of $E(G^\star)$ according to their counterparts: $weight(e^\star) := weight(e)$. The dual graph is always planar, and the dual of the dual is the original graph. See Figure \ref{k4-with-dual} for an example of a dual graph.
+Each edge in $e \in E(G)$ will always have a face on either side, and thus have a corresponding edge $e^\star \in E(G^\star)$ in the dual graph. We can therefore define two convenience functions $left, right : E(G) \rightarrow V(G^\star)$ to get the left and right faces of an edge, respectively. If $G$ is weighted, we usually set the weights of $E(G^\star)$ according to their counterparts: $weight(e^\star) := weight(e)$. The dual graph is always planar, and the dual of the dual is the original graph. See Figure \ref{figure:k4-with-dual} for an example of a dual graph.
 
 \begin{fact}[A simple cycle in a dual graph is a cut in the original graph]
-\label{dual-cycle-is-real-cut}
+\label{fact:dual-cycle-is-real-cut}
     Let $G = (V, E, from, to)$ be a connected planar graph, and let $C^\star$ be a simple cycle in $G^\star$. Then $C^\star$ will always correspond to a cut of $G$. If we define $C := \{e ~ | ~ e^\star \in E(G^\star)\}$ as the edges in $E(G)$ that correspond to edges in $C^\star$, then $(V,E \setminus C, from, to)$ is an unconnected graph of exactly two components. If the cycle $C^\star$ is not simple, then we still end up with an unconnected graph, but we may have more than just two components.
 
-    See Figure \ref{cycle-cut} for an example. In \ref{dual-with-cycle} we have found a simple cycle in the dual graph, and if we delete the corresponding edges in the original graph we end up with the disconnected graph in \ref{k4-cut}.
+    See Figure \ref{figure:cycle-cut} for an example. In Figure \ref{figure:dual-with-cycle} we have found a simple cycle in the dual graph, and if we delete the corresponding edges in the original graph we end up with the disconnected graph in Figure \ref{figure:k4-cut}.
 \end{fact}
 
 \begin{figure}
@@ -82,20 +82,20 @@ Each edge in $e \in E(G)$ will always have a face on either side, and thus have 
         \centering
         \includegraphics[width=4cm]{figures/duality/k4 with dual.png}
         \caption{A planar graph with its dual colored in green}
-        \label{k4-with-dual}
+        \label{figure:k4-with-dual}
     \end{subfigure}\hfill%
     \begin{subfigure}{.3\textwidth}
         \centering
         \includegraphics[width=4cm]{figures/duality/dual with cycle.png}
         \caption{A simple cycle in the dual, colored in blue}
-        \label{dual-with-cycle}
+        \label{figure:dual-with-cycle}
     \end{subfigure}\hfill%
     \begin{subfigure}{.3\textwidth}
         \centering
         \includegraphics[width=4cm]{figures/duality/k4 cut in pieces.png}
         \caption{Deleting the edges that cross the dual's cycle cuts the graph in two}
-        \label{k4-cut}
+        \label{figure:k4-cut}
     \end{subfigure}
     \caption{A simple cycle in a dual graph always corresponds to a cut in the original graph.}
-    \label{cycle-cut}
+    \label{figure:cycle-cut}
 \end{figure}

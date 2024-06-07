@@ -1,8 +1,8 @@
 \section{Intuition}
-Now that we have tried out some algorithms for \textsc{Shortest Odd Walk}, we are finally ready to add the restriction that each vertex is used at most once, and thus solve \textsc{Shortest Odd Path}. The algorithm we are about to present is based on Ulrich Derigs' algorithm \cite{derigs_shortest_odd_path}, though with some improvements.
+Now that we have tried out some algorithms for \textsc{Shortest Odd Walk}, we are finally ready to add the restriction that each vertex is used at most once, and thus solve \textsc{Shortest Odd Path}. The algorithm we are about to present is based on Ulrich Derigs' algorithm \cite{source:derigs_shortest_odd_path}, though with some improvements.
 
 \subsection{Reduction to \textsc{Shortest Alternating Path}}
-\label{reduction}
+\label{subsection:reduction}
 Consider first another related problem:
 
 \fbox{\parbox{0.94\textwidth}{\textsc{Shortest Alternating Path}\\
@@ -16,7 +16,7 @@ Derig observed that \textsc{Shortest Odd Path} can be reduced to a special case 
     Let $G = (V, E)$ be a graph, and $s,t \in V$ be two vertices.
     We construct a new graph $H \sqsupset G$, where for each vertex $u \in V \setminus \{s,t\}$ we add a 'mirror' vertex $u'$, and a connecting 'mirror' edge between them. 
     The vertices in $V(H)$ that are also in $V(G)$ are referred to as the 'real' vertices, and the newly added vertices are referred to as the 'mirror' vertices. In addition, for any vertex $u \in V(H) \setminus \{s,t\}$, real or not, we define $mirror(u)$ as $u$'s mirror on the other side. We usually label mirror vertices with an $'$ at the end of the real counterpart's label.
-    For example, if $G$ is the graph in Figure ~\ref{small5}, then Figure ~\ref{small5-2} would be its corresponding mirror graph $H$.
+    For example, if $G$ is the graph in Figure ~\ref{figure:small5}, then Figure ~\ref{figure:small5-2} would be its corresponding mirror graph $H$.
 \end{definition}
 
 Our reduction from \textsc{Shortest Odd Path} to \textsc{Shortest Alternating Path} follows:
@@ -25,7 +25,7 @@ Our reduction from \textsc{Shortest Odd Path} to \textsc{Shortest Alternating Pa
     \item Construct $H$ as the mirror graph of $G$, and let $F$ be the set of mirror edges in $H$. Now $(H, s, t, F)$ is an instance of \textsc{Shortest Alternating Path}.
     \item Let $P'$ be the shortest alternating path of $(H, s, t, F)$, if one exists. If none exist, then we do not have any odd $s$-$t$-paths in $G$ either.
     \item Construct $P$ by filtering out mirror edges from $P'$, and for each edge $(u',v') \in E(H) \setminus (F \cup E(G))$ from the mirror side of $H$ we replace it by the corresponding edge $(u,v) \in E(G)$ from the real side.
-    \label{translate_alternating_path}
+    \label{point:translate_alternating_path}
     \item Now $P$ is the shortest odd $s$-$t$-path in $G$.
 \end{enumerate}
 
@@ -33,25 +33,25 @@ Our reduction from \textsc{Shortest Odd Path} to \textsc{Shortest Alternating Pa
     \centering
     \includesvg[width=15cm]{figures/graphs/small5.svg}
     \caption{Our input graph $G$, for \textsc{Shortest Odd Path}}
-    \label{small5}
+    \label{figure:small5}
 \end{figure}
 
 \begin{figure}
     \centering
     \includesvg[width=15cm]{figures/graphs/small5-2.svg}
     \caption{The mirror graph $H$ of $G$, with mirror edges marked in red and mirror vertices labeled with an $'$}
-    \label{small5-2}
+    \label{figure:small5-2}
 \end{figure}
 
-For example, if our input $G$ for \textsc{Shortest Odd Path} is Figure ~\ref{small5}, then $H$ and $F$ could look like Figure ~\ref{small5-2}. One of the two possible alternating paths is $P' := [(s,a), (a, a'), (a',b'), (b',b)$, $(b,c), (c,c'), (c',d'), (d',d), (d,t)]$. When we filter out mirror edges and replace edges from the mirror side with their real counterparts, we end up with $P := [(s,a),(a,b),(b,c),(c,d),(d,t)]$, which is one of the two possible odd paths of $G$. 
+For example, if our input $G$ for \textsc{Shortest Odd Path} is Figure ~\ref{figure:small5}, then $H$ and $F$ could look like Figure ~\ref{figure:small5-2}. One of the two possible alternating paths is $P' := [(s,a), (a, a'), (a',b'), (b',b)$, $(b,c), (c,c'), (c',d'), (d',d), (d,t)]$. When we filter out mirror edges and replace edges from the mirror side with their real counterparts, we end up with $P := [(s,a),(a,b),(b,c),(c,d),(d,t)]$, which is one of the two possible odd paths of $G$. 
 \todo{dette kan kanskje formuleres bedre?}
 
-To see why the reduction works, simply observe that for each step we take in the graph, we have to go to the other side of the mirror. If we take another step, we get back to the same side again. It is only when we reach the target vertex $t$ that we do not have to go to the other side. Therefore, to reach a neighbour of $t$, we must have used an even number of mirror edges and an even number of non-mirror edges, and when we take the last step to reach $t$ we have used an odd number of edges and thus found an odd path. If this alternating $s$-$t$-path in $H$ is the shortest such path, then the corresponding path in $G$ must also be the shortest odd $s$-$t$-path in $G$. The reduction works also in the weighted case, as long as each edge $(u',v')$ on the mirror side get the same weight as their real counterpart, and all the mirror edges get the same (usually 0) weight. The interested reader may see \cite{derigs_shortest_odd_path} for more details on this reduction.
+To see why the reduction works, simply observe that for each step we take in the graph, we have to go to the other side of the mirror. If we take another step, we get back to the same side again. It is only when we reach the target vertex $t$ that we do not have to go to the other side. Therefore, to reach a neighbour of $t$, we must have used an even number of mirror edges and an even number of non-mirror edges, and when we take the last step to reach $t$ we have used an odd number of edges and thus found an odd path. If this alternating $s$-$t$-path in $H$ is the shortest such path, then the corresponding path in $G$ must also be the shortest odd $s$-$t$-path in $G$. The reduction works also in the weighted case, as long as each edge $(u',v')$ on the mirror side get the same weight as their real counterpart, and all the mirror edges get the same (usually 0) weight. The interested reader may see \cite{source:derigs_shortest_odd_path} for more details on this reduction.
 
-Ball and Derigs \cite{shortest_alternating_path} have shown how to efficiently solve \textsc{Shortest Alternating Path}. In their algorithms, subgraphs are shrunk into psuedonodes whenever possible, to make the graph smaller. The drawback is that certain psuedonodes must later be expanded again, which is the most complicated and expensive part of their algorithms. In our case, however, we have a special case of \textsc{Shortest Alternating Path}. The set $F$ is, with the exception of $s$ and $t$, a perfect matching of $H$, and we will therefore never have to expand psuedonodes after shrinking them. The curious reader may visit \cite{shortest_alternating_path} for more on these algorithms and why our almost-perfect matching is a simpler case.
+Ball and Derigs \cite{source:shortest_alternating_path} have shown how to efficiently solve \textsc{Shortest Alternating Path}. In their algorithms, subgraphs are shrunk into psuedonodes whenever possible, to make the graph smaller. The drawback is that certain psuedonodes must later be expanded again, which is the most complicated and expensive part of their algorithms. In our case, however, we have a special case of \textsc{Shortest Alternating Path}. The set $F$ is, with the exception of $s$ and $t$, a perfect matching of $H$, and we will therefore never have to expand psuedonodes after shrinking them. The curious reader may visit \cite{source:shortest_alternating_path} for more on these algorithms and why our almost-perfect matching is a simpler case.
 
 \subsection{The idea for our \textsc{Shortest Alternating Path} algorithm}
-We will explain the general idea of our algorithm by following an example, and solve for the graph in figure \ref{small5}. First we construct the mirror graph like explained in \ref{reduction}, to produce the graph in figure \ref{small5-2}. Then we initialize an empty priority queue of vertices and edges to be scanned. For each vertex $u \in V(H)$, we denote
+We will explain the general idea of our algorithm by following an example, and solve for the graph in figure \ref{figure:small5}. First we construct the mirror graph like explained in \ref{subsection:reduction}, to produce the graph in figure \ref{figure:small5-2}. Then we initialize an empty priority queue of vertices and edges to be scanned. For each vertex $u \in V(H)$, we denote
 \begin{itemize}
     \item $d^+_u :=$ the length of the shortest alternating $s$-$u$-path ending on a mirror edge
     \item $d^-_u :=$ the length of the shortest alternating $s$-$u$-path ending on a non-mirror edge
@@ -76,7 +76,7 @@ Now $C'$ is the next in the queue, we set $d^+_C := d^-{C'}$ and scan $C'$. This
 
 \includesvg[width=12cm]{figures/example_story/example-story4.svg}
 
-Next up is to scan this blossom edge, and compute its corresponding odd cycle by backtracking from $C$ and $B$ until they meet at $A'$. To visualize the cycle, we like to 'stretch out' the graph a little, and draw it like below. Note that some of the edges are omitted for clarity. Now we can see that the cycle consists of [$A',C',C,B,B',A'$]. We call the set $\mathbb{B} := \{C',C,B,B'\}$ a \emph{blossom}, and $A'$ the \emph{base} of the blossom, inspired by the famous Blossom algorithm by \cite{blossom}.
+Next up is to scan this blossom edge, and compute its corresponding odd cycle by backtracking from $C$ and $B$ until they meet at $A'$. To visualize the cycle, we like to 'stretch out' the graph a little, and draw it like below. Note that some of the edges are omitted for clarity. Now we can see that the cycle consists of [$A',C',C,B,B',A'$]. We call the set $\mathbb{B} := \{C',C,B,B'\}$ a \emph{blossom}, and $A'$ the \emph{base} of the blossom, inspired by the famous Blossom algorithm by \cite{source:blossom}.
 
 \includesvg[width=12cm]{figures/example_story/example-story5.svg}
 
@@ -93,8 +93,8 @@ After all these values have been set, we immedeately scan all the vertices in $\
 \todo{føler dette kan skrives bedre}
 The second reason we compute the blossom is that we no longer care much about the individual vertices in $\mathbb{B}$, and can shrink it into just the base $A'$. We will still scan vertices like $C$ from the queue as before, but whenever we are backtracking to compute blossoms we can skip the verties in $\mathbb{B}$ entirely and go straight to the base $A'$ instead. In this example, in a few iterations the algorithm will find either $(D',A')$ or $(D,A')$ as a blossom edge, with just $\{D,D'\}$ as its blossom and $A'$ as the base here as well. If we didn't contract the previous blossom, this new blossom would instead consist of $\{C',C,B,B',D,D'\}$, but we are already completely done with most of those vertices and computing all of it again would be a waste. Therefore we shrink them. 
 
-If the reader is familiar with the more general \textsc{Shortest Alternating Path} algorithm \cite{shortest_alternating_path} or the original blossom algorithm \cite{blossom}, and worry that such psuedonodes often have to be expanded again, then remember that in our case the set $F$ is an almost-perfect matching and those cases never happen. \todo{trenger vi si dette? Droppe det? Formulere det annerledes?}
+If the reader is familiar with the more general \textsc{Shortest Alternating Path} algorithm \cite{source:shortest_alternating_path} or the original blossom algorithm \cite{source:blossom}, and worry that such psuedonodes often have to be expanded again, then remember that in our case the set $F$ is an almost-perfect matching and those cases never happen. \todo{trenger vi si dette? Droppe det? Formulere det annerledes?}
 
 \includesvg[width=12cm]{figures/example_story/example-story7.svg}
 
-Let us now skip a few steps, until $T$ eventually reaches the front of the queue. At that point we have that $d^-_T = 5$, and that is also the cost of the shortest odd path in our original input graph. To compute the exact path we can backtrack from $T$ to $S$ and then translate that path as described in step \ref{translate_alternating_path} of our reduction in \ref{reduction}. We end up with the path [$(S,A),(A,B),(B,C),(C,D),(D,T)$], which is the shortest odd $S$-$T$-path in the graph.
+Let us now skip a few steps, until $T$ eventually reaches the front of the queue. At that point we have that $d^-_T = 5$, and that is also the cost of the shortest odd path in our original input graph. To compute the exact path we can backtrack from $T$ to $S$ and then translate that path as described in step \ref{point:translate_alternating_path} of our reduction in \ref{subsection:reduction}. We end up with the path [$(S,A),(A,B),(B,C),(C,D),(D,T)$], which is the shortest odd $S$-$T$-path in the graph.

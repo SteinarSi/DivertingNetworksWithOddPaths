@@ -15,6 +15,7 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 \newtheorem{fact}{Fact}[section]
+\setcounter{secnumdepth}{3}
 
 \begin{document}
 \include{generators/glossary}
@@ -33,25 +34,27 @@
 \include{chapter/preliminaries/planarity}
 
 \chapter{Shortest Odd Walk}
-\label{odd-walk}
+\label{chapter:odd-walk}
 \include{chapter/shortest_odd_walk/intuition}
 \include{chapter/shortest_odd_walk/psuedocode}
 \include{chapter/shortest_odd_walk/analysis}
 
 \chapter{Shortest Odd Path}
+\label{chapter:odd-path}
 \include{chapter/shortest_odd_path/intuition}
 \include{chapter/shortest_odd_path/psuedocode}
 \include{chapter/shortest_odd_path/improvements}
 \include{chapter/shortest_odd_path/analysis}
 
 \chapter{Network Diversion}
-\label{network-diversion}
+\label{chapter:network-diversion}
 \include{chapter/network_diversion/introduction}
 \include{chapter/network_diversion/intuition}
 \include{chapter/network_diversion/psuedocode}
 \include{chapter/network_diversion/analysis}
 
 \chapter{Codebase}
+\label{chapter:codebase}
 \include{chapter/codebase/codebase}
 
 \include{chapter/conclusion}

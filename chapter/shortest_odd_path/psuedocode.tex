@@ -1,5 +1,5 @@
 \section{Psuedocode}
-Here we give a detailed psuedocode of the algorithm, along with explanations of some of the finer details should the interested reader consider implementing the algorithm on their own. For all of the code in one piece without comments or alternatives, see Appendix \ref{full-psuedocode}. And of course, to see the code implemented in Rust, see the GitHub repository \todo[inline]{link github here}.
+Here we give a detailed psuedocode of the algorithm, along with explanations of some of the finer details should the interested reader consider implementing the algorithm on their own. For all of the code in one piece without comments or alternatives, see Appendix \ref{appendix:full-psuedocode}. And of course, to see the code implemented in Rust, see the GitHub repository \todo[inline]{link github here}.
 
 \subsection{Initialization}
 First we initialize the arrays we need, with appropriate default values for all vertices.
@@ -265,7 +265,7 @@ fn set_blossom_values(path) {
     \end{lstlisting}
 
 \subsection{Setting the base of blossoms and psuedonodes}
-\label{basis-code}
+\label{subsection:basis-code}
 When we have found and computed a blossom, we shrink it into a psuedonode by setting the base of all its vertices to the base of the blossom. Whenever we consider a potential blossom edge, we see if the two vertices have the same base, and if they do, they are in fact already in the same psuedonode and the edge can be disregarded. Whenever we set $u$ to have the base $b$, we also have to see if any other vertices have $u$ as their base and set their bases to $b$ as well. Derigs never specified any data structure to update these bases efficiently.
 
 The naïve solution would be to do something like this:
@@ -312,4 +312,4 @@ fn get_base(u) -> int {
 
 \end{lstlisting}
 
-Now we can update a base in constant time, with the tradeoff of potentially slower queries. Is this faster? Sometimes it is. We benchmark both versions and discuss the results in \ref{testing-basis}.
+Now we can update a base in constant time, with the tradeoff of potentially slower queries. Is this faster? Sometimes it is. We benchmark both versions and discuss the results in \ref{subsubsection:testing-basis}.
