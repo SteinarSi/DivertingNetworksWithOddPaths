@@ -1,8 +1,8 @@
 \section{Psuedocode}
-Here we give a detailed psuedocode of the algorithm, along with explanations of some of the finer details should the interested reader consider implementing the algorithm on their own. For all of the code in one piece without comments or alternatives, see Appendix \ref{appendix:full-psuedocode}. And of course, to see the code implemented in Rust, see the GitHub repository \todo[inline]{link github here}.
+Here we give a detailed psuedocode of the algorithm, along with explanations of some of the finer details should the interested reader consider implementing the algorithm on their own. For all of the code in one piece without comments or alternatives, see \Cref{appendix:full-psuedocode}. And of course, to see the code implemented in Rust, see the GitHub repository \todo[inline]{link github here}.
 
 \subsection{Initialization}
-First we initialize the arrays we need, with appropriate default values for all vertices.
+First we initialize the arrays we need, with appropriate default values for all vertices. The mirror graph is constructed as described in \Cref{def:mirror-graph}.
 \begin{lstlisting}[caption={Initialization},label=Listing,mathescape=true]
 fn init(input_graph, s, t) {
     graph = create_mirror_graph(input_graph);

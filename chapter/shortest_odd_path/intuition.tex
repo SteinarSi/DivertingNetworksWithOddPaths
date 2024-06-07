@@ -13,10 +13,11 @@ Consider first another related problem:
 Derig observed that \textsc{Shortest Odd Path} can be reduced to a special case of \textsc{Shortest Alternating Path}, by constructing what we will refer to as a $\emph{mirror graph}$.
 
 \begin{definition}[Mirror graph]
+    \label{def:mirror-graph}
     Let $G = (V, E)$ be a graph, and $s,t \in V$ be two vertices.
     We construct a new graph $H \sqsupset G$, where for each vertex $u \in V \setminus \{s,t\}$ we add a 'mirror' vertex $u'$, and a connecting 'mirror' edge between them. 
     The vertices in $V(H)$ that are also in $V(G)$ are referred to as the 'real' vertices, and the newly added vertices are referred to as the 'mirror' vertices. In addition, for any vertex $u \in V(H) \setminus \{s,t\}$, real or not, we define $mirror(u)$ as $u$'s mirror on the other side. We usually label mirror vertices with an $'$ at the end of the real counterpart's label.
-    For example, if $G$ is the graph in Figure ~\ref{figure:small5}, then Figure ~\ref{figure:small5-2} would be its corresponding mirror graph $H$.
+    For example, if $G$ is the graph in Figure ~\ref{figure:input-graph}, then Figure ~\ref{figure:mirror-graph} would be its corresponding mirror graph $H$.
 \end{definition}
 
 Our reduction from \textsc{Shortest Odd Path} to \textsc{Shortest Alternating Path} follows:
@@ -31,19 +32,59 @@ Our reduction from \textsc{Shortest Odd Path} to \textsc{Shortest Alternating Pa
 
 \begin{figure}
     \centering
-    \includesvg[width=15cm]{figures/graphs/small5.svg}
-    \caption{Our input graph $G$, for \textsc{Shortest Odd Path}}
-    \label{figure:small5}
-\end{figure}
+    \begin{subfigure}{.45\textwidth}
+        \begin{tikzpicture}
+            \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+            \tikzstyle{edge}=[gray, line width=1.5mm]
+       
+            \node (s) at (0.5,1) {$s$};
+            \node (a) at (2,2) {$a$};
+            \node (b) at (3,0.6) {$b$};
+            \node (c) at (4,2) {$c$};
+            \node (d) at (5.5,1) {$d$};
+            \node (t) at (7,1.5) {$t$};
+       
+            \draw[edge] (s) -- (a) -- (c) -- (d) -- (t);
+            \draw[edge] (a) -- (b) -- (c);
+          \end{tikzpicture}
+          \caption{The input graph $G$}
+          \label{figure:input-graph}
+    \end{subfigure}\hfill%
+    \begin{subfigure}{.45\textwidth}
+        \begin{tikzpicture}
+            \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+            \tikzstyle{edge}=[gray, line width=1.5mm]
+       
+            \node (s) at (0.5,1) {$s$};
+            \node (a) at (2,2) {$a$};
+            \node (b) at (3,0.6) {$b$};
+            \node (c) at (4,2) {$c$};
+            \node (d) at (5.5,1) {$d$};
+            \node (t) at (7,1.5) {$t$};
 
-\begin{figure}
-    \centering
-    \includesvg[width=15cm]{figures/graphs/small5-2.svg}
-    \caption{The mirror graph $H$ of $G$, with mirror edges marked in red and mirror vertices labeled with an $'$}
-    \label{figure:small5-2}
-\end{figure}
+            \node (a') at (2,4) {$a'$};
+            \node (b') at (3,2.6) {$b'$};
+            \node (c') at (4,4) {$c'$};
+            \node (d') at (5.5,3) {$d'$};
+       
+            \draw[edge] (s) -- (a) -- (c) -- (d) -- (t);
+            \draw[edge] (a) -- (b) -- (c);
 
-For example, if our input $G$ for \textsc{Shortest Odd Path} is Figure ~\ref{figure:small5}, then $H$ and $F$ could look like Figure ~\ref{figure:small5-2}. One of the two possible alternating paths is $P' := [(s,a), (a, a'), (a',b'), (b',b)$, $(b,c), (c,c'), (c',d'), (d',d), (d,t)]$. When we filter out mirror edges and replace edges from the mirror side with their real counterparts, we end up with $P := [(s,a),(a,b),(b,c),(c,d),(d,t)]$, which is one of the two possible odd paths of $G$. 
+            \draw[edge] (a') -- (b') -- (c') -- (d');
+            \draw[edge] (a') -- (c');
+
+            \tikzstyle{edge}=[red, line width=1.5mm]
+            \draw[edge] (a) -- (a');
+            \draw[edge] (b) -- (b');
+            \draw[edge] (c) -- (c');
+            \draw[edge] (d) -- (d');
+        \end{tikzpicture}
+        \caption{The mirror graph $H$ of $G$, mirror edges marked in red}
+        \label{figure:mirror-graph}
+    \end{subfigure}
+ \end{figure}
+
+For example, if our input $G$ for \textsc{Shortest Odd Path} is Figure ~\ref{figure:input-graph}, then $H$ and $F$ could look like Figure ~\ref{figure:mirror-graph}. One of the two possible alternating paths is $P' := [(s,a), (a, a'), (a',b'), (b',b)$, $(b,c), (c,c'), (c',d'), (d',d), (d,t)]$. When we filter out mirror edges and replace edges from the mirror side with their real counterparts, we end up with $P := [(s,a),(a,b),(b,c),(c,d),(d,t)]$, which is one of the two possible odd paths of $G$. 
 \todo{dette kan kanskje formuleres bedre?}
 
 To see why the reduction works, simply observe that for each step we take in the graph, we have to go to the other side of the mirror. If we take another step, we get back to the same side again. It is only when we reach the target vertex $t$ that we do not have to go to the other side. Therefore, to reach a neighbour of $t$, we must have used an even number of mirror edges and an even number of non-mirror edges, and when we take the last step to reach $t$ we have used an odd number of edges and thus found an odd path. If this alternating $s$-$t$-path in $H$ is the shortest such path, then the corresponding path in $G$ must also be the shortest odd $s$-$t$-path in $G$. The reduction works also in the weighted case, as long as each edge $(u',v')$ on the mirror side get the same weight as their real counterpart, and all the mirror edges get the same (usually 0) weight. The interested reader may see \cite{source:derigs_shortest_odd_path} for more details on this reduction.
@@ -51,7 +92,7 @@ To see why the reduction works, simply observe that for each step we take in the
 Ball and Derigs \cite{source:shortest_alternating_path} have shown how to efficiently solve \textsc{Shortest Alternating Path}. In their algorithms, subgraphs are shrunk into psuedonodes whenever possible, to make the graph smaller. The drawback is that certain psuedonodes must later be expanded again, which is the most complicated and expensive part of their algorithms. In our case, however, we have a special case of \textsc{Shortest Alternating Path}. The set $F$ is, with the exception of $s$ and $t$, a perfect matching of $H$, and we will therefore never have to expand psuedonodes after shrinking them. The curious reader may visit \cite{source:shortest_alternating_path} for more on these algorithms and why our almost-perfect matching is a simpler case.
 
 \subsection{The idea for our \textsc{Shortest Alternating Path} algorithm}
-We will explain the general idea of our algorithm by following an example, and solve for the graph in figure \ref{figure:small5}. First we construct the mirror graph like explained in \ref{subsection:reduction}, to produce the graph in figure \ref{figure:small5-2}. Then we initialize an empty priority queue of vertices and edges to be scanned. For each vertex $u \in V(H)$, we denote
+We will explain the general idea of our algorithm by following an example, and solve for the graph in figure \ref{figure:input-graph}. First we construct the mirror graph like explained in \ref{subsection:reduction}, to produce the graph in figure \ref{figure:mirror-graph}. Then we initialize an empty priority queue of vertices and edges to be scanned. For each vertex $u \in V(H)$, we denote
 \begin{itemize}
     \item $d^+_u :=$ the length of the shortest alternating $s$-$u$-path ending on a mirror edge
     \item $d^-_u :=$ the length of the shortest alternating $s$-$u$-path ending on a non-mirror edge
@@ -60,7 +101,44 @@ We will explain the general idea of our algorithm by following an example, and s
 
 Initally these are either $\infty$ or undefined, except for the source vertex $s$, where we can set $d^+_s := 0$. Then, for each edge $(s,u) \in N(s)$, we can set $d^-_u := weight((s,u))$, $pred_u := (s,u)$, and add $u$ to our priority queue with priority $2 \cdot weight((s,u))$.
 
-We visualize it like in the diagram below. Each vertex $u$ has its values for $d^-_u$ and $d^+_u$ to its top left and top right, respectively.
+We visualize it in the diagram below.
+
+\begin{minipage}{.75\linewidth}
+    \begin{tikzpicture}{text centered}
+        \tikzstyle{every node}=[rectangle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+        \tikzstyle{edge}=[gray, line width=1mm]
+   
+        \node (s) at (0,1)    {\begin{tabular}{c} $s$  \\ $d^+:0$       \\ $d^-:\infty$ \end{tabular}};
+        \node (a) at (2,2)    {\begin{tabular}{c} $a$  \\ $d^+:\infty$  \\ $d^-:1$      \end{tabular}};
+        \node (b) at (4,0)    {\begin{tabular}{c} $b$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+        \node (c) at (6,2)    {\begin{tabular}{c} $c$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+        \node (d) at (8,0)    {\begin{tabular}{c} $d$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+        \node (t) at (10,1)   {\begin{tabular}{c} $t$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+
+        \node (a') at (2,5)   {\begin{tabular}{c} $a'$ \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+        \node (b') at (4,3.5) {\begin{tabular}{c} $b'$ \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+        \node (c') at (6,5)   {\begin{tabular}{c} $c'$ \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+        \node (d') at (8,3)   {\begin{tabular}{c} $d'$ \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+   
+        \draw[edge] (s) -- (a) -- (c) -- (d) -- (t);
+        \draw[edge] (a) -- (b) -- (c);
+
+        \draw[edge] (a') -- (b') -- (c') -- (d');
+        \draw[edge] (a') -- (c');
+
+        \tikzstyle{edge}=[red, line width=1.5mm]
+        \draw[edge] (a) -- (a');
+        \draw[edge] (b) -- (b');
+        \draw[edge] (c) -- (c');
+        \draw[edge] (d) -- (d');
+    \end{tikzpicture}
+\end{minipage}\hfill%
+\begin{minipage}{.22\linewidth}
+    Queue:
+    \begin{itemize}
+        \item $\text{Vertex}(2, a)$
+    \end{itemize}
+\end{minipage}
 
 \includesvg[width=12cm]{figures/example_story/example-story1.svg}
 
