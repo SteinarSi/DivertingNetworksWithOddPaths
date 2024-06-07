@@ -1,5 +1,11 @@
 \chapter{Introduction}
 
-\todo[inline]{talk about Shortest Path, how cool of a problem it is, and how we have solved it in a bunch of different ways already.}
-\todo[inline]{then talk about Shortest Odd Path, how strange it is in comparison, and that we care because acutally useful problems are easier with such a subprocedure.}
+One of the most well-known, well-studied and well-understood algorithmic problems is to find the shortest path in a graph. The problem is simple: given a graph and two vertices, find the shortest sequence of edges to go from one vertex to the other. Yet are the applications almost limitless: to find the fastest route home, to find the cheapest airline tickets to Kuala Lumpur, to solve a Rubik's Cube in the fewest moves, to determine the best-case running time of an algorithm, or to move an NPC in a video game.
+
+This thesis, however, is about a curious little variant, called the shortest \emph{odd} path. The problem is the same except that we now only consider paths consisting of an odd number of edges. If you were to step through the graph, and start walking on your right foot, then an odd path is one where you would also end up on your right foot. Now, the applications of this variant are not remotely as obvious. It rarely, if ever, matters whether a path has odd or even length in any of the examples mentioned above, and it is difficult to come up with example problems where it does matter.
+
+The reason we care is because many other more useful problems are much easier to solve if we already have an algorithm to determine the shortest odd path in a graph. Consider for an example the problem of the shortest bottleneck path: find the shortest path from one vertex to another, except that we are also given a 'bottleneck' edge with the requirement that the path has to go through the bottleneck. \todo[inline]{example of application of a bottleneck path}
+
+\todo[inline]{then talk about Shortest Odd Path, how strange it is in comparison, and that we care because actually useful problems are easier with such a subprocedure.}
 \todo[inline]{then talk about network diversion, and how it is actually a useful problem to solve.}
+\todo[inline]{then present the problem statement of the thesis, and give an overview of the contents and such.}

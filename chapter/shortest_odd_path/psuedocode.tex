@@ -145,7 +145,7 @@ fn scan(u) {
 \subsection{Backtracking a blossom edge}
 When we compute a blossom edge $e$, we need to compute the vertices and edges that make up the blossom. We do this by creating two paths, one from $from(e)$ and one from $to(e)$, and backtrack towards the source while alternating normal and mirror edges until the paths meet up at a common ancestor $b$. Then we set $b$ as the base, and the two paths make up our blossom.
 
-The naïve way would be to backtrack both paths individually all the way to the source, and only then see where they start to overlap. That would run in time linear to all the vertices in the graph and is a waste of time. A slightly better idea is to backtrack one path all the way to the source, and then backtrack the other only until it reaches a vertex in the other's path. That is better, but it's difficult to tell which path would be the longest, and this too would run in linear time.
+The naïve way would be to backtrack both paths individually all the way to the source, and only then see where they start to overlap. That would run in time linear to all the vertices in the graph and is a waste of time. A slightly better idea is to backtrack one path all the way to the source, and then backtrack the other only until it reaches a vertex in the other's path. That is better, but this too would run in linear time even if we somehow know beforehand which path needs the fewest edges.
 
 Instead, we iteratively backtrack both paths at the same time, and mark each vertex when added to a path. Whenever one path reaches a vertex that is already marked by the other, we mark that vertex as the base and delete the vertices in the other path that came after it. Now we can compute the vertices in the blossom in time linear to the number of vertices in the blossom, rather than the entire graph.
 
@@ -202,9 +202,9 @@ fn backtrack_blossom(edge) {
 \end{lstlisting}
 
 \subsection{Computing blossoms}
-To compute a blossom, we first have to determine its base and its edges, like discussed in the previous section. Then we can use the edges in the paths to potentially improves values for $d^+$ and $d^-$, and to set the base all the involved vertices. Afterwards we scan all the vertices that we now gave $d^+$ values.
+To compute a blossom, we first have to determine its base and its edges, like discussed in the previous section. Then we can use the edges in the paths to potentially improve values for $d^+$ and $d^-$, and to set the new base for all the involved vertices. Afterwards we scan all the vertices that we now gave $d^+$ values.
 
-Two two lists of edges can be processed simultaneously without issues, but we treat them separately here to avoid spending time on concatenating them. Setting blossom values and setting the basis can also be done at the same time, but we split it into to seperate functions to improve readability. However, the scans may only be performed after all the vertices in both list have received their new basis.
+Two lists of edges can be processed simultaneously without issues, but we treat them separately here to avoid spending time on concatenating them. Setting blossom values and setting the basis can also be done at the same time, but we split it into to seperate functions to improve readability. However, the scans may only be performed after all the vertices in both list have received their new basis.
 \begin{lstlisting}[caption={Blossom},label=Listing,mathescape=true]
 fn blossom(edge) {
     (b, p1, p2) = backtrack_blossom(edge);
