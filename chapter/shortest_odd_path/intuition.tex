@@ -136,43 +136,263 @@ We visualize it in the diagram below.
 \begin{minipage}{.22\linewidth}
     Queue:
     \begin{itemize}
-        \item $\text{Vertex}(2, a)$
+        \item Vertex(2,$a$)
     \end{itemize}
 \end{minipage}
 
-\includesvg[width=12cm]{figures/example_story/example-story1.svg}
+The first and only vertex in the queue is $a$. We pop it, set $d^+_{a'} := d^-_a$, and 'scan' $a'$. By that, we mean to look at each neighbour $e \in G[a']$, and see if our new value $d^+_{a'} + weight(e)$ is better than the previous value $d^-_{to(edge)}$. That is the case for both $b'$ and $c'$, so we update their values and add them to the queue. Their priorities in the queue is equal to twice their $d^-$ values, which is $2 \cdot 2 = 4$ for both of them.
 
-The first and only vertex in the queue is $A$. We pop it, set $d^+_{A'} := d^-_A$, and 'scan' $A'$. By that, we mean to look at each neighbour $e \in N(A')$, and see if our new value $d^+_{A'} + weight(e)$ is better than the previous value $d^-_{to(edge)}$. That is the case for both $B'$ and $C'$, so we update their values and add them to the queue. Their priorities in the queue is equal to twice their $d^-$ values, which is $2 \cdot 2 = 4$ for both of them.
+\begin{minipage}{.75\linewidth}
+    \begin{tikzpicture}{text centered}
+        \tikzstyle{every node}=[rectangle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+        \tikzstyle{edge}=[gray, line width=1mm]
+   
+        \node (s) at (0,1)    {\begin{tabular}{c} $s$  \\ $d^+:0$       \\ $d^-:\infty$ \end{tabular}};
+        \node (a) at (2,2)    {\begin{tabular}{c} $a$  \\ $d^+:\infty$  \\ $d^-:1$      \end{tabular}};
+        \node (b) at (4,0)    {\begin{tabular}{c} $b$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+        \node (c) at (6,2)    {\begin{tabular}{c} $c$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+        \node (d) at (8,0)    {\begin{tabular}{c} $d$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+        \node (t) at (10,1)   {\begin{tabular}{c} $t$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
 
-\includesvg[width=12cm]{figures/example_story/example-story2.svg}
+        \node (a') at (2,5)   {\begin{tabular}{c} $a'$ \\ $d^+:1$       \\ $d^-:\infty$ \end{tabular}};
+        \node (b') at (4,3.5) {\begin{tabular}{c} $b'$ \\ $d^+:\infty$  \\ $d^-:2$      \end{tabular}};
+        \node (c') at (6,5)   {\begin{tabular}{c} $c'$ \\ $d^+:\infty$  \\ $d^-:2$      \end{tabular}};
+        \node (d') at (8,3)   {\begin{tabular}{c} $d'$ \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+   
+        \draw[edge] (s) -- (a) -- (c) -- (d) -- (t);
+        \draw[edge] (a) -- (b) -- (c);
 
-The next vertex in the queue is $B'$, so we set $d^+_B := d^-_{B'}$ and scan $B'$:
+        \draw[edge] (a') -- (b') -- (c') -- (d');
+        \draw[edge] (a') -- (c');
 
-\includesvg[width=12cm]{figures/example_story/example-story3.svg}
+        \tikzstyle{edge}=[red, line width=1.5mm]
+        \draw[edge] (a) -- (a');
+        \draw[edge] (b) -- (b');
+        \draw[edge] (c) -- (c');
+        \draw[edge] (d) -- (d');
+    \end{tikzpicture}
+\end{minipage}\hfill%
+\begin{minipage}{.26\linewidth}
+    Queue:
+    \begin{itemize}
+        \item \st{Vertex(2,$a$)}
+        \item Vertex(4,$b'$)
+        \item Vertex(4,$c'$)
+    \end{itemize}
+\end{minipage}
 
-Now $C'$ is the next in the queue, we set $d^+_C := d^-{C'}$ and scan $C'$. This is where the interesting part happens: now we have set both $d^+$ and $d^-$ for $B$ and $C$, and that means that we have found an odd cycle in the graph. The edge between them, $(B,C)$, is called the \emph{blossom edge}, and is marked in green. We add $(B,C)$ to the queue, with the priority $d^+_C + d^+_B + weight((B,C))$.
+The next vertex in the queue is $b'$, so we set $d^+_b := d^-_{b'}$ and scan $b'$:
 
-\includesvg[width=12cm]{figures/example_story/example-story4.svg}
+\begin{minipage}{.75\linewidth}
+    \begin{tikzpicture}{text centered}
+        \tikzstyle{every node}=[rectangle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+        \tikzstyle{edge}=[gray, line width=1mm]
+   
+        \node (s) at (0,1)    {\begin{tabular}{c} $s$  \\ $d^+:0$       \\ $d^-:\infty$ \end{tabular}};
+        \node (a) at (2,2)    {\begin{tabular}{c} $a$  \\ $d^+:\infty$  \\ $d^-:1$      \end{tabular}};
+        \node (b) at (4,0)    {\begin{tabular}{c} $b$  \\ $d^+:2$       \\ $d^-:\infty$ \end{tabular}};
+        \node (c) at (6,2)    {\begin{tabular}{c} $c$  \\ $d^+:\infty$  \\ $d^-:3     $ \end{tabular}};
+        \node (d) at (8,0)    {\begin{tabular}{c} $d$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+        \node (t) at (10,1)   {\begin{tabular}{c} $t$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
 
-Next up is to scan this blossom edge, and compute its corresponding odd cycle by backtracking from $C$ and $B$ until they meet at $A'$. To visualize the cycle, we like to 'stretch out' the graph a little, and draw it like below. Note that some of the edges are omitted for clarity. Now we can see that the cycle consists of [$A',C',C,B,B',A'$]. We call the set $\mathbb{B} := \{C',C,B,B'\}$ a \emph{blossom}, and $A'$ the \emph{base} of the blossom, inspired by the famous Blossom algorithm by \cite{source:blossom}.
+        \node (a') at (2,5)   {\begin{tabular}{c} $a'$ \\ $d^+:1$       \\ $d^-:\infty$ \end{tabular}};
+        \node (b') at (4,3.5) {\begin{tabular}{c} $b'$ \\ $d^+:\infty$  \\ $d^-:2$      \end{tabular}};
+        \node (c') at (6,5)   {\begin{tabular}{c} $c'$ \\ $d^+:\infty$  \\ $d^-:2$      \end{tabular}};
+        \node (d') at (8,3)   {\begin{tabular}{c} $d'$ \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+   
+        \draw[edge] (s) -- (a) -- (c) -- (d) -- (t);
+        \draw[edge] (a) -- (b) -- (c);
 
-\includesvg[width=12cm]{figures/example_story/example-story5.svg}
+        \draw[edge] (a') -- (b') -- (c') -- (d');
+        \draw[edge] (a') -- (c');
 
-The first reason why we care about this blossom is because now we can immedeately set the final, optimal $d^-$ and $d^+$ for all the vertices in the blossom. That is because we now have two alternating paths to each vertex, one goes around the cycle while the other takes the shortcut. One of these ends up on a mirror edge, and the other on a normal edge, and both are optimal. For example, to go from $S$ to $C'$, we can either go through [$S,A,A',C'$] with a cost of $d^-_C$, or go along [$S,A,A',B',B,C,C'$] with a cost of $d^+_C$.
+        \tikzstyle{edge}=[red, line width=1.5mm]
+        \draw[edge] (a) -- (a');
+        \draw[edge] (b) -- (b');
+        \draw[edge] (c) -- (c');
+        \draw[edge] (d) -- (d');
+    \end{tikzpicture}
+\end{minipage}\hfill%
+\begin{minipage}{.26\linewidth}
+    Queue:
+    \begin{itemize}
+        \item \st{Vertex(4,$b'$)}
+        \item Vertex(4,$c'$)
+        \item Vertex(6,$c$)
+    \end{itemize}
+\end{minipage}
+
+Now $c'$ is the next in the queue, we set $d^+_c := d^-{c'}$ and scan $c'$. This is where the interesting part happens: now we have set both $d^+$ and $d^-$ for $b$ and $c$, and that means that we have found an odd cycle in the graph. The edge between them, $(b,c)$, is called the \emph{blossom edge}, and is marked in green. We add $(b,c)$ to the queue, with the priority $d^+_c + d^+_b + weight((b,c))$.
+
+\begin{minipage}{.75\linewidth}
+    \begin{tikzpicture}{text centered}
+        \tikzstyle{every node}=[rectangle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+        \tikzstyle{edge}=[gray, line width=1mm]
+   
+        \node (s) at (0,1)    {\begin{tabular}{c} $s$  \\ $d^+:0$       \\ $d^-:\infty$ \end{tabular}};
+        \node (a) at (2,2)    {\begin{tabular}{c} $a$  \\ $d^+:\infty$  \\ $d^-:1$      \end{tabular}};
+        \node (b) at (4,0)    {\begin{tabular}{c} $b$  \\ $d^+:2$       \\ $d^-:3$      \end{tabular}};
+        \node (c) at (6,2)    {\begin{tabular}{c} $c$  \\ $d^+:2$       \\ $d^-:3$      \end{tabular}};
+        \node (d) at (8,0)    {\begin{tabular}{c} $d$  \\ $d^+:\infty$  \\ $d^-:4$      \end{tabular}};
+        \node (t) at (10,1)   {\begin{tabular}{c} $t$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+
+        \node (a') at (2,5)   {\begin{tabular}{c} $a'$ \\ $d^+:1$       \\ $d^-:\infty$ \end{tabular}};
+        \node (b') at (4,3.5) {\begin{tabular}{c} $b'$ \\ $d^+:\infty$  \\ $d^-:2$      \end{tabular}};
+        \node (c') at (6,5)   {\begin{tabular}{c} $c'$ \\ $d^+:\infty$  \\ $d^-:2$      \end{tabular}};
+        \node (d') at (8,3)   {\begin{tabular}{c} $d'$ \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+   
+        \draw[edge] (s) -- (a) -- (c) -- (d) -- (t);
+        \draw[edge] (a) -- (b);
+
+        \draw[edge] (a') -- (b') -- (c') -- (d');
+        \draw[edge] (a') -- (c');
+
+        \tikzstyle{edge}=[red, line width=1.5mm]
+        \draw[edge] (a) -- (a');
+        \draw[edge] (b) -- (b');
+        \draw[edge] (c) -- (c');
+        \draw[edge] (d) -- (d');
+
+        \tikzstyle{edge}=[green, line width=1mm]
+        \draw[edge] (b) -- (c);
+    \end{tikzpicture}
+\end{minipage}\hfill%
+\begin{minipage}{.26\linewidth}
+    Queue:
+    \begin{itemize}
+        \item \st{Vertex(4,$c'$)}
+        \item Blossom(5,($b$,$c$))
+        \item Vertex(6,$c$)
+        \item Vertex(6,$d$)
+    \end{itemize}
+\end{minipage}
+
+Next up is to scan this blossom edge, and compute its corresponding odd cycle by backtracking from $c$ and $b$ until they meet at $a'$. To visualize the cycle, we like to 'stretch out' the graph a little, and draw it like below. Note that some of the edges are omitted for clarity. Now we can see that the cycle consists of [$a',c',c,b,b',a'$]. We call the set $\mathbb{B} := \{c',c,b,b'\}$ a \emph{blossom}, and $a'$ the \emph{base} of the blossom, inspired by the famous Blossom algorithm by \cite{source:blossom}.
+
+\begin{minipage}{.7\linewidth}
+    \begin{tikzpicture}{text centered}
+        \tikzstyle{every node}=[rectangle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+        \tikzstyle{edge}=[gray, line width=1mm]
+   
+        \node (s) at (0,1)    {\begin{tabular}{c} $s$  \\ $d^+:0$       \\ $d^-:\infty$ \end{tabular}};
+        \node (a) at (2,1)    {\begin{tabular}{c} $a$  \\ $d^+:\infty$  \\ $d^-:1$      \end{tabular}};
+        \node (b) at (8,0)    {\begin{tabular}{c} $b$  \\ $d^+:2$       \\ $d^-:3$      \end{tabular}};
+        \node (c) at (8,2)    {\begin{tabular}{c} $c$  \\ $d^+:2$       \\ $d^-:3$      \end{tabular}};
+        \node (d) at (9,4)    {\begin{tabular}{c} $d$  \\ $d^+:\infty$  \\ $d^-:4$      \end{tabular}};
+        \node (t) at (11,4)   {\begin{tabular}{c} $t$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+
+        \node (a') at (4,1)   {\begin{tabular}{c} $a'$ \\ $d^+:1$       \\ $d^-:\infty$ \end{tabular}};
+        \node (b') at (6,0)   {\begin{tabular}{c} $b'$ \\ $d^+:\infty$  \\ $d^-:2$      \end{tabular}};
+        \node (c') at (6,2)   {\begin{tabular}{c} $c'$ \\ $d^+:\infty$  \\ $d^-:2$      \end{tabular}};
+        \node (d') at (7,4)   {\begin{tabular}{c} $d'$ \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+   
+        \draw[edge] (s) -- (a) -- (a') -- (c') -- (d');
+        \draw[edge] (a') -- (b');
+        \draw[edge] (c) -- (d) -- (t);
+
+        \tikzstyle{edge}=[red, line width=1.5mm]
+        \draw[edge] (a) -- (a');
+        \draw[edge] (b) -- (b');
+        \draw[edge] (c) -- (c');
+        \draw[edge] (d) -- (d');
+
+        \tikzstyle{edge}=[green, line width=1.5mm]
+        \draw[edge] (b) -- (c);
+    \end{tikzpicture}
+\end{minipage}\hfill%
+\begin{minipage}{.26\linewidth}
+    \vspace{2cm}
+    Queue:
+    \begin{itemize}
+        \item Blossom(5,($b$,$c$))
+        \item Vertex(6,$c$)
+        \item Vertex(6,$d$)
+    \end{itemize}
+\end{minipage}
+
+The first reason why we care about this blossom is because now we can immedeately set the final, optimal $d^-$ and $d^+$ for all the vertices in the blossom. That is because we now have two alternating paths to each vertex, one goes around the cycle while the other takes the shortcut. One of these ends up on a mirror edge, and the other on a normal edge. For example, to go from $s$ to $c'$, we can either go through [$s,a,a',c'$] with a cost of $d^-_c$, or go along [$s,a,a',b',b,c,c'$] with a cost of $d^+_c$.
 
 More specifically, for each $u \in \mathbb{B}$: \begin{itemize}
     \item If $d^+_u = \infty$, we set $d^+_u = d^-_{mirror(u)}$.
     \item If we can improve $d^-_u$ by coming from its neighbour in the blossom, we do so.
 \end{itemize}
-After all these values have been set, we immedeately scan all the vertices in $\mathbb{B}$ that just received values for $d^+$. In this example we scan $C'$ and $B'$, and discover $D'$. Unfortunately, since this is a very small blossom we don't have any vertices that receive new values for $d^-$.
+After all these values have been set, we immedeately scan all the vertices in $\mathbb{B}$ that just received values for $d^+$. In this example we scan $c'$ and $b'$, and discover $d'$. Unfortunately, since this is a very small blossom we don't have any vertices that receive new values for $d^-$.
 
-\includesvg[width=12cm]{figures/example_story/example-story6.svg}
+\begin{minipage}{.7\linewidth}
+    \begin{tikzpicture}{text centered}
+        \tikzstyle{every node}=[rectangle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+        \tikzstyle{edge}=[gray, line width=1mm]
+   
+        \node (s) at (0,1)    {\begin{tabular}{c} $s$  \\ $d^+:0$       \\ $d^-:\infty$ \end{tabular}};
+        \node (a) at (2,1)    {\begin{tabular}{c} $a$  \\ $d^+:\infty$  \\ $d^-:1$      \end{tabular}};
+        \node (b) at (8,0)    {\begin{tabular}{c} $b$  \\ $d^+:2$       \\ $d^-:3$      \end{tabular}};
+        \node (c) at (8,2)    {\begin{tabular}{c} $c$  \\ $d^+:2$       \\ $d^-:3$      \end{tabular}};
+        \node (d) at (9,4)    {\begin{tabular}{c} $d$  \\ $d^+:\infty$  \\ $d^-:4$      \end{tabular}};
+        \node (t) at (11,4)   {\begin{tabular}{c} $t$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
 
-\todo{føler dette kan skrives bedre}
-The second reason we compute the blossom is that we no longer care much about the individual vertices in $\mathbb{B}$, and can shrink it into just the base $A'$. We will still scan vertices like $C$ from the queue as before, but whenever we are backtracking to compute blossoms we can skip the verties in $\mathbb{B}$ entirely and go straight to the base $A'$ instead. In this example, in a few iterations the algorithm will find either $(D',A')$ or $(D,A')$ as a blossom edge, with just $\{D,D'\}$ as its blossom and $A'$ as the base here as well. If we didn't contract the previous blossom, this new blossom would instead consist of $\{C',C,B,B',D,D'\}$, but we are already completely done with most of those vertices and computing all of it again would be a waste. Therefore we shrink them. 
+        \node (a') at (4,1)   {\begin{tabular}{c} $a'$ \\ $d^+:1$       \\ $d^-:\infty$ \end{tabular}};
+        \node (b') at (6,0)   {\begin{tabular}{c} $b'$ \\ $d^+:3$       \\ $d^-:2$      \end{tabular}};
+        \node (c') at (6,2)   {\begin{tabular}{c} $c'$ \\ $d^+:3$       \\ $d^-:2$      \end{tabular}};
+        \node (d') at (7,4)   {\begin{tabular}{c} $d'$ \\ $d^+:\infty$  \\ $d^-:4$      \end{tabular}};
+   
+        \draw[edge] (s) -- (a) -- (a') -- (c') -- (d');
+        \draw[edge] (a') -- (b');
+        \draw[edge] (c) -- (d) -- (t);
+
+        \tikzstyle{edge}=[red, line width=1.5mm]
+        \draw[edge] (a) -- (a');
+        \draw[edge] (b) -- (b');
+        \draw[edge] (c) -- (c');
+        \draw[edge] (d) -- (d');
+
+        \tikzstyle{edge}=[green, line width=1.5mm]
+        \draw[edge] (b) -- (c);
+    \end{tikzpicture}
+\end{minipage}\hfill%
+\begin{minipage}{.26\linewidth}
+    \vspace{2cm}
+    Queue:
+    \begin{itemize}
+        \item \st{Blossom(5,($b$,$c$))}
+        \item Vertex(6,$c$)
+        \item Vertex(6,$d$)
+        \item Vertex(8,$d'$)
+    \end{itemize}
+\end{minipage}
+
+The second reason we compute the blossom is that we no longer care much about the individual vertices in $\mathbb{B}$, and can shrink it into just the base $a'$. We will still scan vertices like $c$ from the queue as before, but whenever we are backtracking to compute blossoms we can skip the verties in $\mathbb{B}$ entirely and go straight to the base $a'$ instead. In this example, in a few iterations the algorithm will find either $(d',a')$ or $(d,a')$ as a blossom edge, with just $\{d,d'\}$ as its blossom and $a'$ as the base here as well. If we didn't contract the previous blossom, this new blossom would instead consist of $\{c',c,b,b',d,d'\}$, but we are already completely done with most of those vertices and computing all of it again would be a waste. Therefore we shrink them. 
 
 If the reader is familiar with the more general \textsc{Shortest Alternating Path} algorithm \cite{source:shortest_alternating_path} or the original blossom algorithm \cite{source:blossom}, and worry that such psuedonodes often have to be expanded again, then remember that in our case the set $F$ is an almost-perfect matching and those cases never happen. \todo{trenger vi si dette? Droppe det? Formulere det annerledes?}
 
-\includesvg[width=12cm]{figures/example_story/example-story7.svg}
+\begin{minipage}{.7\linewidth}
+    \begin{tikzpicture}{text centered}
+        \tikzstyle{every node}=[rectangle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+        \tikzstyle{edge}=[gray, line width=1mm]
+   
+        \node (s)  at (0,1) {\begin{tabular}{c} $s$  \\ $d^+:0$       \\ $d^-:\infty$ \end{tabular}};
+        \node (a)  at (2,1) {\begin{tabular}{c} $a$  \\ $d^+:\infty$  \\ $d^-:1$      \end{tabular}};
+        \node (a') at (4,1) {\begin{tabular}{c} $a'$ \\ $d^+:1$       \\ $d^-:\infty$ \end{tabular}};
+        \node (d)  at (6,2) {\begin{tabular}{c} $d$  \\ $d^+:\infty$  \\ $d^-:4$      \end{tabular}};
+        \node (d') at (6,0) {\begin{tabular}{c} $d'$ \\ $d^+:\infty$  \\ $d^-:4$      \end{tabular}};
+        \node (t)  at (8,2) {\begin{tabular}{c} $t$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
+        
+        \draw[edge] (s) -- (a);
+        \draw[edge] (a') -- (d) -- (t);
+        \draw[edge] (a') -- (d');
 
-Let us now skip a few steps, until $T$ eventually reaches the front of the queue. At that point we have that $d^-_T = 5$, and that is also the cost of the shortest odd path in our original input graph. To compute the exact path we can backtrack from $T$ to $S$ and then translate that path as described in step \ref{point:translate_alternating_path} of our reduction in \ref{subsection:reduction}. We end up with the path [$(S,A),(A,B),(B,C),(C,D),(D,T)$], which is the shortest odd $S$-$T$-path in the graph.
+        \tikzstyle{edge}=[red, line width=1.5mm]
+        \draw[edge] (a) -- (a');
+        \draw[edge] (d) -- (d');
+    \end{tikzpicture}
+\end{minipage}\hfill%
+\begin{minipage}{.26\linewidth}
+    \vspace{2cm}
+    Queue:
+    \begin{itemize}
+        \item Vertex(6,$c$)
+        \item Vertex(6,$d$)
+        \item Vertex(8,$d'$)
+    \end{itemize}
+\end{minipage}
+
+Let us now skip a few steps, until $t$ eventually reaches the front of the queue. At that point we have that $d^-_t = 5$, and that is also the cost of the shortest odd path in our original input graph. To compute the exact path we can backtrack from $t$ to $s$ and then translate that path as described in step \ref{point:translate_alternating_path} of our reduction in \ref{subsection:reduction}. We end up with the path [$(s,a),(a,b),(b,c),(c,d),(d,t)$], which is the shortest odd $s$-$t$-path in the graph.
