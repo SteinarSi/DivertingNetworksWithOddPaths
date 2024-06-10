@@ -2,12 +2,28 @@
 
 \begin{figure}
     \centering
-    \includesvg[width=10cm]{figures/graphs/small2.svg}
-    \caption{No odd $S$-$T$-path exist, but we still have many odd $S$-$T$-walks}
+    \begin{tikzpicture}
+        \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+        \tikzstyle{edge}=[gray, line width=1.5mm]
+    
+        \node (s) at (0,2) {$s$};
+        \node (a) at (2,2) {$a$};
+        \node (b) at (1,0) {$b$};
+        \node (c) at (3,0) {$c$};
+        \node (t) at (4,2) {$t$};
+    
+        \draw[edge] (s) -- (a) -- (b) -- (c) -- (a) -- (t);
+    \end{tikzpicture}
+    \caption{No odd $s$-$t$-path exist, yet we still have many odd $s$-$t$-walks.}
     \label{figure:small2}
-\end{figure}
+ \end{figure}
 
-Consider Figure ~\ref{figure:small2}. There are no odd paths from $S$ to $T$, yet we have an infinite amount of odd walks by utilizing the cycle $[A,B,C]$ to offset the parity. Our algorithm would first find an odd walk to $A$, then an even walk to $B$, then an odd walk to $C$, then an even walk to $A$, and lastly an odd walk to $T$. However, the algorithm would search $A$ twice, once for each parity, and the resulting walk is not a path. Therefore this algorithm cannot be used to solve \textsc{Shortest Odd Path}.
+Consider \Cref{figure:small2}. There are no odd paths from $s$ to $t$, yet we have an infinite amount of odd walks by utilizing the cycles $[a,b,c]$ or $[a,c,b]$ an odd number of times to offset the parity. Our algorithm would first find an odd walk to $a$, then an even walk to $b$, then an odd walk to $c$, then an even walk to $a$, and lastly an odd walk to $t$. However, then $a$ is used twice in the walk, once for each parity, and the resulting walk is not a path. Therefore can this algorithm not be used to solve \textsc{Shortest Odd Path}.
+
+\subsection{Limitations}
+The main limitation of the algorithm is that the edges in the input graph must either have non-negative weights or no weights at all. Otherwise we cannot guarantee that \pyth{even_dist[u]} and \pyth{odd_dist[u]} have their final, correct values when we scan a vertex $u$. 
+
+Note that unlike most other algorithms shown in this thesis, this algorithm does not require the input graph to be undirected, it can also be directed.
 
 \subsection{Correctness}
 Let \pyth{(priority, even, u)} be the triple at the front of the queue at any point in the execution of our algorithm.
@@ -16,7 +32,7 @@ Claim: If \pyth{even} is true and \pyth{even_done[u]} is false, then \pyth{prior
 \begin{proof}
 By induction. 
 
-The source vertex \pyth{s} has a best possible even cost of \pyth{0}, and initially we have just \pyth{(0, true, s)} in the queue. When that triple is popped the property holds in the base case.
+The source vertex \pyth{s} has a best possible even cost of \pyth{0}, and initially we have only \pyth{(0, true, s)} in the queue. When that triple is popped the property holds in the base case.
 
 \todo[inline]{
     Burde yoinke beviset herfra: https://web.engr.oregonstate.edu/~glencora/wiki/uploads/dijkstra-proof.pdf

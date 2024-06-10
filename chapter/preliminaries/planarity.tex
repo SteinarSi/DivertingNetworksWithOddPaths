@@ -71,10 +71,95 @@ Each edge in $e \in E(G)$ will always have a face on either side, and thus have 
 
 \begin{fact}[A simple cycle in a dual graph is a cut in the original graph]
 \label{fact:dual-cycle-is-real-cut}
-    Let $G = (V, E, from, to)$ be a connected planar graph, and let $C^\star$ be a simple cycle in $G^\star$. Then $C^\star$ will always correspond to a cut of $G$. If we define $C := \{e ~ | ~ e^\star \in E(G^\star)\}$ as the edges in $E(G)$ that correspond to edges in $C^\star$, then $(V,E \setminus C, from, to)$ is an unconnected graph of exactly two components. If the cycle $C^\star$ is not simple, then we still end up with an unconnected graph, but we may have more than just two components.
+    Let $G := (V, E, from, to)$ be a connected planar graph, and let $C^\star$ be a simple cycle in $G^\star$. Then $C^\star$ will always correspond to a cut of $G$. If we define $C := \{e ~ | ~ e^\star \in E(G^\star)\}$ as the edges in $E(G)$ that correspond to edges in $C^\star$, then $(V,E \setminus C, from, to)$ is an unconnected graph of exactly two components. If the cycle $C^\star$ is not simple, then we still end up with an unconnected graph, but we may have more than just two components.
 
     See Figure \ref{figure:cycle-cut} for an example. In Figure \ref{figure:dual-with-cycle} we have found a simple cycle in the dual graph, and if we delete the corresponding edges in the original graph we end up with the disconnected graph in Figure \ref{figure:k4-cut}.
 \end{fact}
+
+\begin{theorem}[The relation between the number of vertices, edges and faces]
+    Let $G := (V, E, from, to)$ be a connected planar graph, where $n := |V|, m := |E|$, and $f$ is the number of faces in any embedding of $G$. \\
+    Claim: $n + f - m = 2$.
+
+    \begin{proof}
+        Let $H \sqsubseteq G$ be any non-empty connected subgraph that does not have any cycles, and let $n_H := |V|$. Since it does not have any cycles, we have that:
+        \begin{itemize}
+            \item The outside face must be the only face: $f_H := 1$.
+            \item Each edge must connect a 'new' vertex to the rest of the graph, except the first edge which connects two new vertices. Therefore the number of edges is one less than the number of vertices: $m_H := n_H - 1$.
+        \end{itemize}
+        We now have that $n_H + f_H - m_H = n_H + 1 - (n_H-1) = 2$, so the equality holds for this subgraph.
+
+        Now we can iteratively add either an edge alone or both a vertex and an edge to $H$ until we have $G$. If we add just an edge, we increase both $m_H$ and $f_H$ by 1, and the equality still holds. If we add a new vertex with a new edge, we increase both $n_H$ and $m_h$ by one, and the equality still holds. 
+        
+        Therefore, the equality $n + f - m = 2$ holds for any connected planar graph $G$.
+    \end{proof}
+\end{theorem}
+
+\begin{corollary}
+    The number of faces is fixed. A graph may have different faces depending on the embedding, but the number of faces is always the same.
+\end{corollary}
+    
+\begin{corollary}
+    \label{corollary:m-leq-3n}
+    Since all faces (except possibly the outer face) are bounded by at least three edges, and all edges touch at most two faces, we can show that if $n \geq 3$, then $m \leq 3n-6$.
+\end{corollary}
+
+% \begin{fact}[]
+%     \label{fact:nmf2}
+    
+%     \begin{enumerate}
+%         \item $n + f - m = 2$.
+%         \item If $n \geq 3$, then $m \leq 3n - 6$.
+%     \end{enumerate}
+%     For an idea for a proof, consider first any non-empty connected subgraph $H \sqsubseteq G$ that does not have any cycles. Let $n_H := |V|$. Since it does not have any cycles, we have that the outside face must be the only face: $f_H := 1$. Also because it does not have any cycles, then each edge must connect a new vertex to the rest, and the number of edges must be $m_H := n-1$. We now have that $n_H + f_H - m_H = n_H + 1 - (n_H-1) = 2$.  
+% \end{fact}
+
+% \begin{figure}
+%     \centering
+%     \begin{subfigure}{.3\textwidth}
+%         \centering
+%         \begin{tikzpicture}
+%             \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=0.8em]
+%             \tikzstyle{edge}=[gray, line width=0.8mm]
+
+%             \node (a) at (0,0) {};
+%             \node (b) at (3,0) {};
+%             \node (c) at (1.5,1.2) {};
+%             \node (d) at (1.5,3) {};
+
+%             \draw[edge] (c) -- (a) -- (b) -- (d) -- (a);
+%             \draw[edge] (b) -- (c) -- (d);
+
+%             \tikzstyle{every node}=[circle, fill=green, draw=black, inner sep=2pt, minimum size=0.6em]
+%             \tikzstyle{edge}=[green, line width=0.8mm]
+
+%             \node (1) at (1.5,0.5) {};
+%             \node (2) at (1,1.55) {};
+%             \node (3) at (2,1.55) {};
+%             \node (4) at (3,3) {};
+
+%             \draw[edge] (3) -- (2) -- (1) -- (3) -- (4);
+%             \draw[edge] (2) to [bend left=20] (1.25,3.25) to [bend left=20] (4);
+%             \draw[edge] (1) to [bend right=45] (3.5,-0.2) to [bend right=25] (4);
+%         \end{tikzpicture}
+%         % \includegraphics[width=4cm]{figures/duality/k4 with dual.png}
+%         % \caption{A planar graph with its dual colored in green}
+%         % \label{figure:k4-with-dual}
+%     \end{subfigure}\hfill%
+%     \begin{subfigure}{.3\textwidth}
+%         \centering
+%         % \includegraphics[width=4cm]{figures/duality/dual with cycle.png}
+%         % \caption{A simple cycle in the dual, colored in blue}
+%         % \label{figure:dual-with-cycle}
+%     \end{subfigure}\hfill%
+%     \begin{subfigure}{.3\textwidth}
+%         \centering
+%         % \includegraphics[width=4cm]{figures/duality/k4 cut in pieces.png}
+%         % \caption{Deleting the edges that cross the dual's cycle cuts the graph in two}
+%         % \label{figure:k4-cut}
+%     \end{subfigure}
+%     \caption{A simple cycle in a dual graph always corresponds to a cut in the original graph.}
+%     % \label{figure:cycle-cut}
+% \end{figure}
 
 \begin{figure}
     \centering

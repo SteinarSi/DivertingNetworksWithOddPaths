@@ -30,10 +30,15 @@ If we are working with multiple graphs at once, say two graphs $G$ and $H$, then
 \begin{definition}[Neighbourhood]
     Let $G$ be a graph, and let $u \in V$ be a vertex in the graph. The \emph{neighbourhood} of $u$, denoted as $N(u)$, is defined as the vertices in $G$ that are reachable from $u$ using just a single edge: $N(u) := \{ to(e)  ~|~  e \in E, ~ from(e) = u\}$. 
     In code, it is usually more useful to consider neighbourhoods in terms of edges. We will therefore denote $G[u]$ as the edges in $G$ that start in $u$: $G[u] := \{e ~ | ~ e \in E, ~ from(e) = u\}$
+    We also denote $deg(u) := |N(u)|$ as the size of $u$'s neighbourhood, often referred to as the \emph{degree} of $u$.
 \end{definition}
 
 \begin{definition}[Simple graph]
     Let $G$ be a graph. $G$ is said to be a \emph{simple} graph if for each pair of vertices $u,v \in V$, there exists \emph{at most} one edge $e$ such that $from(e) = u$ and $to(e) = v$. If two or more edges have the same endpoints, we say the edges are \emph{parallel} to each other, and that the graph has \emph{parallel} edges and is thus not simple.
+\end{definition}
+
+\begin{definition}[Sparse and dense graphs]
+    Let $G := (V, E, from, to)$ be a graph, let $n := |V|$, and let $m := |E|$. We say that $G$ is a \emph{sparse} graph if $m \in O(n)$. On the contrary, we say that $G$ is a \emph{dense} graph if it is not sparse.
 \end{definition}
 
 \begin{definition}[Walk]

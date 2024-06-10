@@ -1,5 +1,16 @@
 \section{Analysis}
 
+\subsection{Limitations}
+Whether \textsc{Network Diversion} in the general case can be solved in polynomial time is still an open problem.
+This algorithm does not solve the general case, but rather the special case where the input graph...
+\begin{itemize}
+    \item is planar,
+    \item is undirected,
+    \item has edges of either non-negative weights or no weights at all.
+\end{itemize}
+
+In addition, even though the algorithm as described here will also work on non-simple graphs, we implemented the algorithm with the assumption that the graph is simple. See \Cref{chapter:codebase} for more details. \todo{vurder å skrive dette i kodekapitlet istedet. Eller også ta med at vi trenger en straight-line embedding.}
+
 \subsection{Complexity}
 
 \subsection{Benchmarking methodology}
