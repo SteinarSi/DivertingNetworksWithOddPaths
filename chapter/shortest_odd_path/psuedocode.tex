@@ -92,12 +92,13 @@ fn control() -> bool {
             return;
         }
         match priority_queue.pop() {
-            Vertex(delta, l) => {
-                if l == t {
+            Vertex(delta, u) => {
+                if u == t {
                     // We have found a shortest odd s-t-path :)
                     return;
                 }
-                grow(l);
+                d_plus[u] = d_minus[mirror(u)];
+                scan(mirror(u));
             }
             Blossom(delta, edge) => {
                 blossom(e);
@@ -108,14 +109,6 @@ fn control() -> bool {
 \end{lstlisting}
 
 \subsection{Scanning vertices}
-
-\begin{lstlisting}[caption={Grow},label=Listing,mathescape=true]
-fn grow(l) {
-    d_plus[mirror(l)] = d_minus[l];
-    scan(mirror(l));
-}
-\end{lstlisting}
-
 \begin{lstlisting}[caption={Scan},label=Listing,mathescape=true]
 fn scan(u) {
     completed[u] = true;
@@ -141,6 +134,7 @@ fn scan(u) {
     }
 }
 \end{lstlisting}
+\todo{Bør kanskje skrive noe lurt her}
 
 \subsection{Backtracking a blossom edge}
 When we compute a blossom edge $e$, we need to compute the vertices and edges that make up the blossom. We do this by creating two paths, one from $from(e)$ and one from $to(e)$, and backtrack towards the source while alternating normal and mirror edges until the paths meet up at a common ancestor $b$. Then we set $b$ as the base, and the two paths make up our blossom.
@@ -254,12 +248,12 @@ fn set_blossom_values(path) {
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Set edge bases},label=Listing,mathescape=true]
-    fn set_edge_bases(path) {
+    fn set_edge_bases(base, path) {
         for edge in path {
             u = from(edge);
             m = mirror(u);
-            set_base(u, b);
-            set_base(m, b);
+            set_base(base, u);
+            set_base(base, m);
         }
     }
     \end{lstlisting}
@@ -270,11 +264,11 @@ When we have found and computed a blossom, we shrink it into a psuedonode by set
 
 The naïve solution would be to do something like this:
 \begin{lstlisting}[caption={Näive basis},label=Listing,mathescape=true]
-fn set_base(b, u) {
-    basis[u] = b;
+fn set_base(base, u) {
+    basis[u] = base;
     for v in 0..n {
         if basis[v] == u {
-            basis[v] = b;
+            basis[v] = base;
         }
     }
 }
@@ -282,28 +276,28 @@ fn get_base(u) {
     return basis[u];
 }
 \end{lstlisting}
-This would search through all vertices in the graph in linear time. We have found two potential improvements to this. The first version is to use an oberserver pattern, where each vertex $u$ keeps a record of the vertices that have $u$ as its base. Initially $dependents[u] = []$ for all of them. Then, when we update $u$'s base to $b$:
+This would search through all vertices in the graph in linear time. We have found two potential improvements to this. The first version is to use an oberserver pattern, where each vertex $u$ keeps a record of the vertices that have $u$ as its base. Initially $dependents[u] = []$ for all of them. Then, when we update $u$'s base to $base$:
 
 \begin{lstlisting}[caption={Observer basis},label=Listing,mathescape=true]
-fn set_base(b, u) {
-    basis[u] = b;
-    dependents[b].push(u);
+fn set_base(base, u) {
+    basis[u] = base;
+    dependents[base].push(u);
     for v in dependents[u] {
-        basis[v] = b;
-        dependents[b].push(v);
+        basis[v] = base;
+        dependents[base].push(v);
     }
 }
 \end{lstlisting}
 
-Now we only go through the vertices that have $u$ as their base, in time linear to the count of vertices that need to be updated.
+Now we go through only the vertices that have $u$ as their base, in time linear to the count of vertices that need to be updated.
 
 The second version is to use a structure resembling UnionFind, where each disjoint set and its representative is a blossom and its base. To update the base of $u$ we simply set the new base and do nothing else. When we require the base of a vertex we recursively query its representative's base and contract the path along the way in the style of UnionFind. 
 
 \begin{lstlisting}[caption={UF-like basis},label=Listing,mathescape=true]
-fn set_base(b, u) {
-    basis[u] = b;
+fn set_base(base, u) {
+    basis[u] = base;
 }
-fn get_base(u) -> int {
+fn get_base(u) {
     if u != basis[u] {
         basis[u] = get_base(basis[u]);
     }
