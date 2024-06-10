@@ -1,16 +1,16 @@
 \section{Psuedocode}
-\begin{lstlisting}[caption={Main},label=Listing,mathescape=true]
-/**
-    In:
-        graph: an undirected planar graph, with non-negative edges 
-        s, t: vertices whose $s$-$t$-paths we consider
-        d: the diversion edge
+% /**
+%     In:
+%         graph: an undirected planar graph, with non-negative edges 
+%         s, t: vertices whose $s$-$t$-paths we consider
+%         d: the diversion edge
 
-    Out:
-        The cheapest set of edges that can be deleted from the graph 
-        to force all $s$-$t$-paths to go through $d$, along with the 
-        cost, if one such set exists.
-*/
+%     Out:
+%         The cheapest set of edges that can be deleted from the graph 
+%         to force all $s$-$t$-paths to go through $d$, along with the 
+%         cost, if one such set exists.
+% */
+\begin{lstlisting}[caption={Main},label=Listing,mathescape=true]
 fn network_diversion(graph, s, t, d) {
     graph.delete_edge(d);
     path = shortest_path(graph, s, t);

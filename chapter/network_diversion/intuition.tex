@@ -1,7 +1,7 @@
 \section{Intuition}
 \subsection{Bottleneck Paths}
 \label{section:subdividing-bottlenecks}
-Before we reveal the algorithm for Network Diversion, we will first look at a curious little problem that we call \textsc{SBP: Shortest Bottleneck Path}:
+Before we reveal the algorithm for Network Diversion, we will first look at a curious little problem that we call \textsc{Shortest Bottleneck Path}:
 
 \fbox{\parbox{0.94\textwidth}{\textsc{Shortest Bottleneck Path}\\
     \textbf{Input:} A graph $G$, two vertices $s,t \in V$, and a 'bottleneck' edge $b \in E$\\
@@ -12,19 +12,70 @@ There is no obvious way to solve \textsc{Shortest Bottleneck Path}. One might at
 
 \begin{figure}
     \centering
-    \begin{subfigure}{.45\textwidth}
+    \begin{subfigure}{.80\textwidth}
         \centering
-        \includegraphics[width=6cm]{figures/bottleneck.png}
-        \caption{An instance of \textsc{Shortest Bottleneck Path}, bottleneck marked in red}
+        % \includegraphics[width=6cm]{figures/bottleneck.png}
+        \begin{tikzpicture}
+            \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+            \tikzstyle{edge}=[gray, line width=1.5mm]
+        
+            \node (s) at (0,0) {$s$};
+            \node (a) at (2,2) {};
+            \node (b) at (4,0) {};
+            \node (c) at (2,-2) {};
+            \node (d) at (6,-2) {};
+            \node (e) at (8,0) {};
+            \node (f) at (6,2) {};
+            \node (t) at (10,2) {$t$};
+        
+            \draw[edge] (s) -- (a) -- (b) -- (e);
+            \draw[edge] (c) -- (b) -- (d) -- (e) -- (f) -- (t);
+            \draw[edge] (a) -- (f);
+        
+            \tikzstyle{edge}=[red, line width=1.5mm]
+            \draw[edge] (c) -- (d);
+        \end{tikzpicture}
+        \caption{An instance of \textsc{Shortest Bottleneck Path}, bottleneck marked in red.}
         \label{figure:bottleneck}
     \end{subfigure}\hfill%
-    \begin{subfigure}{.45\textwidth}
+    \begin{subfigure}{.80\textwidth}
         \centering
-        \includegraphics[width=6cm]{figures/subdivide-bottleneck.png}
-        \caption{All edges except the bottleneck have been subdivided}
+        % \includegraphics[width=6cm]{figures/subdivide-bottleneck.png}
+        \begin{tikzpicture}
+            \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+            \tikzstyle{edge}=[gray, line width=1.5mm]
+        
+            \node (s) at (0,0) {$s$};
+            \node (a) at (2,2) {};
+            \node (b) at (4,0) {};
+            \node (c) at (2,-2) {};
+            \node (d) at (6,-2) {};
+            \node (e) at (8,0) {};
+            \node (f) at (6,2) {};
+            \node (t) at (10,2) {$t$};
+        
+            \draw[edge] (s) -- (a) -- (b) -- (e);
+            \draw[edge] (c) -- (b) -- (d) -- (e) -- (f) -- (t);
+            \draw[edge] (a) -- (f);
+        
+            \tikzstyle{edge}=[red, line width=1.5mm]
+            \draw[edge] (c) -- (d);
+
+            \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1em, font=\footnotesize, text=black]
+            \node (sa) at (1,1) {};
+            \node (af) at (4,2) {};
+            \node (ab) at (3,1) {};
+            \node (bc) at (3,-1) {};
+            \node (bd) at (5,-1) {};
+            \node (be) at (6,0) {};
+            \node (de) at (7,-1) {};
+            \node (ef) at (7,1) {};
+            \node (ft) at (8,2) {};
+        \end{tikzpicture}
+        \caption{All edges except the bottleneck have been subdivided.}
         \label{figure:subdivided-bottleneck}
     \end{subfigure}%
-    \caption{\textsc{Shortest Bottleneck Path} reduced to \textsc{Shortest Odd Path} by subdividing edges}
+    \caption{\textsc{Shortest Bottleneck Path} reduced to \textsc{Shortest Odd Path} by subdividing edges.}
     \label{figure:bottleneck-subdividing}
 \end{figure}
 
