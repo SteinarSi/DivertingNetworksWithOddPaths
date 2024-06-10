@@ -63,7 +63,8 @@ As shown and discussed in Section \ref{subsection:basis-code}, we have implement
 The results are a little mixed. The UnionFind-based structure spends $4.2\%$ more time on the huge Pokec Social Network graph. However, it also either outperforms or does as well as the Observer-based structure on all the other graphs, at best shaving off $14.2\%$ of the time spent on the San Joaquin County graph. Since the UnionFind-based structure outperforms the Observer-based structure on average, we have chosen to use that one for the remainder of this thesis.
 
 \subsubsection{Running times on Delaunay graphs}
-Like explained in \Cref{section:delaunay}, we have generated 101 Delaunay graphs of sizes 1000 to 100 000. For each graph, we have found two vertices with the highest possible shortest path between them, and run our \textsc{Shortest Odd Path} algorithm. The algorithm gets 20 attempts on each input graph, and we take the median and plot it below.
+\label{subsubsection:odd-path-delaunay-testing}
+Like explained in \Cref{section:delaunay}, we have generated 101 Delaunay graphs of sizes 1000 to 100 000. For each graph, we have found a sourec and target with the highest possible shortest path between them, and run our \textsc{Shortest Odd Path} algorithm. The algorithm gets 20 attempts on each input graph, and we take the median and plot it below.
 
 The theoretical running time is $O(m \log n)$, and we have tried our best to come up with constants to create a running time function that matches our algorithm. Remember that in Delaunay graphs we have that $m \leq 6n$, so we have set $m := 6n$ in this function.
 
