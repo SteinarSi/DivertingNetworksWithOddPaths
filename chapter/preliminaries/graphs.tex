@@ -25,7 +25,6 @@ If we are working with multiple graphs at once, say two graphs $G$ and $H$, then
     If $G$ is not undirected, we say that $G$ is a \emph{directed graph}.
     Edges in directed graphs are often drawn as arrows, while edges in undirected graphs can be drawn using just a line.
 \end{definition}
-% \todo[inline]{figures for graphs}
 
 \begin{definition}[Neighbourhood]
     Let $G$ be a graph, and let $u \in V$ be a vertex in the graph. The \emph{neighbourhood} of $u$, denoted as $N(u)$, is defined as the vertices in $G$ that are reachable from $u$ using just a single edge: $N(u) := \{ to(e)  ~|~  e \in E, ~ from(e) = u\}$. 
@@ -57,20 +56,105 @@ If we are working with multiple graphs at once, say two graphs $G$ and $H$, then
     A \emph{cycle} in a graph is a walk that starts and ends in the same vertex. If it does not repeat any vertices except in the last verex, then we call is a \emph{simple cycle}.
 \end{definition}
 
-\begin{definition}[The cost of a path (/walk)]
-    Let $P := [e_1, e_2, ..., e_k]$ be a path (/walk) in a weighted graph $G$. The \emph{cost} of $P$ is defined as the sum of the weights of its edges: $\sum_{i=1}^k w(e_i)$. In a collection of paths (/walks), we say that the \emph{shortest} path (/walk) is the \emph{cheapest} one, the one with the lowest cost. Likewise for the longest and most expensive path (/walk). 
-\end{definition}
+\begin{definition}[The cost of a walk]
+    Let $P := [e_1, e_2, ..., e_k]$ be a walk in a weighted graph $G$. The \emph{cost} of $P$ is defined as the sum of the weights of its edges: $\sum_{i=1}^k weight(e_i)$. In a collection of walks, we say that the \emph{shortest} walk is the \emph{cheapest} one, the one with the lowest cost. Likewise for the longest and most expensive walk. 
 
-Note that in some literature, \emph{shortest} may instead mean \emph{fewest edges}, and the term \emph{length} could mean both the number of edges or the cost of a path. For that ambiguous reason, we will from now on avoid the word \emph{length}, and \emph{shortest} will always mean \emph{cheapest}. If a graph is unweighted, we pretend that all the edges have a unit weight of 1, and in that case the cost is the same as the number of edges.
+    Note that in some literature, \emph{shortest} may instead mean \emph{fewest edges}, and the term \emph{length} could refer to both the number of edges and the cost. For that ambiguous reason, we will from now on avoid the word \emph{length}, and \emph{shortest} will always mean \emph{cheapest}. If a graph is unweighted, we pretend that all the edges have a unit weight of 1, and in that case the cost is the same as the number of edges.
+\end{definition}
 
 \begin{definition}[Components of a graph]
     Let $G$ be an undirected graph. A component in $G$ is a set of vertices of $G$ where all vertices in the component have paths to all other vertices in the component. Moreover, this must be a \emph{maximal} set: no other vertices in the graph can be added to the component without giving up this property.
 \end{definition}
 
 \begin{definition}[Connected graph]
-    We say that an undirected graph is a \emph{connected} graph if it has only one component.
+    We say that an undirected graph is a \emph{connected} graph if it has exactly one component. If it hase more than that we call it a \emph{disconnected} graph, and if it has less it is an \emph{empty} graph.
 \end{definition}
 
 \begin{definition}[Cut]
-    Let $G = (V, E, from, to)$ be a connected and undirected graph. A \emph{cut} $\mathbb{C} \subseteq E$ of $G$ is a subset of edges such that $(V, E \setminus \mathbb{C}, from, to)$ is an unconnected graph of exactly two components. If two vertices $s,t \in V$ end up in separate components after the cut, we denote $\mathbb{C}$ as an $s$-$t$-\emph{cut} in $G$.
+    Let $G = (V, E, from, to)$ be a connected and undirected graph. A \emph{cut} $C \subseteq E$ of $G$ is a subset of edges such that $(V, E \setminus C, from, to)$ is a disconnected graph of exactly two components. If two vertices $s,t \in V$ end up in separate components after the cut, we denote $C$ as an $s$-$t$-\emph{cut} in $G$. See \Cref{figure:s-t-cut} for an example of an $s$-$t$-cut.
 \end{definition}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{.45\textwidth}
+        \begin{tikzpicture}
+            \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+            \tikzstyle{edge}=[gray, line width=1.5mm]
+       
+            \node (s) at (0,1) {$s$};
+            \node (a) at (1,2) {};
+            \node (b) at (1,0) {};
+            \node (c) at (3,0) {};
+            \node (d) at (4,1) {};
+            \node (t) at (3,2) {$t$};
+
+            \draw[edge] (s) -- (a) -- (b) -- (s);
+            \draw[edge] (t) -- (d) -- (c) -- (t);
+       
+            \tikzstyle{edge}=[red, line width=1.5mm]
+            \draw[edge] (b) -- (c) -- (a) -- (t);
+        \end{tikzpicture}
+        \caption{A connected graph with an $s$-$t$-cut marked in red}
+        \label{subfigure:to-be-cut-graph}
+    \end{subfigure}\hfill%
+    \begin{subfigure}{.45\textwidth}
+        \begin{tikzpicture}
+            \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+            \tikzstyle{edge}=[gray, line width=1mm]
+       
+            \node (s) at (0,1) {$s$};
+            \node (a) at (1,2) {};
+            \node (b) at (1,0) {};
+            \node (c) at (3,0) {};
+            \node (d) at (4,1) {};
+            \node (t) at (3,2) {$t$};
+
+            \draw[edge] (s) -- (a) -- (b) -- (s);
+            \draw[edge] (t) -- (d) -- (c) -- (t);
+        \end{tikzpicture}
+        \caption{The disconnected graph of exactly two components, after deleting all the edges in the cut}
+        \label{subfigure:cut-graph}
+    \end{subfigure}
+    \caption{A graph before and after an $s$-$t$-cut of edges has been deleted}
+    \label{figure:s-t-cut}
+\end{figure}
+
+% \begin{minipage}{.45\textwidth}
+%     \begin{tikzpicture}
+%         \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+%         \tikzstyle{edge}=[gray, line width=1.5mm]
+   
+%         \node (s) at (0,1) {$s$};
+%         \node (a) at (1,2) {};
+%         \node (b) at (1,0) {};
+%         \node (c) at (3,0) {};
+%         \node (d) at (4,1) {};
+%         \node (t) at (3,2) {$t$};
+
+%         \draw[edge] (s) -- (a) -- (b) -- (s);
+%         \draw[edge] (t) -- (d) -- (c) -- (t);
+   
+%         \tikzstyle{edge}=[red, line width=1.5mm]
+%         \draw[edge] (b) -- (c) -- (a) -- (t);
+%     \end{tikzpicture}
+%     \captionof{A connected graph with an $s$-$t$-cut marked in red}
+%     \label{subfigure:to-be-cut-graph}
+% \end{minipage}\hfill%
+% \begin{minipage}{.45\textwidth}
+%     \begin{tikzpicture}
+%         \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+%         \tikzstyle{edge}=[gray, line width=1mm]
+   
+%         \node (s) at (0,1) {$s$};
+%         \node (a) at (1,2) {};
+%         \node (b) at (1,0) {};
+%         \node (c) at (3,0) {};
+%         \node (d) at (4,1) {};
+%         \node (t) at (3,2) {$t$};
+
+%         \draw[edge] (s) -- (a) -- (b) -- (s);
+%         \draw[edge] (t) -- (d) -- (c) -- (t);
+%     \end{tikzpicture}
+%     \captionof{The disconnected graph of exactly two components, after deleting all the edges in the cut}
+%     \label{subfigure:cut-graph}
+% \end{minipage}
