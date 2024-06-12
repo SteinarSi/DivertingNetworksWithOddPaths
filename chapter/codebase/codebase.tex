@@ -1,1 +1,50 @@
-\todo[inline]{Here we write about the codebase. Language, testing, frameworks, design choices, and how the algorithms can be used. Maye also mention Minimum Maximal Matching.}
+The crux of this thesis is not about the theory we have presented in the other chapters, but rather to see how well these algorithms work in practice, if at all. We have implemented most of the algorithms mentioned in the paper, and in this chapter we will present the codebase. Of course, we invite the reader to explore the repository on their own: \cite{source:codebase}.
+
+\section{Language}
+Our library is written in Rust. We chose that language because of performance, but also because its type system and strict compiler helps massively in reducing the developer overhead during development. Being able to fearlessly perform large refactors, and to use sum-types rather than just product types to describe the data, has had a huge impact on the quality of our code. \todo{Skrive mer her? Slå det sammen med neste?}
+
+\section{Algorithms}
+We have successfully implemented the following algorithms:
+
+\begin{itemize}
+    \item \textsc{Shortest Odd Walk} on graphs of non-negative weights, as described in \Cref{chapter:odd-walk}.
+    \item \textsc{Shortest Odd Path} on undirected graphs of non-negative weights, as described in \Cref{chapter:odd-path}.
+    \item \textsc{Network Diversion} on undirected planar graphs of non-negative weights, as described in \Cref{chapter:network-diversion}.
+    \item \textsc{Shortest Path} on unweighted graphs, using a classic breadth-first search.
+    \item \textsc{Shortest Path} on graphs of non-negative weights, using Dijkstra's Algorithm as shown in \Cref{algorithm:dijkstras-algorithm}.
+    \item \textsc{Shortest Bottleneck Path} on undirected graphs of non-negative weights, as described in \Cref{section:subdividing-bottlenecks}.
+\end{itemize}
+
+With the obvious exception of the breadth-first search are all of them generic with respect to edge weights, and can handle any type of weights like \pyth{i32}, \pyth{u64} and \pyth{f64}. When we subdivide edges in \textsc{Network Diversion} and \textsc{Shortest Bottleneck Path} we use a neat little trick to be able to split a weight into two weights without potentially accidentally rounding down an integer: we set one weight to zero and the other to the original weight. Any path that uses one of those edges will have to use the other afterwards, and their sum will then be the same as the original weight prior to the split.
+
+\todo[inline]{write about the algorithms}
+
+\section{Data structures}
+\subsection{Graphs}
+To perform these algorithms, we have implemented a few different data structures. The first is a basic structure for undirected graphs, using a vector of vectors to represent the graph with adjacency lists. It is generic both in the type of its edge weights, but also on the type of its edges. \todo{bli kvitt den fargen på .from()} The 'basic' edge has just the methods \pyth{.from()}, \pyth{.to()} and \pyth{.weight()}, but we also have a struct for planar edges, where we also have the methods \pyth{.left()} and \pyth{.right()}. All five of the methods work like described in \Cref{section:graphs} and \Cref{section:planar-graphs}. 
+
+We also have a data structure for planar graphs. They consist of two undirected graphs of planar edges: the 'real' graph and its dual. Each of them has edges that know which regions are to left and right in the other graph. Even though our algorithm for \textsc{Network Diversion} will work any planar graphs, parsing them and finding an embedding is rough. We therefore assume that we are the given coordinates of each of the vertices, and that they form a straight-line embedding. From there we can figure out the dual graph.
+
+Another limitation is that we can only handle simple planar graphs: if we have parallel edges, then our algorithm for finding the dual will not work. If the input graph is not simple, we have to somehow combine the parallel edges until it is. Depending on the usecase we have many reasonable strategies for combining them. If the edges represent bridges to be blown up with artillery, then the combined edge should probably be the sum of the weights of its components, the sum of the artillery needed to destroy the edges between those to vertices. If we in another case just need to cut any of the edges between them, then we may want to just take the cheapest one, or perhaps we are forced to take the most expensive one. Rather than making assumptions about the usecases, we have implemented five strategies for combining parallel edges, to cover as many usecases as possible:
+
+\begin{itemize}
+    \item Take the first edge
+    \item Take the last edge
+    \item Keep highest weight
+    \item Keep the lowest weight
+    \item Sum all weights
+\end{itemize}
+
+We hope these are enough. If not, then our framework can easily be extended to with more strategies.
+
+\subsection{Basis}
+As discussed in \Cref{subsection:basis-code} and benchmarked in \Cref{subsubsection:testing-basis}, we have implemented two different data structures to keep track of the basis. They are called ObserverBase and UnionFindBase. Both are implemented using a common trait and can be switched out interchangably in the \textsc{Shortest Odd Path} algorithm. UnionFindBase usually performs the best, and has been set as the default. Since ObserverBase can outperform the other in certain cases, we have kept both.
+
+\section{Testing}
+\subsection{Unit tests}
+\todo[inline]{Write about the test suites}
+
+\subsection{Benchmarking}
+\todo[inline]{Write about marking benches}
+
+\todo[inline]{anything else?}
