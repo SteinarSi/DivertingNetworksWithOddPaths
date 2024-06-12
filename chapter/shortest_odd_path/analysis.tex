@@ -64,7 +64,7 @@ The results are a little mixed. The UnionFind-based structure spends $4.2\%$ mor
 
 \subsubsection{Running times on Delaunay graphs}
 \label{subsubsection:odd-path-delaunay-testing}
-Like explained in \Cref{section:delaunay}, we have generated 201 Delaunay graphs of sizes 1000, 2000, 3000 etc. to 200 000. For each graph, we have found a source and target with the highest possible shortest path between them, and run our \textsc{Shortest Odd Path} algorithm. The algorithm gets 10 attempts on each input graph, and we take the median and plot it below.
+Like explained in \Cref{subsection:delaunay}, we have generated 201 Delaunay graphs of sizes 1000, 2000, 3000 etc. to 200 000. For each graph, we have found a source and target with the highest possible shortest path between them, and run our \textsc{Shortest Odd Path} algorithm. The algorithm gets 10 attempts on each input graph, and we take the median and plot it below.
 
 The theoretical running time is $O(m \log n)$, and we have tried our best to come up with constants to create a running time function that matches our algorithm. Remember that in Delaunay graphs we have that $m \leq 6n$, so we have set $m := 6n$ in this function.
 

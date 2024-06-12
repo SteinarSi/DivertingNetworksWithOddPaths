@@ -22,10 +22,9 @@
 \setcounter{secnumdepth}{3}
 
 \begin{document}
-\include{generators/glossary}
 \include{generators/frontpage}
 \include{generators/abstract}
-% \include{generators/tableOfContentsAndListings}
+\include{generators/tableOfContentsAndListings}
 \pagenumbering{arabic}
 \setcounter{page}{1}
 \setlength{\parskip}{0.5cm plus4mm minus3mm}  
@@ -37,7 +36,6 @@
 \include{chapter/preliminaries/graphs}
 \include{chapter/preliminaries/graph_problems}
 \include{chapter/preliminaries/planarity}
-\include{chapter/preliminaries/delaunay_triangulations}
 
 \chapter{Shortest Odd Walk}
 \label{chapter:odd-walk}
@@ -65,21 +63,6 @@
 
 \include{chapter/conclusion}
 
-% Include more chapters as required.
-%%=========================================
-
-% Alternative 1 of printing glossaries & acronymes
-%\renewcommand{\glossarypreamble}{\footnotesize}
-%\printglossary[style=super, type=\glsdefaulttype] \let\cleardoublepage\clearpage
-%\printglossary[style=super, type=\acronymtype]
-
-
-%Alternative 2
-%Simplified way of printing glossaries, slower than alt 1, but has better compatibility
-\printnoidxglossaries
-
-% Include more appendices as required.
-%%=========================================
 \clearpage
 \DeclareRobustCommand{\VAN}[3]{#3}
 \addcontentsline{toc}{chapter}{Bibliography}

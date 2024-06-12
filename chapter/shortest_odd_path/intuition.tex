@@ -10,7 +10,7 @@ Consider first another related problem:
     \textbf{Output:} the shortest $s$-$t$-path in $G$ where every other edge used is in $F$.
 }}
 
-Derig observed that \textsc{Shortest Odd Path} can be reduced to a special case of \textsc{Shortest Alternating Path}, by constructing what we will refer to as a $\emph{mirror graph}$.
+Derigs observed that \textsc{Shortest Odd Path} can be reduced to a special case of \textsc{Shortest Alternating Path}, by constructing what we will refer to as a $\emph{mirror graph}$.
 
 \begin{definition}[Mirror graph]
     \label{def:mirror-graph}
@@ -20,17 +20,7 @@ Derig observed that \textsc{Shortest Odd Path} can be reduced to a special case 
     For example, if $G$ is the graph in Figure ~\ref{figure:input-graph}, then Figure ~\ref{figure:mirror-graph} would be its corresponding mirror graph $H$.
 \end{definition}
 
-Our reduction from \textsc{Shortest Odd Path} to \textsc{Shortest Alternating Path} follows:
-\begin{enumerate}
-    \item Let $(G, s, t)$ be an instance of \textsc{Shortest Odd Path}.
-    \item Construct $H$ as the mirror graph of $G$, and let $F$ be the set of mirror edges in $H$. Now $(H, s, t, F)$ is an instance of \textsc{Shortest Alternating Path}.
-    \item Let $P'$ be the shortest alternating path of $(H, s, t, F)$, if one exists. If none exist, then we do not have any odd $s$-$t$-paths in $G$ either.
-    \item Construct $P$ by filtering out mirror edges from $P'$, and for each edge $(u',v') \in E(H) \setminus (F \cup E(G))$ from the mirror side of $H$ we replace it by the corresponding edge $(u,v) \in E(G)$ from the real side.
-    \label{point:translate_alternating_path}
-    \item Now $P$ is the shortest odd $s$-$t$-path in $G$.
-\end{enumerate}
-
-\begin{figure}
+\begin{figure}[H]
     \centering
     \begin{subfigure}{.45\textwidth}
         \begin{tikzpicture}
@@ -82,9 +72,20 @@ Our reduction from \textsc{Shortest Odd Path} to \textsc{Shortest Alternating Pa
         \caption{The mirror graph $H$ of $G$, mirror edges marked in red}
         \label{figure:mirror-graph}
     \end{subfigure}
+    \caption{Reduction from \textsc{Shortest Odd Path} to \textsc{Shortest Alternating Path}.}
  \end{figure}
 
-For example, if our input $G$ for \textsc{Shortest Odd Path} is Figure ~\ref{figure:input-graph}, then $H$ and $F$ could look like Figure ~\ref{figure:mirror-graph}. One of the two possible alternating paths is $P' := [(s,a), (a, a'), (a',b'), (b',b)$, $(b,c), (c,c'), (c',d'), (d',d), (d,t)]$. When we filter out mirror edges and replace edges from the mirror side with their real counterparts, we end up with $P := [(s,a),(a,b),(b,c),(c,d),(d,t)]$, which is one of the two possible odd paths of $G$. 
+Our reduction from \textsc{Shortest Odd Path} to \textsc{Shortest Alternating Path} follows:
+\begin{enumerate}
+    \item Let $(G, s, t)$ be an instance of \textsc{Shortest Odd Path}.
+    \item Construct $H$ as the mirror graph of $G$, and let $F$ be the set of mirror edges in $H$. Now $(H, s, t, F)$ is an instance of \textsc{Shortest Alternating Path}.
+    \item Let $P'$ be the shortest alternating path of $(H, s, t, F)$, if one exists. If none exist, then we do not have any odd $s$-$t$-paths in $G$ either.
+    \item Construct $P$ by filtering out mirror edges from $P'$, and for each edge $(u',v') \in E(H) \setminus (F \cup E(G))$ from the mirror side of $H$ we replace it by the corresponding edge $(u,v) \in E(G)$ from the real side.
+    \label{point:translate_alternating_path}
+    \item Now $P$ is the shortest odd $s$-$t$-path in $G$.
+\end{enumerate}
+
+For example, if our input $G$ for \textsc{Shortest Odd Path} is \Cref{figure:input-graph}, then $H$ and $F$ could look like \Cref{figure:mirror-graph}. One of the two possible alternating paths is $P' := [(s,a), (a, a'), (a',b'), (b',b)$, $(b,c), (c,c'), (c',d'), (d',d), (d,t)]$. When we filter out mirror edges and replace edges from the mirror side with their real counterparts, we end up with $P := [(s,a),(a,b),(b,c),(c,d),(d,t)]$, which is one of the two possible odd paths of $G$. 
 \todo{dette kan kanskje formuleres bedre?}
 
 To see why the reduction works, simply observe that for each step we take in the graph, we have to go to the other side of the mirror. If we take another step, we get back to the same side again. It is only when we reach the target vertex $t$ that we do not have to go to the other side. Therefore, to reach a neighbour of $t$, we must have used an even number of mirror edges and an even number of non-mirror edges, and when we take the last step to reach $t$ we have used an odd number of edges and thus found an odd path. If this alternating $s$-$t$-path in $H$ is the shortest such path, then the corresponding path in $G$ must also be the shortest odd $s$-$t$-path in $G$. The reduction works also in the weighted case, as long as each edge $(u',v')$ on the mirror side get the same weight as their real counterpart, and all the mirror edges get the same (usually 0) weight. The interested reader may see \cite{source:derigs_shortest_odd_path} for more details on this reduction.

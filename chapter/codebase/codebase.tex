@@ -23,28 +23,36 @@ With the obvious exception of the breadth-first search are all of them generic w
 \subsection{Graphs}
 To perform these algorithms, we have implemented a few different data structures. The first is a basic structure for undirected graphs, using a vector of vectors to represent the graph with adjacency lists. It is generic both in the type of its edge weights, but also on the type of its edges. \todo{bli kvitt den fargen på .from()} The 'basic' edge has just the methods \pyth{.from()}, \pyth{.to()} and \pyth{.weight()}, but we also have a struct for planar edges, where we also have the methods \pyth{.left()} and \pyth{.right()}. All five of the methods work like described in \Cref{section:graphs} and \Cref{section:planar-graphs}. 
 
-We also have a data structure for planar graphs. They consist of two undirected graphs of planar edges: the 'real' graph and its dual. Each of them has edges that know which regions are to left and right in the other graph. Even though our algorithm for \textsc{Network Diversion} will work any planar graphs, parsing them and finding an embedding is rough. We therefore assume that we are the given coordinates of each of the vertices, and that they form a straight-line embedding. From there we can figure out the dual graph.
+We also have a data structure for planar graphs. They consist of two undirected graphs of planar edges: the 'real' graph and its dual. Each of them has edges that know which faces are to their left and right in the other graph. Even though our algorithm for \textsc{Network Diversion} will work any planar graphs, parsing them and finding an embedding is rough. We therefore assume that we are the given coordinates of each of the vertices, and that they form a straight-line embedding. From there we can figure out the dual graph. Whether the given coordinates form true planar embeddings is usually not verified, since that code runs in the painfully slow $O(m^2)$ and has been disabled by default.
 
-Another limitation is that we can only handle simple planar graphs: if we have parallel edges, then our algorithm for finding the dual will not work. If the input graph is not simple, we have to somehow combine the parallel edges until it is. Depending on the usecase we have many reasonable strategies for combining them. If the edges represent bridges to be blown up with artillery, then the combined edge should probably be the sum of the weights of its components, the sum of the artillery needed to destroy the edges between those to vertices. If we in another case just need to cut any of the edges between them, then we may want to just take the cheapest one, or perhaps we are forced to take the most expensive one. Rather than making assumptions about the usecases, we have implemented five strategies for combining parallel edges, to cover as many usecases as possible:
+Another limitation is that we can only handle simple planar graphs: if we have parallel edges, then the way we compute the dual will not work. If the input graph is not simple, we have to somehow combine the parallel edges until it is. Depending on the usecase we have many reasonable strategies for combining them. If the edges represent bridges to be blown up with artillery, then the combined edge should probably be the sum of the weights of its components, the sum of the artillery needed to destroy the edges between those to vertices. If we in another case just need to cut any of the edges between them, then we may want to just take the cheapest one, or perhaps we are forced to take the most expensive one. Rather than making assumptions about the usecases, we have implemented five strategies for combining parallel edges, to cover as many usecases as possible:
 
 \begin{itemize}
     \item Take the first edge
     \item Take the last edge
-    \item Keep highest weight
+    \item Keep the highest weight
     \item Keep the lowest weight
     \item Sum all weights
 \end{itemize}
 
-We hope these are enough. If not, then our framework can easily be extended to with more strategies.
+We hope that these are enough. If not, then our framework can easily be extended to with more strategies.
 
 \subsection{Basis}
-As discussed in \Cref{subsection:basis-code} and benchmarked in \Cref{subsubsection:testing-basis}, we have implemented two different data structures to keep track of the basis. They are called ObserverBase and UnionFindBase. Both are implemented using a common trait and can be switched out interchangably in the \textsc{Shortest Odd Path} algorithm. UnionFindBase usually performs the best, and has been set as the default. Since ObserverBase can outperform the other in certain cases, we have kept both.
+As discussed in \Cref{subsection:basis-code} and benchmarked in \Cref{subsubsection:testing-basis}, we have implemented two different data structures to keep track of the basis. They are called ObserverBase and UnionFindBase. Both are implemented using a common trait and can be switched out interchangably in the \textsc{Shortest Odd Path} algorithm. UnionFindBase usually performs the best, and has been set as the default. Since ObserverBase can outperform the other in certain cases, we have kept both. The 'näive' basis we mentioned was too inefficient for anything but an MVP and has long since been deleted.
 
 \section{Testing}
-\subsection{Unit tests}
-\todo[inline]{Write about the test suites}
+The repository includes a multiple large test suites, to ensure the correctness of everything we have implemented. First of all, each data structure comes with its own set of unit tests. Secondly, we have a total of 17 hand-crafted graphs of various shapes and sizes, and for each them we have many queries for the different graph problems. We have found the optimal solutions manually, and confirmed that the expected answers match the actual answers provided by the algorithms. Lastly, we also have numerous problem-specific assertions in place, like asserting that the output of \textsc{Odd Shortest Path} really is a path, or that the output of \textsc{Network Diversion} indeed cuts the graph in two except for the diversion edge.
 
-\subsection{Benchmarking}
+These tests have been immensively helpful in the development of our algorithms. Whenever we modified anything, we could instantly verify the validity with just the press of a hotkey and its subsequent run of the test suites. Though we do not present many formal proofs for the algorithms in this thesis, we like to think of the tests as informal proofs by empirical analysis.
+
+\section{Benchmarking}
+\todo{Write about the 'real-life' graphs we benchmarked}
+
 \todo[inline]{Write about marking benches}
+
+\subsection{Delaunay triangulations}
+\label{subsection:delaunay}
+To compare the theoretical and practical runtimes of our algorithms, and plot them nicely, we needed a set of graphs of TODO TODO TODO
+\todo{Write about Delaunay triangulations and shit}
 
 \todo[inline]{anything else?}
