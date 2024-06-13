@@ -58,8 +58,13 @@ Claim: the algorithm runs in time at most $O(m \cdot \log m)$, or $O(m \cdot \lo
 \end{proof}
 
 \subsection{Benchmarking}
+Like explained in \Cref{subsection:delaunay}, we have generated 201 Delaunay graphs of sizes 1000, 2000, 3000 and so on until 200 000. For each graph, we have estimated a source and target with the maximum shortest path between them, and run our \textsc{Shortest Odd Path} algorithm. The algorithm gets 10 attempts on each input graph, and we take the median and plot it below.
 
-\todo[inline]{Do the benchmarking, silly}
+We have also tried to find constants to convert the $O(m \cdot \log m)$ theoretical complexity into a comparable function, and plotted it next to the real practical results.
+
+\includegraphics[width=12cm]{figures/bench_plots/shortest odd walk.png}
+
+As we can see, the algorithm easily solves \textsc{Shortest Odd Walk} on graphs of 200000+ vertices in less than 100ms. These results are excellent. Despite having a similiar complexity to the other algorithms in this thesis, this algorithm is still by far the fastest in practice.
 
 \subsection{Discussion}
-Though we discovered it ourselves, the algorithm is not particularly groundbreaking or in any way creative. Thus, we do not expect it to be original. It is, however, quite fast, and we are happy with that. The main reason we include it in this thesis is because of its pedagogical value in introducing our main topic: \textsc{Shortest Odd Path}. \todo{Skrive mer her?}
+Though we discovered it independently, the algorithm is not particularly groundbreaking or in any way creative. Therefore, we do not expect it to be original. It is, however, quite fast, and we are happy with that. The main reason we include it in this thesis is because of its pedagogical value in introducing our main topic: \textsc{Shortest Odd Path}. \todo{Skrive mer her?}
