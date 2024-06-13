@@ -72,9 +72,9 @@ Each edge in $e \in E(G)$ will always have a face on either side, possibly the s
 Note that the dual graph is also planar, and the dual of the dual is the original graph. We could then for example let $e$ be an edge in the dual graph, and then refer to its real counterpart as $e^\star$. It would not be wrong, yet it could possibly lead to confusion. Furthermore, we do not need that fact for any of the results in this thesis. We will therefore give variable names like $G$, $u$ and $e$ for the graphs, vertices and edges that we are 'working on', and use variable names like $G^\star$, $u^\star$ and $e^\star$ for their dual equivalents only in intermediary computations before arriving at results for our original graph.
 \todo{Consider dropping this, or rewriting it}
 
-\begin{fact}[A simple cycle in a dual graph is a cut in the original graph]
+\begin{fact}[Cycle--cut duality]
 \label{fact:dual-cycle-is-real-cut}
-    Let $G := (V, E, from, to)$ be a connected planar graph, and let $C^\star$ be a simple cycle in $G^\star$. Then $C^\star$ will always correspond to a cut of $G$. If we define $C := \{e ~ | ~ e^\star \in E(G^\star)\}$ as the edges in $E(G)$ that correspond to edges in $C^\star$, then $(V,E \setminus C, from, to)$ is an disconnected graph of exactly two components. If the cycle $C^\star$ is not simple, then we still end up with an disconnected graph, but we may have more than just two components.
+    Let $G := (V, E, from, to)$ be a connected planar graph, and let $C^\star$ be a simple cycle in $G^\star$. Then $C^\star$ will always correspond to a minimal cut in $G$. If we define $C := \{e ~ | ~ e^\star \in E(G^\star)\}$ as the edges in $E(G)$ that correspond to edges in $C^\star$, then $(V,E \setminus C, from, to)$ is an disconnected graph of exactly two components. If the cycle $C^\star$ is not simple, then we still end up with an disconnected graph, but we may have more than just two components.
 
     See Figure \ref{figure:cycle-cut} for an example. In Figure \ref{figure:dual-with-cycle} we have found a simple cycle in the dual graph, and if we delete the corresponding edges in the original graph we end up with the disconnected graph in Figure \ref{subfigure:k4-cut}.
 \end{fact}

@@ -70,11 +70,10 @@ The theoretical running time is $O(m \log n)$, and we have tried our best to com
 
 \includegraphics[width=15cm]{figures/bench_plots/shortest odd path.png}
 
+\todo{bench again with the newer graphs, and write about how fast it is}
+
 As we can see, the running times grow almost linearly as the inputs grow larger. The slight upwards curve is barely noticable. This is to be expected with a linearithmic theoretical running time.
 
-\subsection{Discussion}
 The focus of this thesis is to create an algorithm that performs well on sparse graphs, especially planar graphs, which is why we consider the running times mainly on sparse graphs. If we instead had implemented an algorithm for denser graphs, or just graphs in general, then testing on graphs with more edges would be more appropriate.
 
-With that said, we are very happy with these results. Being able to solve graphs of millions of nodes in seconds is exactly the performance we were hoping for.
-
-\todo{write more here}
+With that said, we are very happy with these results. \todo{update this sentence with new data} Being able to solve graphs of millions of nodes in seconds is exactly the performance we were hoping for.
