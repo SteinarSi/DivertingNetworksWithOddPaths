@@ -21,7 +21,7 @@
 Consider \Cref{figure:small2}. There are no odd paths from $s$ to $t$, yet we have an infinite amount of odd walks by utilizing the cycles $[a,b,c]$ or $[a,c,b]$ an odd number of times to offset the parity. Our algorithm would first find an odd walk to $a$, then an even walk to $b$, then an odd walk to $c$, then an even walk to $a$, and lastly an odd walk to $t$. However, then $a$ is used twice in the walk, once for each parity, and the resulting walk is not a path. Therefore can this algorithm not be used to solve \textsc{Shortest Odd Path}.
 
 \subsection{Limitations}
-The main limitation of the algorithm is that the edges in the input graph must either have non-negative weights or no weights at all. Otherwise we cannot guarantee that \pyth{even_dist[u]} and \pyth{odd_dist[u]} have their final, correct values when we scan a vertex $u$. 
+The main limitation of the algorithm is that the edges in the input graph must have either non-negative weights or no weights at all. Otherwise we cannot guarantee that \pyth{even_dist[u]} and \pyth{odd_dist[u]} have their final, correct values when we scan a vertex $u$. 
 
 Note that unlike most other algorithms shown in this thesis, this algorithm does not require the input graph to be undirected, it can also be directed.
 
@@ -59,4 +59,7 @@ Claim: the algorithm runs in time at most $O(m \cdot \log m)$, or $O(m \cdot \lo
 
 \subsection{Benchmarking}
 
+\todo[inline]{Do the benchmarking, silly}
+
 \subsection{Discussion}
+Though we discovered it ourselves, the algorithm is not particularly groundbreaking or in any way creative. Thus, we do not expect it to be original. It is, however, quite fast, and we are happy with that. The main reason we include it in this thesis is because of its pedagogical value in introducing our main topic: \textsc{Shortest Odd Path}. \todo{Skrive mer her?}
