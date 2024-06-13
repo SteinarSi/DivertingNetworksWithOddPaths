@@ -125,7 +125,8 @@ fn scan(u) {
             }
         }
         else if d_plus[v] < $\infty$ and base_of(u) != base_of(v) {
-            priority_queue.push(Blossom(d_plus[u] + d_plus[v] + weight(edge)));
+            priority = d_plus[u] + d_plus[v] + weight(edge);
+            priority_queue.push(Blossom(priority, edge));
             if new_dist_v < d_minus[v] {
                 d_minus[v] = new_dist_v;
                 pred[v] = e;

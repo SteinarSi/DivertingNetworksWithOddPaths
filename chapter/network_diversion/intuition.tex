@@ -74,7 +74,7 @@ Instead we create a new graph $H$, by subdividing all edges in $G$ \emph{except}
             \node (ef) at (7,1) {};
             \node (ft) at (8,2) {};
         \end{tikzpicture}
-        \caption{All edges except the bottleneck have been subdivided.}
+        \caption{All edges except the bottleneck have been subdivided, to create an instance of \textsc{Shortest Odd Path}.}
         \label{figure:subdivided-bottleneck}
     \end{subfigure}%
     \caption{\textsc{Shortest Bottleneck Path} reduced to \textsc{Shortest Odd Path} by subdividing edges.}
@@ -85,9 +85,9 @@ If we extend the problem to have multiple bottleneck edges, where we have to go 
 The problem is that we have no way of knowing whether we have used the marked edges 1, or 3, or 5, etc. times, because in all of them we hit vertices from $G$ using our right leg. We can, however, use this idea to find paths that use a certain set of edges an odd amount of times. As it turns out, that is exactly what we need to solve \textsc{Network Diversion}.
 
 \subsection{From a dual path to a real diversion}
-Let us start off by finding a path in the dual graph, from and to the regions to the left and right of $d$. Then we add $d^\star$ to the path, to make it a cycle. As explained in \Cref{fact:dual-cycle-is-real-cut}, this simple cycle in the dual graph must correspond to a cut in the original graph. Since it both includes $d^\star$ and does not repeat any other edges or vertices, it corresponds to a minimal cut that uses $d$.
+Let us start off by finding a path in the dual graph, from and to the regions to the left and right of $d$, that does not use $d^\star$. Then we add $d^\star$ to the path, to make it a cycle. As explained in \Cref{fact:dual-cycle-is-real-cut}, this simple cycle in the dual graph must correspond to a cut in the original graph. Since it both includes $d^\star$ and does not repeat any other edges or vertices, it corresponds to a minimal cut that uses $d$.
 
-This cut is not necessarily an $s$-$t$-cut in $G$. To be such a cut, the cycle needs to go 'around' either $s$ or $t$, but not both. Otherwise $s$ and $t$ would end up in the same component. There is no obvious way to enforce that, but we will show an as for now unpublished trick. Find first any $s$-$t$-path in $G$ that does not use the diversion edge $d$. Then subdivide all the edges in the dual graph, except those that cross edges in that $s$-$t$-path. If we now find an \emph{odd} path from and to the left and right regions of $d$, then this must be a path that crosses the $s$-$t$-path an odd number of times. Therefore, the $s$-$t$-path must have exactly one endpoint on the 'inside' of the cycle, and the other on the 'outside'. That means that cycle cuts off $s$ from $t$, and is therefore an $s$-$t$-cut of $G$. 
+This cut is not necessarily an $s$-$t$-cut in $G$. To be such a cut, the cycle needs to go 'around' either $s$ or $t$, but not both. Otherwise $s$ and $t$ would end up in the same component. There is no obvious way to enforce that, but we will show an as for now unpublished trick. Find first any $s$-$t$-path in $G$ that does not use the diversion edge $d$. Then subdivide all the edges in $G^\star$, except those that cross edges in that $s$-$t$-path. If we now find an \emph{odd} path from and to the left and right regions of $d$, then this must be a path that crosses the $s$-$t$-path an odd number of times. Therefore, the $s$-$t$-path must have exactly one endpoint on the 'inside' of the cycle, and the other on the 'outside'. That means that cycle cuts off $s$ from $t$, and is therefore an $s$-$t$-cut of $G$. 
 
 If this odd path is also the shortest odd path, then the corresponding cut is the minimum minimal $s$-$t$-cut of $G$ that includes $d$, and the solution to this instance of \textsc{Network Diversion}. This is the main idea of our algorithm, see \Cref{subsection:network-diversion-example} for a run-through of the algorithm with a small example.
 
@@ -95,6 +95,7 @@ If this odd path is also the shortest odd path, then the corresponding cut is th
 \label{subsection:network-diversion-example}
 We will explain the algorithm by following an example. We want to find the minimum minimal $s$-$t$-cut that includes the diversion edge $cd$ marked in red. 
 
+\begin{center}
 \begin{tikzpicture}
     \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
     \tikzstyle{edge}=[gray, line width=1mm]
@@ -121,9 +122,11 @@ We will explain the algorithm by following an example. We want to find the minim
     \tikzstyle{edge}=[red, line width=1mm]
     \draw[edge] (c) -- (e);
 \end{tikzpicture}
+\end{center}
 
 First we find any $s$-$t$-path that does not use the diversion edge $cd$. It does not necessarily have to be the shortest path. We have marked such a path in green below.
 
+\begin{center}
 \begin{tikzpicture}
     \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
     \tikzstyle{edge}=[gray, line width=1mm]
@@ -152,9 +155,11 @@ First we find any $s$-$t$-path that does not use the diversion edge $cd$. It doe
     \tikzstyle{edge}=[green, line width=1mm]
     \draw[edge] (s) -- (a) -- (e) -> (t);
 \end{tikzpicture}
+\end{center}
 
 Next up is to compute the dual graph. We delete the dual edge that crosses $cd$, and color the rest in blue here. Note that we have omitted the outside face and its edges in this visualizion, otherwise we would have a much too cluttered illustration.
 
+\begin{center}
 \begin{tikzpicture}
     \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
     \tikzstyle{edge}=[gray, line width=1mm]
@@ -199,9 +204,11 @@ Next up is to compute the dual graph. We delete the dual edge that crosses $cd$,
     \draw[edge] (fik) -- (cifs) -- (cehi) -- (ehjt) -- (det) -- (ade) -- (abd) -- (abfs) -- (bfg);
     \draw[edge] (ade) -- (aces) to [bend left=20] (cifs) to [bend right=25] (abfs) to [bend right=20] (aces); 
 \end{tikzpicture}
+\end{center}
 
 Now we subdivide all the edges in the dual graph except those who cross the path in green.
 
+\begin{center}
 \begin{tikzpicture}
     \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
     \tikzstyle{edge}=[gray, line width=1mm]
@@ -257,9 +264,11 @@ Now we subdivide all the edges in the dual graph except those who cross the path
     \draw[edge] (fik) -- (fi) -- (cifs) -- (ci) -- (cehi) -- (eh) -- (ehjt) -- (det) -- (de) -- (ade) -- (ad) -- (abd) -- (ab) -- (abfs) -- (bf) -- (bfg);
     \draw[edge] (ade) -- (aces) to [bend left=20] (cifs) -- (fs) -- (abfs) to [bend right=20] (aces);    
 \end{tikzpicture}
+\end{center}
 
 Last up is to find the shortest odd path in the subdivided dual graph from and to the regions to the left and right of the diversion edge, using our newfound favorite algorithm. If we find such a path, we know that it must cross $s$-$t$-path in green an odd number of times. If we add the dual diversion edge $cd^\star$ to the path to create a cycle, then we know that this cycle goes around either $s$ or $t$, but not both. We illustrate one of the shortest odd paths in orange below, in an attempt to not run out of colors.
 
+\begin{center}
 \begin{tikzpicture}
     \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
     \tikzstyle{edge}=[gray, line width=1mm]
@@ -319,9 +328,11 @@ Last up is to find the shortest odd path in the subdivided dual graph from and t
     \tikzstyle{edge}=[orange, line width=0.9mm]
     \draw[edge] (cehi) -- (ci) -- (cifs) -- (fs) -- (abfs) to [bend right=20] (aces);
 \end{tikzpicture}
+\end{center}
 
 With this, we finally have our diversion set. Simply delete the edges in the original graph that crosses the odd path we found and colored in orange. We end up with a graph where all $s$-$t$-paths must pass through the diversion edge. The problem is solved.
 
+\begin{center}
 \begin{tikzpicture}
     \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
     \tikzstyle{edge}=[gray, line width=1mm]
@@ -348,3 +359,4 @@ With this, we finally have our diversion set. Simply delete the edges in the ori
     \tikzstyle{edge}=[red, line width=1mm]
     \draw[edge] (c) -- (e);
 \end{tikzpicture}
+\end{center}
