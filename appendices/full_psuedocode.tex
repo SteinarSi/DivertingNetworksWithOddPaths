@@ -1,4 +1,238 @@
 \chapter{The full, uninterrupted psuedocode for \textsc{Shortest Odd Path}}
 \label{appendix:full-psuedocode}
 
-\todo[inline]{Here we paste in the full psuedocode}
+Here is the full psuedocode in one big code block. For explanations and discussion of different variants, see \Cref{section:odd-path-psuedocode}.
+
+\begin{lstlisting}[caption={Algorithm for \textsc{Shortest Odd Path}},label=Listing,mathescape=true]
+fn main(input_graph, s, t){
+    init(input_graph, s, t);
+
+    control();
+
+    if d_minus[t] == $\infty$ {
+        return None;
+    }
+    cost = d_minus[t];
+    path = backtrack();
+    
+    return Some(cost, path);
+}
+
+fn init(input_graph, s, t) {
+    graph = create_mirror_graph(input_graph);
+
+    for u in 0..n {
+        d_plus[u] = $\infty$;
+        d_minus[u] = $\infty$;
+        pred[u] = null;
+        completed[u] = false;
+        basis[u] = u;
+        in_current_blossom[u] = false;
+    }
+    d_plus[s] = 0;
+    completed[s] = true;
+
+    for edge in graph[s] {
+        priority_queue.push(Vertex(weight(edge), to(edge)));
+        d_minus[to(edge)] = weight(edge);
+        pred[to(edge)] = e;
+    }
+}
+
+fn backtrack() {
+    current_edge = pred[t];
+    path = [current_edge];
+    while from(current_edge) != s {
+        current_edge = pred[mirror(from(current_edge))];
+        if from(current_edge) < input_graph.n() {
+            path.push(current_edge);
+        }
+        else {
+            path.push(shift_edge_by(current_edge, -input_graph.n()));
+        }
+    }
+    return path;
+}
+
+fn control() -> bool {
+    loop {
+        while ! priority_queue.is_empty() {
+            match priority_queue.top() {
+                Vertex(_, u) => {
+                    if completed[u] {
+                        priority_queue.pop();
+                    }
+                    else {
+                        break;
+                    }
+                },
+                Blossom(_, edge) => {
+                    if base_of(from(edge)) == base_of(to(edge)) {
+                        priority_queue.pop();
+                    }
+                    else {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if priority_queue.is_empty() {
+            // No odd s-t-paths exist :(
+            return;
+        }
+        match priority_queue.pop() {
+            Vertex(delta, u) => {
+                if u == t {
+                    // We have found a shortest odd s-t-path :)
+                    return;
+                }
+                d_plus[u] = d_minus[mirror(u)];
+                scan(mirror(u));
+            }
+            Blossom(delta, edge) => {
+                blossom(e);
+            }
+        }
+    }
+}
+
+fn scan(u) {
+    completed[u] = true;
+    dist_u = d_plus[u];
+    for edge in graph[u] {
+        v = to(edge);
+        new_dist_v = dist_u + weight(edge);
+
+        if ! completed[v] {
+            if new_dist_v < d_minus[v] {
+                d_minus[v] = new_dist_v;
+                pred[v] = edge;
+                priority_queue.push(Vertex(new_dist_v, v));
+            }
+        }
+        else if d_plus[v] < $\infty$ and base_of(u) != base_of(v) {
+            priority = d_plus[u] + d_plus[v] + weight(edge);
+            priority_queue.push(Blossom(priority, edge));
+            if new_dist_v < d_minus[v] {
+                d_minus[v] = new_dist_v;
+                pred[v] = e;
+            }
+        }
+    }
+}
+
+fn backtrack_blossom(edge) {
+    p1 = [ reverse(edge) ];
+    p2 = [ edge ];
+    u = get_basis(to(edge));
+    v = get_basis(from(edge));
+    in_current_blossom[u] = true;
+    in_current_blossom[v] = true;
+
+    loop {
+        if u != s {
+            u = get_basis(mirror(u));
+            in_current_blossom[u] = true;
+            e = pred[u];
+            u = get_basis(from(e));
+            p1.push(e);
+
+            // Ff true, then $u$ is the base
+            if in_current_blossom[u] { 
+                p1.pop();
+                in_current_blossom[u] = false;
+
+                // We remove all the edges in p2 after the base
+                while p2 is not empty {
+                    e = p2.last();
+                    v = get_basis(from(e));
+                    in_current_blossom[v] = false;
+                    p2.pop();
+                    if v == u {
+                        break;
+                    }
+                }
+                return (u, p1, p2);
+            }
+        }
+        if v != s {
+            v = get_basis(mirror(v));
+            in_current_blossom[v] = true;
+            e = pred[v];
+            v = get_basis(from(e));
+            p2.push(e);
+
+            if in_current_blossom[v] {
+                p2.pop();
+                in_current_blossom[v] = false;
+
+                while p1 is not empty {
+                    e = p1.last();
+                    u = get_basis(from(e));
+                    in_current_blossom[u] = false;
+                    p1.pop();
+                    if u == v {
+                        break;
+                    }
+                }
+                return (v, p1, p2);
+            }
+        }
+    }
+}
+
+fn blossom(edge) {
+    (b, p1, p2) = backtrack_blossom(edge);
+
+    to_scan1 = set_blossom_values(p1);
+    to_scan2 = set_blossom_values(p2);
+
+    set_edge_bases(b, p1);
+    set_edge_bases(b, p2);
+
+    for u in to_scan1 {
+        scan(u);
+    }
+    for v in to_scan2 {
+        scan(v);
+    }
+}
+
+fn set_blossom_values(path) {
+    to_scan = [];
+
+    for edge in path {
+        u = from(edge);
+        v = to(edge);
+        w = weight(edge);
+        in_current_cycle[u] = false;
+        in_current_cycle[v] = false;
+
+        // We can set a d_minus
+        if d_plus[v] + w < d_minus[u] {
+            d_minus[u] = d_plus[v] + w;
+            pred[u] = reverse(edge);
+        }
+
+        int m = mirror(u);
+        // We can set a d_plus, and scan it
+        if d_minus[u] < d_plus[m] {
+            d_plus[m] = d_minus[u];
+            to_scan.push(m);
+        }
+    }
+
+    return to_scan;
+}
+
+fn set_base(base, u) {
+    basis[u] = base;
+}
+fn get_base(u) {
+    if u != basis[u] {
+        basis[u] = get_base(basis[u]);
+    }
+    return basis[u];
+}
+\end{lstlisting}
