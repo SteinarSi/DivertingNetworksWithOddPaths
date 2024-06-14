@@ -18,47 +18,45 @@
     \label{figure:small2}
  \end{figure}
 
-Consider \Cref{figure:small2}. There are no odd paths from $s$ to $t$, yet we have an infinite amount of odd walks by utilizing the cycles $[a,b,c]$ or $[a,c,b]$ an odd number of times to offset the parity. Our algorithm would first find an odd walk to $a$, then an even walk to $b$, then an odd walk to $c$, then an even walk to $a$, and lastly an odd walk to $t$. However, then $a$ is used twice in the walk, once for each parity, and the resulting walk is not a path. Therefore can this algorithm not be used to solve \textsc{Shortest Odd Path}.
+Consider \Cref{figure:small2}. There are no odd paths from $s$ to $t$, but we have an infinite amount of odd walks by utilizing the cycles $[a,b,c]$ or $[a,c,b]$ an odd number of times to offset the parity. Our algorithm would perhaps first find an odd walk to $a$, then an even walk to $b$, then an odd walk to $c$, then an even walk to $a$, and lastly an odd walk to $t$. This is one of the two odd $s$-$t$-walks of minimum cost. However, $a$ is visited twice in the walk, once for each parity, and the resulting walk is not a path. Therefore, this algorithm cannot be used to solve \textsc{Shortest Odd Path}.
 
-\subsection{Limitations}
-The main limitation of the algorithm is that the edges in the input graph must have either non-negative weights or no weights at all. Otherwise we cannot guarantee that \pyth{even_dist[u]} and \pyth{odd_dist[u]} have their final, correct values when we scan a vertex $u$. 
+The main limitation of the algorithm is that the edges in the input graph must have either non-negative weights or no weights at all. Otherwise we cannot guarantee that \pyth{even_dist[u]} and \pyth{odd_dist[u]} have their final, correct values when we scan a vertex $u$. Note that unlike most other algorithms shown in this thesis, this algorithm does not require the input graph to be undirected, it may also be directed.
 
-Note that unlike most other algorithms shown in this thesis, this algorithm does not require the input graph to be undirected, it can also be directed.
+\begin{theorem}
+    Let \pyth{(priority, even, u)} be the triple at the front of the queue at any point in the execution of our algorithm.
+    Claim: If \pyth{even} is true and \pyth{even_done[u]} is false, then \pyth{priority} is the cost of the shortest even path from the source to \pyth{u}.
 
-\subsection{Correctness}
-Let \pyth{(priority, even, u)} be the triple at the front of the queue at any point in the execution of our algorithm.
-Claim: If \pyth{even} is true and \pyth{even_done[u]} is false, then \pyth{priority} is the cost of the shortest even path from the source to \pyth{u}.
+    \begin{proof}
+    By induction. 
 
-\begin{proof}
-By induction. 
+    The source vertex \pyth{s} has a best possible even cost of \pyth{0}, and initially we have only \pyth{(0, true, s)} in the queue. When that triple is popped the property holds in the base case.
 
-The source vertex \pyth{s} has a best possible even cost of \pyth{0}, and initially we have only \pyth{(0, true, s)} in the queue. When that triple is popped the property holds in the base case.
+    \todo[inline]{
+        Burde yoinke beviset herfra: https://web.engr.oregonstate.edu/~glencora/wiki/uploads/dijkstra-proof.pdf
 
-\todo[inline]{
-    Burde yoinke beviset herfra: https://web.engr.oregonstate.edu/~glencora/wiki/uploads/dijkstra-proof.pdf
+        Eller herfra: https://community.wvu.edu/~krsubramani/courses/fa05/gaoa/qen/dijk.pdf
 
-    Eller herfra: https://community.wvu.edu/~krsubramani/courses/fa05/gaoa/qen/dijk.pdf
+        Eller fra INF234
 
-    Eller fra INF234
+        Også si det samme når det er odd, kanskje
+    }
 
-    Også si det samme når det er odd, kanskje
-}
+    \end{proof}
+\end{theorem}
 
-\end{proof}
+\begin{theorem}
+    Let $(G,s,t)$ be an instance of \textsc{Shortest Odd Walk}, let $n := |V|$ and let $m := |E|$.\\
+    Claim: the algorithm runs in time at most $O(m \cdot \log m)$, or $O(m \cdot \log n)$ if the graph is simple.
+    \begin{proof}
+        Because of our \pyth{odd_done} and \pyth{even_done} arrays, we can guarantee that each vertex is scanned at most twice, once for each parity. For each scan, we loop through each of the neighbours in linear time, and consider putting them in the queue. The total cost of the scans is therefore at most $O(m)$. A vertex may be put into the queue many times before it is scanned, in the worst case once for each of its neighbours. That means that we put vertices in the queue at most $O(m)$ times, for a total cost of $O(m)$, and removing all of them takes a total of $O(m \cdot \log m)$. 
+        
+        The algorithm runs in time at most $O(m) + O(m \cdot \log m) = O(m \cdot \log m)$, which shows the first part of the claim.
+        
+        If the graph is simple we may simplify the complexity further: $O(m \cdot \log m) \subseteq (m \cdot \log n^2) = O(m \cdot 2 \cdot \log n) = O(m \cdot \log n)$, which shows the second part of the claim.
+    \end{proof}
+\end{theorem}
 
-\subsection{Complexity}
-Let $(G,s,t)$ be an instance of \textsc{Shortest Odd Walk}, let $n := |V|$ and let $m := |E|$.\\
-Claim: the algorithm runs in time at most $O(m \cdot \log m)$, or $O(m \cdot \log n)$ if the graph is simple.
-\begin{proof}
-    Because of our \pyth{odd_done} and \pyth{even_done} arrays, we can guarantee that each vertex is scanned at most twice, once for each parity. For each scan, we loop through each of the neighbours in linear time, and consider putting them in the queue. The total cost of the scans is therefore at most $O(m)$. A vertex may be put into the queue many times before it is scanned, in the worst case once for each of its neighbours. That means that we put vertices in the queue at most $O(m)$ times, for a total cost of $O(m)$, and removing all of them takes a total of $O(m \cdot \log m)$. 
-    
-    The algorithm runs in time at most $O(m) + O(m \cdot \log m) = O(m \cdot \log m)$, which shows the first part of the claim.
-    
-    If the graph is simple we may simplify the complexity further: $O(m \cdot \log m) \subseteq (m \cdot \log n^2) = O(m \cdot 2 \cdot \log n) = O(m \cdot \log n)$, which shows the second part of the claim.
-\end{proof}
-
-\subsection{Benchmarking}
-Like explained in \Cref{subsection:delaunay}, we have generated 201 Delaunay graphs of sizes 1000, 2000, 3000 and so on until 200 000. For each graph, we have estimated a source and target with the maximum shortest path between them, and run our \textsc{Shortest Odd Path} algorithm. The algorithm gets 10 attempts on each input graph, and we take the median and plot it below.
+To test how well the algorithm scales, we generate 200 Delaunay graphs of sizes 1000, 2000, 3000 and so on until 200 000. We explain how these graphs are generated in \Cref{subsection:delaunay}. For each graph, we have estimated a source and target with the maximum shortest path between them, and run our \textsc{Shortest Odd Path} algorithm. We take the mediam running time of 10 runs, and plot the results below.
 
 We have also tried to find constants to convert the $O(m \cdot \log m)$ theoretical complexity into a comparable function, and plotted it next to the real practical results.
 
@@ -66,5 +64,4 @@ We have also tried to find constants to convert the $O(m \cdot \log m)$ theoreti
 
 As we can see, the algorithm easily solves \textsc{Shortest Odd Walk} on graphs of 200000+ vertices in less than 100ms. These results are excellent. Despite having a similiar complexity to the other algorithms in this thesis, this algorithm is still by far the fastest in practice.
 
-\subsection{Discussion}
-Though we discovered it independently, the algorithm is not particularly groundbreaking or in any way creative. Therefore, we do not expect it to be original. It is, however, quite fast, and we are happy with that. The main reason we include it in this thesis is because of its pedagogical value in introducing our main topic: \textsc{Shortest Odd Path}. \todo{Skrive mer her?}
+Though we discovered it independently, the algorithm is not particularly groundbreaking or in any way creative. Therefore, we do not expect it to be original. It is, however, quite fast, and we are happy with that. The main reason we include it in this thesis is because of its pedagogical value in introducing our main topic: \textsc{Shortest Odd Path}. \todo{Her burde vi finne en eksisterende algoritme og referere til den.}

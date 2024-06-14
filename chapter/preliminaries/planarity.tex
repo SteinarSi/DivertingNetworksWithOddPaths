@@ -8,14 +8,14 @@ A fascinating and important class of graphs that we will focus on in \Cref{chapt
 \end{definition}
 
 \begin{definition}[Planar graph]
-    We say that a graph $G$ is a \emph{planar graph} if there exists a planar embedding of $G$.
+    We say that a graph $G$ is a \emph{planar graph} if there exists a planar embedding of $G$. A planar graph along with a specific planar embedding is called a \emph{plane} graph.
 \end{definition}
 
 \begin{definition}[Straight-line embedding]
-    Let $G$ be a graph. A \emph{straight-line embedding} of $G$ is a planar embedding of where each edge can be drawn as a line segment between its endpoint vertices and still not cross any other edge. In a straight line embedding we can forgo the mappings of the edges altogether and consider the mapping of vertices only. Such embeddings always exist: if $G$ is planar then there is a straight-line embedding of $G$.
+    Let $G$ be a graph. A \emph{straight-line embedding} of $G$ is a planar embedding of $G$ where each edge can be drawn as a line segment between its endpoint vertices and still not cross any other edge. In a straight line embedding we can forgo the mappings of the edges altogether and consider the mapping of vertices only. Such embeddings always exist: if $G$ is planar then there is a straight-line embedding of $G$.
 \end{definition}
 
-See \Cref{subfigure:k4-a} and \Cref{subfigure:k4-b} for an example of a planar graph. \Cref{subfigure:k4-a} also shows a planar embedding. \Cref{subfigure:k33} shows a graph that is not planar, since no planar embeddings of the graph exist. Note that in all these examples we have drawn all the edges as straight line segments, but that is not necessary: as long as a curve does not cross any other curves it can be as curved as we want.
+See \Cref{subfigure:k4-a}, \Cref{subfigure:k4-b} and \Cref{subfigure:k4-c} for an example of a planar graph. \Cref{subfigure:k4-a} and \Cref{subfigure:k4-c} also show planar embeddings of the graph. \Cref{subfigure:k33} shows a graph that is not planar, since no planar embeddings of the graph exist. Note that in all these examples we have drawn all the edges as straight line segments, but that is not necessary: as long as a curve does not cross any other curves it can be as curved as we want.
 
 \begin{figure}
     \centering
@@ -49,7 +49,7 @@ See \Cref{subfigure:k4-a} and \Cref{subfigure:k4-b} for an example of a planar g
 It is generally complicated to determine whether a given graph is planar in practice, and to compute an appropriate embedding if it is. For all the algorithms we have implemented in this paper, if they take a planar graph as input, we have for simplicity assumed that we are also given a planar embedding of the graph. Furthermore, since all planar graphs also have straight-line embeddings, we have assumed that the given embeddings are straight-line embeddings. Our theoretical results hold for planar graphs in general, but in practice these assumptions make implementing the algorithms less tedious.
 
 \subsection{Duality}
-The next topic is easy to visualize and understand, but difficult to give formal definitions for. Imagine loading a drawing of a planar graph like the one in \Cref{subfigure:k4-a} into an image editing program, and using the fill tool to cover each region in a different color, like in \Cref{subfigure:k4-c}. Each such region is called a \emph{face} of the graph, including the region 'outside' the graph called the \emph{outer} face. Two faces are adjacent if they are separated by just a single edge: if we were to delete the edge our fill tool would give both the same color.
+The next topic is easy to visualize and understand, but challenging to formalize. Imagine loading a drawing of a planar graph like the one in \Cref{subfigure:k4-a} into an image editing program, and using the fill tool to cover each region in a different color, like in \Cref{subfigure:k4-c}. Each such region is called a \emph{face} of the graph, including the region 'outside' the graph called the \emph{outer} face. Two faces are adjacent if they are separated by just a single edge: if we were to delete the edge our fill tool would give both the same color.
 
 We will now formalize this concept.
 
@@ -60,7 +60,7 @@ We will now formalize this concept.
 \end{definition}
 
 \begin{definition}[Duality of planar graphs]
-    Let $G$ be a planar graph. The \emph{dual graph} of $G$, denoted as $G^\star$, is the graph where 
+    Let $G$ be a plane graph. The \emph{dual graph} of $G$, denoted as $G^\star$, is the graph where 
     \begin{itemize}
         \item The vertices represent faces of $G$
         \item There is an edge between two faces if they are adjacent in $G$.
@@ -69,7 +69,7 @@ We will now formalize this concept.
 
 Each edge in $e \in E(G)$ will always have a face on either side, possibly the same face, and thus have a corresponding edge $e^\star \in E(G^\star)$ in the dual graph. We can therefore define two convenience functions $\leftt, \rightt : E(G) \rightarrow V(G^\star)$ to get the left and right faces of an edge, respectively. If $G$ is weighted, we usually set the weights of $E(G^\star)$ according to their counterparts: $\weight(e^\star) := \weight(e)$. See \Cref{subfigure:k4-with-dual} for an example of a dual graph.
 
-Note that the dual graph is also planar, and the dual of the dual is the original graph. We could then for example let $e$ be an edge in the dual graph, and then refer to its real counterpart as $e^\star$. It would not be wrong, yet it could possibly lead to confusion. Furthermore, we do not need that fact for any of the results in this thesis. We will therefore give variable names like $G$, $u$ and $e$ for the graphs, vertices and edges that we are 'working on', and use variable names like $G^\star$, $u^\star$ and $e^\star$ for their dual equivalents only in intermediary computations before arriving at results for our original graph.
+Note that the dual graph is also planar, and the dual of the dual is the original graph\footnote{Strictly speaking, there is an embedding of $G^\star$ such that $G^{\star\star} \cong G$.}. We could then for example let $e$ be an edge in the dual graph, and then refer to its real counterpart as $e^\star$. It would not be wrong, but it could possibly lead to confusion. Furthermore, we do not need that fact for any of the results in this thesis. We will therefore give variable names like $G$, $u$ and $e$ for the graphs, vertices and edges that we are 'working on', and use variable names like $G^\star$, $u^\star$ and $e^\star$ for their dual equivalents only in intermediary computations before arriving at results for our original graph.
 
 \begin{fact}[Cycle--cut duality]
 \label{fact:dual-cycle-is-real-cut}

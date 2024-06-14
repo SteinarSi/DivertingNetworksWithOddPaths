@@ -93,7 +93,7 @@ fn control() -> bool {
             return;
         }
         match priority_queue.pop() {
-            Vertex(delta, u) => {
+            Vertex(_, u) => {
                 if u == t {
                     // We have found a shortest odd s-t-path :)
                     return;
@@ -101,7 +101,7 @@ fn control() -> bool {
                 d_plus[u] = d_minus[mirror(u)];
                 scan(mirror(u));
             }
-            Blossom(delta, edge) => {
+            Blossom(_, edge) => {
                 blossom(e);
             }
         }
@@ -109,7 +109,6 @@ fn control() -> bool {
 }
 \end{lstlisting}
 
-\subsection{Scanning vertices}
 \begin{lstlisting}[caption={Scan},label=Listing,mathescape=true]
 fn scan(u) {
     completed[u] = true;
@@ -148,14 +147,16 @@ Instead, we iteratively backtrack both paths at the same time, and mark each ver
 
 Implementing this may sound difficult, tedious and error-prone, but is actually way worse. Here are some reasons why this is the most complex part of any algorithm in this thesis, and why any programmer should take particular care when implementing this:
 \begin{itemize}
+    \item It is difficult to alternate through mirror and normal edges, while simultaneously alternating between computing two separate paths.
     \item The paths may not be of equal length, even if the graph is unweighted.
-    \item The paths may not have any edges at all other than the blossom edge.
+    \item The endpoints we start backtracking from may already be the base, if the blossom edge itself is adjacent it.
+    \item The blossom edge should end up in both, either or neither of the paths, depending on where it is in relation to the base.
+    \item The paths may not have any edges at all.
     \item We have to consider the basis of each vertex found on the paths rather than the vertex itself, because we shrink each blossom into a pseudonode after computing it.
     \item One path may reach the source vertex before the other path has reached $b$. Then we have to stop backtracking that path and focus on the other.
-    \item It is difficult to alternate through mirror and normal edges, while also alternating between computing two separate paths.
 \end{itemize}
 
-Here is our solution. It returns the base and two lists of all the normal edges that make up blossom. That includes the blossom edge itself, which is part of both paths.
+Here is our solution. The procedure returns the base and two lists of all the normal edges that make up blossom. That usually includes the blossom edge itself, which is part of both paths unless it is adjacent to the base itself.
 \begin{lstlisting}[caption={Backtrack blossom},label=Listing,mathescape=true]
 fn backtrack_blossom(edge) {
     p1 = [ reverse(edge) ];
@@ -197,6 +198,7 @@ fn backtrack_blossom(edge) {
     }
 }
 \end{lstlisting}
+See \Cref{appendix:full-pseudocode} for the full version.
 
 \subsection{Computing blossoms}
 To compute a blossom, we first have to determine its base and its edges, like discussed in the previous section. Then we can use the edges in the paths to potentially improve values for $d^+$ and $d^-$, and to set the new base for all the involved vertices. Afterwards we scan all the vertices that we now gave $d^+$ values.

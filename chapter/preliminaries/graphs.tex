@@ -21,18 +21,21 @@ If we are working with multiple graphs at once, say two graphs $G$ and $H$, then
 \begin{definition}[Weighted graph]
     A \emph{weighted graph} $G := (V, E, \from, \too, \weight)$ is a graph, where $\weight : E \rightarrow \mathbb{R}$ is the \emph{weight} of each edge. If a graph is not weighted, we often treat it as if all edges have unit weight, a weight of 1. Algorithms intended for weighted graphs will therefore often work on unweighted graphs as well.
 \end{definition}
+\todo{Slett? Omskriv?}
 
 \begin{definition}[Directed and undirected graphs]
     Let $G$ be a graph. $G$ is said to be an \emph{undirected graph} if each edge has an opposite: $\forall e \in E ~ \exists e' \in E : \reverse(e) = e'$.
     If $G$ is not undirected, we say that $G$ is a \emph{directed graph}.
     Edges in directed graphs are often drawn as arrows, while edges in undirected graphs can be drawn using just a line.
 \end{definition}
+\todo{Slett? Omskriv?}
 
 \begin{definition}[Neighbourhood]
     Let $G$ be a graph, and let $u \in V$ be a vertex in the graph. The \emph{neighbourhood} of $u$, denoted as $N(u)$, is defined as the vertices in $G$ that are reachable from $u$ using just a single edge: $N(u) := \{ to(e)  ~|~  e \in E, ~ \from(e) = u\}$. 
     In code, it is usually more useful to consider neighbourhoods in terms of edges. We will therefore denote $G[u]$ as the edges in $G$ that start in $u$: $G[u] := \{e ~ | ~ e \in E, ~ \from(e) = u\}$
     We also denote $\deg(u) := |N(u)|$ as the size of $u$'s neighbourhood, often referred to as the \emph{degree} of $u$.
 \end{definition}
+\todo{Slett? Omskriv?}
 
 \begin{definition}[Simple graph]
     Let $G$ be a graph. $G$ is said to be a \emph{simple} graph if for each pair of vertices $u,v \in V$, there exists \emph{at most} one edge $e$ such that $\from(e) = u$ and $\too(e) = v$. If two or more edges have the same endpoints, we say the edges are \emph{parallel} to each other, and that the graph has \emph{parallel} edges and is thus not simple.
@@ -41,6 +44,7 @@ If we are working with multiple graphs at once, say two graphs $G$ and $H$, then
 \begin{definition}[Sparse and dense graphs]
     Let $G := (V, E, from, to)$ be a graph, let $n := |V|$, and let $m := |E|$. We say that $G$ is a \emph{sparse} graph if $m \in O(n)$. On the contrary, we say that $G$ is a \emph{dense} graph if it is not sparse.
 \end{definition}
+\todo{Slett? Omskriv?}
 
 \begin{definition}[Walk]
     A \emph{walk} $P := [e_1, e_2, ..., e_k]$ in a graph $G$, for $e_i \in E$, is a sequence of edges where each edge ends where the next one starts: $\forall i \in \{1,2,..,k-1\} : \too(e_i) = \from(e_{i+1})$.
@@ -64,13 +68,13 @@ If we are working with multiple graphs at once, say two graphs $G$ and $H$, then
     Note that in some literature, \emph{shortest} may instead mean \emph{fewest edges}, and the term \emph{length} could refer to both the number of edges and the cost. For that ambiguous reason, we will from now on avoid the word \emph{length}, and \emph{shortest} will always mean \emph{cheapest}. If a graph is unweighted, we pretend that all the edges have a unit weight of 1, and in that case the cost is the same as the number of edges.
 \end{definition}
 
-\begin{definition}[Components of a graph]
-    Let $G$ be an undirected graph. A component in $G$ is a set of vertices of $G$ where all vertices in the component have paths to all other vertices in the component. Moreover, this must be a \emph{maximal} set: no other vertices in the graph can be added to the component without giving up this property.
-\end{definition}
+% \begin{definition}[Components of a graph]
+%     Let $G$ be an undirected graph. A component in $G$ is a set of vertices of $G$ where all vertices in the component have paths to all other vertices in the component. Moreover, this must be a \emph{maximal} set: no other vertices in the graph can be added to the component without giving up this property.
+% \end{definition}
 
-\begin{definition}[Connected graph]
-    We say that an undirected graph is a \emph{connected} graph if it has exactly one component. If it hase more than that we call it a \emph{disconnected} graph, and if it has less it is an \emph{empty} graph.
-\end{definition}
+% \begin{definition}[Connected graph]
+%     We say that an undirected graph is a \emph{connected} graph if it has exactly one component. If it has more than that we call it a \emph{disconnected} graph, and if it has less it is an \emph{empty} graph.
+% \end{definition}
 
 \begin{definition}[Cut]
     Let $G = (V, E, \from, \too)$ be a connected and undirected graph. A \emph{cut} $C \subseteq E$ of $G$ is a subset of edges such that $(V, E \setminus C, \from, \too)$ is a disconnected graph of exactly two components. If two vertices $s,t \in V$ end up in separate components after the cut, we denote $C$ as an $s$-$t$-\emph{cut} in $G$. See \Cref{figure:s-t-cut} for an example of an $s$-$t$-cut.
