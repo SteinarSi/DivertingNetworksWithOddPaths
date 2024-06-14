@@ -18,8 +18,8 @@
 
 @misc{source:pål,
     author       = {Pål Grønås Drange},
-    howpublished = {Personal Communication},
-    title        = {Unpublished Theory},
+    howpublished = {Personal communication},
+    title        = {Unpublished theory},
     year         = {2024},
 }
 
@@ -76,7 +76,72 @@
     year    = {2013},
 }
 
- 
+% Contains some NP-completeness proofs or something
+@misc{source:odd-paths-cycles-and-tjoins,
+    title         = {Odd Paths, Cycles and $T$-joins: Connections and Algorithms},
+    author        = {Ildikó Schlotter and András Sebő},
+    year          = {2023},
+    eprint        = {2211.12862},
+    archiveprefix = {arXiv},
+    primaryclass  = {id='cs.CC' full_name='Computational Complexity' is_active=True alt_name=None in_archive='cs' is_general=False description='Covers models of computation, complexity classes, structural complexity, complexity tradeoffs, upper and lower bounds. Roughly includes material in ACM Subject Classes F.1 (computation by abstract devices), F.2.3 (tradeoffs among complexity measures), and F.4.3 (formal languages), although some material in formal languages may be more appropriate for Logic in Computer Science. Some material in F.2.1 and F.2.2, may also be appropriate here, but is more likely to have Data Structures and Algorithms as the primary subject area.'},
+}
+
+% O(n+m) algorithm for shortest odd path on unweighted undirected graphs
+@article{source:modularity-of-cycles-and-paths,
+    author     = {Arkin, E. M. and Papadimitriou, C. H. and Yannakakis, M.},
+    title      = {Modularity of cycles and paths in graphs},
+    year       = {1991},
+    issue_date = {April 1991},
+    publisher  = {Association for Computing Machinery},
+    address    = {New York, NY, USA},
+    volume     = {38},
+    number     = {2},
+    issn       = {0004-5411},
+    url        = {https://doi.org/10.1145/103516.103517},
+    doi        = {10.1145/103516.103517},
+    abstract   = {Certain problems related to the length of cycles and paths modulo a given integer are studied. Linear-time algorithms are presented that determine whether all cycles in an undirected graph are of length P mod Q and whether all paths between two specified nodes are of length P mod Q, for fixed integers P.Q. These results are compared to those for directed graphs.},
+    journal    = {J. ACM},
+    month      = {apr},
+    pages      = {255–274},
+    numpages   = {20},
+    keywords   = {modularity, graphs, cycles and paths},
+}
+
+% They talk about parity, and a nice generalization
+@article{source:group-labeled-graphs,
+    author  = {Y. Iwata and Y. Yamaguchi},
+    journal = {Combinatorica},
+    number  = {2},
+    title   = {Finding a Shortest Non-Zero Path in Group-Labeled Graphs},
+    volume  = {42},
+    year    = {2022},
+    urel    = {https://doi.org/10.1007/s00493-021-4736-x},
+}
+
+@article{source:even-cycles-in-directed-graphs,
+    title    = {Even Cycles in Directed Graphs},
+    journal  = {European Journal of Combinatorics},
+    volume   = {6},
+    number   = {1},
+    pages    = {85-89},
+    year     = {1985},
+    issn     = {0195-6698},
+    doi      = {https://doi.org/10.1016/S0195-6698(85)80025-1},
+    url      = {https://www.sciencedirect.com/science/article/pii/S0195669885800251},
+    author   = {Carsten Thomassen},
+    abstract = {We discuss the complexity of finding a cycle of even length in a digraph. In particular, we observe that finding a cycle of prescribed parity through a prescribed edge is NP-complete. Also, we settle a problem of Lovász [11] and disprove a conjecture of Seymour [15] by describing, for each natural number k, a digraph of minimum outdegree k and with no even cycle. We prove that a digraph of order n and minimum outdegree [log2n] + 1 contains, for each edge set E, a cycle containing an even number of edges of E and we show that this is best possible. A modification of the construction yields counterexamples to Hamidoune's conjecture [5] on local connectivity in digraphs of large indegrees and outdegrees.},
+}
+
+% UiB paper on things related to Network Diversion.
+@misc{source:two-sets-cut-uncut-on-planar-graphs,
+    title         = {Two-sets cut-uncut on planar graphs},
+    author        = {Matthias Bentert and Pål Grønås Drange and Fedor V. Fomin and Petr A. Golovach and Tuukka Korhonen},
+    year          = {2023},
+    eprint        = {2305.01314},
+    archiveprefix = {arXiv},
+    primaryclass  = {id='cs.DS' full_name='Data Structures and Algorithms' is_active=True alt_name=None in_archive='cs' is_general=False description='Covers data structures and analysis of algorithms. Roughly includes material in ACM Subject Classes E.1, E.2, F.2.1, and F.2.2.'},
+}
+
 % TODO: add sources for most other graphs
 
 % Graphs
@@ -106,7 +171,7 @@
 % https://snap.stanford.edu/data/soc-Pokec.html
 @misc{graph:soc-pokec,
     title        = {Pokec social network},
-    author       = {L. Takac, M. Zabovsky},
+    author       = {L. Takac and M. Zabovsky},
     year         = {2012},
     primaryclass = {cs.LG},
 }
