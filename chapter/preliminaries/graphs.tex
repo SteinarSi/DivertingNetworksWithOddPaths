@@ -48,14 +48,16 @@ In code, it is usually more useful to consider neighbourhoods in terms of edges.
 \begin{definition}[Walk]
     A \emph{walk} $P := [e_1, e_2, ..., e_k]$ in a graph $G$, for $e_i \in E$, is a sequence of edges where each edge ends where the next one starts: $\forall i \in \{1,2,..,k-1\} : \too(e_i) = \from(e_{i+1})$.
     If $s := \from(e_1)$ and $t := \too(e_k)$, we say that $P$ is an \emph{$s$-$t$-walk} in $G$.
-    Another way to denote a walk is to give a sequence of vertices in the order they are visited: $[u_1, u_2, ..., u_n]$, for $u_i \in V$. This works as long as the graph is simple, if there are multiple edges from $u_i$ to $u_{i+1}$, then the walk is ambiguous.
 \end{definition}
+
+Another way to denote a walk is to give a sequence of vertices in the order they are visited: $[u_1, u_2, ..., u_n]$, for $u_i \in V$. This works as long as the graph is simple, if there are multiple edges from $u_i$ to $u_{i+1}$, then the walk is ambiguous.
 
 \begin{definition}[Path]
     A \emph{path} $P := [e_1, e_2, ..., e_k]$ in a graph $G$ is a walk with the extra requirement that each vertex is used at most once: $\forall i, j \in \{1,2,..,k\} : j \neq {i+1} \rightarrow \too(e_i) \neq \from(e_j)$.
     If $s := \from(e_1)$ and $t := \too(e_k)$, we say that $P$ is path from $s$ to $t$, or an \emph{$s$-$t$-path} in $G$.
-    Note that in some literature, a walk is referred to as a path, and a path is referred to as a \emph{simple} path. In this thesis, when we refer to paths they are always simple, meaning that they never repeat any vertices. If any vertices are repeated, we will refer to it as a walk.    
 \end{definition}
+
+Note that in some literature, a walk is referred to as a path, and a path is referred to as a \emph{simple} path. In this thesis, when we refer to paths they are always simple, meaning that they never repeat any vertices. If any vertices are repeated, we will refer to it as a walk.    
 
 \begin{definition}[Cycle]
     A \emph{cycle} in a graph is a walk that starts and ends in the same vertex. If it does not repeat any vertices except in the last vertex, then we call it a \emph{simple cycle}.
@@ -63,9 +65,9 @@ In code, it is usually more useful to consider neighbourhoods in terms of edges.
 
 \begin{definition}[The cost of a walk]
     Let $P := [e_1, e_2, ..., e_k]$ be a walk in a weighted graph $G$. The \emph{cost} of $P$ is defined as the sum of the weights of its edges: $\sum_{i=1}^k \weight(e_i)$. In a collection of walks, we say that the \emph{shortest} walk is the \emph{cheapest} one, the one with the lowest cost. Likewise for the longest and most expensive walk. 
-
-    Note that in some literature, \emph{shortest} may instead mean \emph{fewest edges}, and the term \emph{length} could refer to both the number of edges and the cost. For that ambiguous reason, we will from now on avoid the word \emph{length}, and \emph{shortest} will always mean \emph{cheapest}. If a graph is unweighted, we pretend that all the edges have a unit weight of 1, and in that case the cost is the same as the number of edges.
 \end{definition}
+
+Note that in some literature, \emph{shortest} may instead mean \emph{fewest edges}, and the term \emph{length} could refer to both the number of edges and the cost. For that ambiguous reason, we will from now on avoid the word \emph{length}, and \emph{shortest} will always mean \emph{cheapest}. If a graph is unweighted, we pretend that all the edges have a unit weight of 1, and in that case the cost is the same as the number of edges.
 
 % \begin{definition}[Components of a graph]
 %     Let $G$ be an undirected graph. A component in $G$ is a set of vertices of $G$ where all vertices in the component have paths to all other vertices in the component. Moreover, this must be a \emph{maximal} set: no other vertices in the graph can be added to the component without giving up this property.
