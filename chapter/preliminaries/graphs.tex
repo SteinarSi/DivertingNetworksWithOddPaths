@@ -19,32 +19,31 @@ This definition of a graph is a little unusual. A more common definition is to i
 If we are working with multiple graphs at once, say two graphs $G$ and $H$, then writing just $V$ is ambiguous. In such cases we instead denote $V(G)$ and $V(H)$ as $G$'s and $H$'s vertices, respectively. The same goes for $E(G)$ and $E(H)$ for their edges.
 
 \begin{definition}[Weighted graph]
-    A \emph{weighted graph} $G := (V, E, \from, \too, \weight)$ is a graph, where $\weight : E \rightarrow \mathbb{R}$ is the \emph{weight} of each edge. If a graph is not weighted, we often treat it as if all edges have unit weight, a weight of 1. Algorithms intended for weighted graphs will therefore often work on unweighted graphs as well.
+    A \emph{weighted graph} $G := (V, E, \from, \too, \weight)$ is a graph, where $\weight : E \rightarrow \mathbb{R}$ is the \emph{weight} of each edge. 
 \end{definition}
-\todo{Slett? Omskriv?}
+
+If a graph is not weighted, we often treat it as if all edges have unit weight, a weight of 1. Algorithms intended for weighted graphs will therefore often work on unweighted graphs as well. Although weights in the general case can be negative, all the algorithms presented in this thesis are designed for graphs of non-negative weights, and the reader may assume that $\weight : E \rightarrow \mathbb{R}_{\geq0}$ unless otherwise stated.
 
 \begin{definition}[Directed and undirected graphs]
     Let $G$ be a graph. $G$ is said to be an \emph{undirected graph} if each edge has an opposite: $\forall e \in E ~ \exists e' \in E : \reverse(e) = e'$.
     If $G$ is not undirected, we say that $G$ is a \emph{directed graph}.
-    Edges in directed graphs are often drawn as arrows, while edges in undirected graphs can be drawn using just a line.
 \end{definition}
-\todo{Slett? Omskriv?}
+Most of the algorithms presented in this thesis are designed for undirected graphs. The reader may assume that all graphs in the thesis are undirected unless otherwise stated.
 
 \begin{definition}[Neighbourhood]
     Let $G$ be a graph, and let $u \in V$ be a vertex in the graph. The \emph{neighbourhood} of $u$, denoted as $N(u)$, is defined as the vertices in $G$ that are reachable from $u$ using just a single edge: $N(u) := \{ to(e)  ~|~  e \in E, ~ \from(e) = u\}$. 
-    In code, it is usually more useful to consider neighbourhoods in terms of edges. We will therefore denote $G[u]$ as the edges in $G$ that start in $u$: $G[u] := \{e ~ | ~ e \in E, ~ \from(e) = u\}$
-    We also denote $\deg(u) := |N(u)|$ as the size of $u$'s neighbourhood, often referred to as the \emph{degree} of $u$.
 \end{definition}
+In code, it is usually more useful to consider neighbourhoods in terms of edges. We will therefore denote $G[u]$ as the edges in $G$ that start in $u$: $G[u] := \{e ~ | ~ e \in E, ~ \from(e) = u\}$. We also denote $\deg(u) := |N(u)|$ as the size of $u$'s neighbourhood, often referred to as the \emph{degree} of $u$.
 \todo{Slett? Omskriv?}
 
 \begin{definition}[Simple graph]
     Let $G$ be a graph. $G$ is said to be a \emph{simple} graph if for each pair of vertices $u,v \in V$, there exists \emph{at most} one edge $e$ such that $\from(e) = u$ and $\too(e) = v$. If two or more edges have the same endpoints, we say the edges are \emph{parallel} to each other, and that the graph has \emph{parallel} edges and is thus not simple.
 \end{definition}
 
-\begin{definition}[Sparse and dense graphs]
-    Let $G := (V, E, from, to)$ be a graph, let $n := |V|$, and let $m := |E|$. We say that $G$ is a \emph{sparse} graph if $m \in O(n)$. On the contrary, we say that $G$ is a \emph{dense} graph if it is not sparse.
-\end{definition}
-\todo{Slett? Omskriv?}
+% \begin{definition}[Sparse and dense graphs]
+%     Let $G := (V, E, from, to)$ be a graph, let $n := |V|$, and let $m := |E|$. We say that $G$ is a \emph{sparse} graph if $m \in O(n)$. On the contrary, we say that $G$ is a \emph{dense} graph if it is not sparse.
+% \end{definition}
+% \todo{Slett? Omskriv?}
 
 \begin{definition}[Walk]
     A \emph{walk} $P := [e_1, e_2, ..., e_k]$ in a graph $G$, for $e_i \in E$, is a sequence of edges where each edge ends where the next one starts: $\forall i \in \{1,2,..,k-1\} : \too(e_i) = \from(e_{i+1})$.
@@ -59,7 +58,7 @@ If we are working with multiple graphs at once, say two graphs $G$ and $H$, then
 \end{definition}
 
 \begin{definition}[Cycle]
-    A \emph{cycle} in a graph is a walk that starts and ends in the same vertex. If it does not repeat any vertices except in the last vertex, then we call is a \emph{simple cycle}.
+    A \emph{cycle} in a graph is a walk that starts and ends in the same vertex. If it does not repeat any vertices except in the last vertex, then we call it a \emph{simple cycle}.
 \end{definition}
 
 \begin{definition}[The cost of a walk]

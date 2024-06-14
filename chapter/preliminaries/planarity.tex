@@ -8,7 +8,7 @@ A fascinating and important class of graphs that we will focus on in \Cref{chapt
 \end{definition}
 
 \begin{definition}[Planar graph]
-    We say that a graph $G$ is a \emph{planar graph} if there exists a planar embedding of $G$. A planar graph along with a specific planar embedding is called a \emph{plane} graph.
+    We say that a graph $G$ is a \emph{planar graph} if there exists a planar embedding of $G$. A planar graph along with a specific planar embedding is called a \emph{plane graph}.
 \end{definition}
 
 \begin{definition}[Straight-line embedding]
@@ -49,14 +49,12 @@ See \Cref{subfigure:k4-a}, \Cref{subfigure:k4-b} and \Cref{subfigure:k4-c} for a
 It is generally complicated to determine whether a given graph is planar in practice, and to compute an appropriate embedding if it is. For all the algorithms we have implemented in this paper, if they take a planar graph as input, we have for simplicity assumed that we are also given a planar embedding of the graph. Furthermore, since all planar graphs also have straight-line embeddings, we have assumed that the given embeddings are straight-line embeddings. Our theoretical results hold for planar graphs in general, but in practice these assumptions make implementing the algorithms less tedious.
 
 \subsection{Duality}
-The next topic is easy to visualize and understand, but challenging to formalize. Imagine loading a drawing of a planar graph like the one in \Cref{subfigure:k4-a} into an image editing program, and using the fill tool to cover each region in a different color, like in \Cref{subfigure:k4-c}. Each such region is called a \emph{face} of the graph, including the region 'outside' the graph called the \emph{outer} face. Two faces are adjacent if they are separated by just a single edge: if we were to delete the edge our fill tool would give both the same color.
-
-We will now formalize this concept.
+The next topic is easy to visualize and understand, but challenging to formalize. Imagine loading a drawing of a planar graph like the one in \Cref{subfigure:k4-a} into an image editing program, and using the fill tool to cover each region in a different color, like in \Cref{subfigure:k4-c}. Each such region is called a \emph{face} of the graph, including the region 'outside' the graph called the \emph{outer} face. Two faces are adjacent if they are separated by just a single edge: if we were to delete the edge our fill tool would give both the same color. We will now formalize this concept.
 
 \begin{definition}[Face]
-    Let $G$ be a planar graph embedded in the plane. A \emph{face} of $G$ is a region in the embedding bounded by a cycle that contains no other vertices or edges. Equivalently, we can define faces as the connected components that remain in $\mathbb{R}^2$ after we delete all vertices and edges from our embedding. 
+    Let $G$ be a plane graph. A \emph{face} of $G$ is a region in the embedding bounded by a cycle that contains no other vertices or edges. Equivalently, we can define faces as the connected components that remain in $\mathbb{R}^2$ after we delete all vertices and edges from our embedding. 
 
-    Note that different embeddings of the same graph may yield different faces. When we refer to a face of a graph, it is always in relation to a certain embedding of the graph.
+    Note that different embeddings of the same planar graph may yield different faces. When we refer to a face of a graph, it is always in relation to a certain embedding of the graph.
 \end{definition}
 
 \begin{definition}[Duality of planar graphs]
