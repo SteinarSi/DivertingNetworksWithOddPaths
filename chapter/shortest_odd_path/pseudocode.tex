@@ -1,6 +1,6 @@
-\section{Psuedocode}
-\label{section:odd-path-psuedocode}
-Here we give a detailed psuedocode of the algorithm, along with explanations of some of the finer details should the interested reader consider implementing the algorithm on their own. For all of the code in one piece without comments or alternatives, see \Cref{appendix:full-psuedocode}. And of course, to see the code implemented in Rust, see the GitHub repository \cite{source:codebase}.
+\section{Pseudocode}
+\label{section:odd-path-pseudocode}
+Here we give a detailed pseudocode of the algorithm, along with explanations of some of the finer details should the interested reader consider implementing the algorithm on their own. For all of the code in one piece without comments or alternatives, see \Cref{appendix:full-pseudocode}. And of course, to see the code implemented in Rust, see the GitHub repository \cite{source:codebase}.
 
 \subsection{Initialization}
 First we initialize the arrays we need, with appropriate default values for all vertices. The mirror graph is constructed as described in \Cref{def:mirror-graph}.
@@ -44,7 +44,7 @@ fn main(input_graph, s, t){
 }
 \end{lstlisting}
 
-Here is how to backtrack once we know we have the shortest odd path to $t$. Each of the edges from the mirror side must be replaced by their equivalents on the real side of the input graph. Note that unlike when backtracking blossoms, here we do not consider the base of the vertices. Here we pretend we never shrunk the blossoms into psuedonodes, so that we find the entire path.
+Here is how to backtrack once we know we have the shortest odd path to $t$. Each of the edges from the mirror side must be replaced by their equivalents on the real side of the input graph. Note that unlike when backtracking blossoms, here we do not consider the base of the vertices. Here we pretend we never shrunk the blossoms into pseudonodes, so that we find the entire path.
 \begin{lstlisting}[caption={Backtracking},label=Listing,mathescape=true]
 fn backtrack() {
     current_edge = pred[t];
@@ -150,7 +150,7 @@ Implementing this may sound difficult, tedious and error-prone, but is actually 
 \begin{itemize}
     \item The paths may not be of equal length, even if the graph is unweighted.
     \item The paths may not have any edges at all other than the blossom edge.
-    \item We have to consider the basis of each vertex found on the paths rather than the vertex itself, because we shrink each blossom into a psuedonode after computing it.
+    \item We have to consider the basis of each vertex found on the paths rather than the vertex itself, because we shrink each blossom into a pseudonode after computing it.
     \item One path may reach the source vertex before the other path has reached $b$. Then we have to stop backtracking that path and focus on the other.
     \item It is difficult to alternate through mirror and normal edges, while also alternating between computing two separate paths.
 \end{itemize}
@@ -261,9 +261,9 @@ fn set_blossom_values(path) {
     }
     \end{lstlisting}
 
-\subsection{Setting the base of blossoms and psuedonodes}
+\subsection{Setting the base of blossoms and pseudonodes}
 \label{subsection:basis-code}
-When we have found and computed a blossom, we shrink it into a psuedonode by setting the base of all its vertices to the base of the blossom. Whenever we consider a potential blossom edge, we see if the two vertices have the same base, and if they do, they are in fact already in the same psuedonode and the edge can be disregarded. Whenever we set $u$ to have the base $b$, we also have to see if any other vertices have $u$ as their base and set their bases to $b$ as well. Derigs never specified any data structure to update these bases efficiently.
+When we have found and computed a blossom, we shrink it into a pseudonode by setting the base of all its vertices to the base of the blossom. Whenever we consider a potential blossom edge, we see if the two vertices have the same base, and if they do, they are in fact already in the same pseudonode and the edge can be disregarded. Whenever we set $u$ to have the base $b$, we also have to see if any other vertices have $u$ as their base and set their bases to $b$ as well. Derigs never specified any data structure to update these bases efficiently.
 
 The naïve solution would be to do something like this:
 \begin{lstlisting}[caption={Näive basis},label=Listing,mathescape=true]
