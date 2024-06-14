@@ -14,9 +14,9 @@ In this section we will give a theoretical analysis of our algorithm's running t
 Let $(G,s,t)$ be an instance of \textsc{Shortest Odd Path}, let $n := |V|$ and let $m := |E|$. \\
 Claim: the algorithm runs in time at most $O(m \cdot \log m)$, or $O(m \cdot \log n)$ of the graph is simple.
 \begin{proof}  
-    First of all, we construct the mirror graph $H$ with $2n-2 \in O(n)$ vertices and $2m - deg(s) - deg(t) \in O(m)$ edges, in time $O(n+m)$.
+    First of all, we construct the mirror graph $H$ with $2n-2 \in O(n)$ vertices and $2m - \deg(s) - \deg(t) \in O(m)$ edges, in time $O(n+m)$.
     
-    With our \pyth{completed} array we can guarantee that each vertex is scanned at most once, and the scanning operation just loops through all the neighbours. Therefore, the total cost of all the scans is $O(n + \sum_{u \in V} deg(u)) = O(n + 2m) = O(n + m)$.
+    With our \pyth{completed} array we can guarantee that each vertex is scanned at most once, and the scanning operation just loops through all the neighbours. Therefore, the total cost of all the scans is $O(n + \sum_{u \in V} \deg(u)) = O(n + 2m) = O(n + m)$.
 
     The blossom operation is a little more complicated. Thanks to the overly complicated code in our \pyth{backtrack_blossom} procedure in \Cref{subsection:backtracking-blossom-edges}, we can backtrack from a blossom edge and determine the vertices in the blossom in time linear to the size of the blossom. Setting their values for $d^+$ and $d^-$ can also be done in linear time, and the potential scans have already been accounted for above. The key point here is that we shrink the blossom into a pseudonode afterwards: each vertex can then only be part of such a blossom procedure at most once. Even though we may compute many blossom edges, the total amount of work will therefore never exceed $O(n)$.
 

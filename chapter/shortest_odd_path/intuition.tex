@@ -1,12 +1,12 @@
 \section{Intuition}
-Now that we have tried out some algorithms for \textsc{Shortest Odd Walk}, we are finally ready to add the restriction that each vertex is used at most once, and thus solve \textsc{Shortest Odd Path}. The algorithm we are about to present is based on Ulrich Derigs' algorithm \cite{source:derigs_shortest_odd_path}, though with some improvements.
+Now that we have tried out some algorithms for \textsc{Shortest Odd Walk}, we are finally ready to add the restriction that each vertex is used at most once, and thus solve \textsc{Shortest Odd Path}. The algorithm we are about to present is based on Derigs' algorithm \cite{source:derigs_shortest_odd_path}, though with some improvements.
 
 \subsection{Reduction to \textsc{Shortest Alternating Path}}
 \label{subsection:reduction}
 Consider first another related problem:
 
 \noindent\fbox{\parbox{0.94\textwidth}{\textsc{Shortest Alternating Path}\\
-    \textbf{Input:} A weighted graph $G := (V, E)$, two vertices $s,t \in V$, and a set $F \subseteq E$\\
+    \textbf{Input:} A weighted graph $G := (V, E, \from, \too)$, two vertices $s,t \in V$, and a set $F \subseteq E$\\
     \textbf{Output:} the shortest $s$-$t$-path in $G$ where every other edge used is in $F$.
 }}
 
@@ -16,7 +16,7 @@ Derigs observed that \textsc{Shortest Odd Path} can be reduced to a special case
     \label{def:mirror-graph}
     Let $G = (V, E)$ be a graph, and $s,t \in V$ be two vertices.
     We construct a new graph $H \sqsupset G$, where for each vertex $u \in V \setminus \{s,t\}$ we add a 'mirror' vertex $u'$, and a connecting 'mirror' edge between them. 
-    The vertices in $V(H)$ that are also in $V(G)$ are referred to as the 'real' vertices, and the newly added vertices are referred to as the 'mirror' vertices. In addition, for any vertex $u \in V(H) \setminus \{s,t\}$, real or not, we define $mirror(u)$ as $u$'s mirror on the other side. We usually label mirror vertices with an $'$ at the end of the real counterpart's label.
+    The vertices in $V(H)$ that are also in $V(G)$ are referred to as the 'real' vertices, and the newly added vertices are referred to as the 'mirror' vertices. In addition, for any vertex $u \in V(H) \setminus \{s,t\}$, real or not, we define $\mirror(u)$ as $u$'s mirror on the other side. We usually label mirror vertices with an $'$ at the end of the real counterpart's label.
     For example, if $G$ is the graph in \Cref{figure:input-graph}, then \Cref{figure:mirror-graph} would be its corresponding mirror graph $H$.
 \end{definition}
 
@@ -97,10 +97,10 @@ We will explain the general idea of our algorithm by following an example, and s
 \begin{itemize}
     \item $d^+_u :=$ the length of the shortest alternating $s$-$u$-path ending on a mirror edge
     \item $d^-_u :=$ the length of the shortest alternating $s$-$u$-path ending on a non-mirror edge
-    \item $pred_u :=$ the last edge used to find $u$'s most recent value for $d^-_u$
+    \item $\pred_u :=$ the last edge used to find $u$'s most recent value for $d^-_u$
 \end{itemize}
 
-Initally these are either $\infty$ or undefined, except for the source vertex $s$, where we can set $d^+_s := 0$. Then, for each edge $(s,u) \in N(s)$, we can set $d^-_u := weight((s,u))$, $pred_u := (s,u)$, and add $u$ to our priority queue with priority $2 \cdot weight((s,u))$.
+Initally these are either $\infty$ or undefined, except for the source vertex $s$, where we can set $d^+_s := 0$. Then, for each edge $e \in N(s)$, we can set $d^-_{\too(e)} := \weight(e)$, $pred_{to(e)} := e$, and add $\too(e)$ to our priority queue with priority $2 \cdot \weight(e)$.
 
 We visualize it in the diagram below.
 
@@ -141,7 +141,7 @@ We visualize it in the diagram below.
     \end{itemize}
 \end{minipage}
 
-The first and only vertex in the queue is $a$. We pop it, set $d^+_{a'} := d^-_a$, and 'scan' $a'$. By that, we mean to look at each neighbour $e \in G[a']$, and see if our new value $d^+_{a'} + weight(e)$ is better than the previous value $d^-_{to(edge)}$. That is the case for both $b'$ and $c'$, so we update their values and add them to the queue. Their priorities in the queue is equal to twice their $d^-$ values, which is $2 \cdot 2 = 4$ for both of them.
+The first and only vertex in the queue is $a$. We pop it, set $d^+_{a'} := d^-_a$, and 'scan' $a'$. By that, we mean to look at each neighbour $e \in G[a']$, and see if our new value $d^+_{a'} + \weight(e)$ is better than the previous value $d^-_{\too(edge)}$. That is the case for both $b'$ and $c'$, so we update their values and add them to the queue. Their priorities in the queue is equal to twice their $d^-$ values, which is $2 \cdot 2 = 4$ for both of them.
 
 \begin{minipage}{.75\linewidth}
     \begin{tikzpicture}{text centered}
@@ -223,7 +223,7 @@ The next vertex in the queue is $b'$, so we set $d^+_b := d^-_{b'}$ and scan $b'
     \end{itemize}
 \end{minipage}
 
-Now $c'$ is the next in the queue, we set $d^+_c := d^-{c'}$ and scan $c'$. This is where the interesting part happens: now we have set both $d^+$ and $d^-$ for $b$ and $c$, and that means that we have found an odd cycle in the graph. The edge between them, $(b,c)$, is called the \emph{blossom edge}, and is marked in green. We add $(b,c)$ to the queue, with the priority $d^+_c + d^+_b + weight((b,c))$.
+Now $c'$ is the next in the queue, we set $d^+_c := d^-c'$ and scan $c'$. This is where the interesting part happens: now we have set both $d^+$ and $d^-$ for $b$ and $c$, and that means that we have found an odd cycle in the graph. The edge between them, $e$, is called the \emph{blossom edge}, and is marked in green. We add $e$ to the queue, with the priority $d^+_c + d^+_b + \weight(e)$.
 
 \begin{minipage}{.75\linewidth}
     \begin{tikzpicture}{text centered}
@@ -311,13 +311,13 @@ Next up is to scan this blossom edge, and compute its corresponding odd cycle by
     \end{itemize}
 \end{minipage}
 
-The first reason why we care about this blossom is because now we can immedeately set the final, optimal $d^-$ and $d^+$ for all the vertices in the blossom. That is because we now have two alternating paths to each vertex, one goes around the cycle while the other takes the shortcut. One of these ends up on a mirror edge, and the other on a normal edge. For example, to go from $s$ to $c'$, we can either go through [$s,a,a',c'$] with a cost of $d^-_c$, or go along [$s,a,a',b',b,c,c'$] with a cost of $d^+_c$.
+The first reason why we care about this blossom is because now we can immediately set the final, optimal $d^-$ and $d^+$ for all the vertices in the blossom. That is because we now have two alternating paths to each vertex, one goes around the cycle while the other takes the shortcut. One of these ends up on a mirror edge, and the other on a normal edge. For example, to go from $s$ to $c'$, we can either go through [$s,a,a',c'$] with a cost of $d^-_c$, or go along [$s,a,a',b',b,c,c'$] with a cost of $d^+_c$.
 
 More specifically, for each $u \in \mathbb{B}$: \begin{itemize}
-    \item If $d^+_u = \infty$, we set $d^+_u = d^-_{mirror(u)}$.
+    \item If $d^+_u = \infty$, we set $d^+_u = d^-_{\mirror(u)}$.
     \item If we can improve $d^-_u$ by coming from its neighbour in the blossom, we do so.
 \end{itemize}
-After all these values have been set, we immedeately scan all the vertices in $\mathbb{B}$ that just received values for $d^+$. In this example we scan $c'$ and $b'$, and discover $d'$. Unfortunately, since this is a very small blossom we don't have any vertices that receive new values for $d^-$.
+After all these values have been set, we immediately scan all the vertices in $\mathbb{B}$ that just received values for $d^+$. In this example we scan $c'$ and $b'$, and discover $d'$. Unfortunately, since this is a very small blossom we don't have any vertices that receive new values for $d^-$.
 
 \begin{minipage}{.7\linewidth}
     \begin{tikzpicture}{text centered}

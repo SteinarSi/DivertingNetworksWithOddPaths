@@ -140,7 +140,7 @@ fn scan(u) {
 
 \subsection{Backtracking a blossom edge}
 \label{subsection:backtracking-blossom-edges}
-When we compute a blossom edge $e$, we need to compute the vertices and edges that make up the blossom. We do this by creating two paths, one from $from(e)$ and one from $to(e)$, and backtrack towards the source while alternating normal and mirror edges until the paths meet up at a common ancestor $b$. Then we set $b$ as the base, and the two paths make up our blossom.
+When we compute a blossom edge $e$, we need to compute the vertices and edges that make up the blossom. We do this by creating two paths, one from $\from(e)$ and one from $\too(e)$, and backtrack towards the source while alternating normal and mirror edges until the paths meet up at a common ancestor $b$. Then we set $b$ as the base, and the two paths make up our blossom.
 
 The naïve way would be to backtrack both paths individually all the way to the source, and only then see where they start to overlap. That would run in time linear to all the vertices in the graph and is a waste of time. A slightly better idea is to backtrack one path all the way to the source, and then backtrack the other only until it reaches a vertex in the other's path. That is better, but this too would run in linear time even if we somehow know beforehand which path needs the fewest edges.
 
@@ -279,7 +279,7 @@ fn get_base(u) {
     return basis[u];
 }
 \end{lstlisting}
-This would search through all vertices in the graph in linear time. We have found two potential improvements to this. The first version is to use an oberserver pattern, where each vertex $u$ keeps a record of the vertices that have $u$ as its base. Initially $dependents[u] = []$ for all of them. Then, when we update $u$'s base to $base$:
+This would search through all vertices in the graph in linear time. We have found two potential improvements to this. The first version is to use an oberserver pattern, where each vertex $u$ keeps a record of the vertices that have $u$ as its base. Initially $dependents[u] = [~]$ for all of them. Then, when we update $u$'s base to $base$:
 
 \begin{lstlisting}[caption={Observer basis},label=Listing,mathescape=true]
 fn set_base(base, u) {

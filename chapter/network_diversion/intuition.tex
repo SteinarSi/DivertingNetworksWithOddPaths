@@ -8,7 +8,7 @@ Before we reveal the algorithm for Network Diversion, we will first look at a cu
     \textbf{Output:} the shortest $s$-$t$-path in $G$ that goes through the bottleneck $b$
 }}
 
-There is no obvious way to solve \textsc{Shortest Bottleneck Path}. One might attempt to find the shortest paths from $s$ to $from(b)$ and from $to(b)$ to $t$, but those two paths might overlap and reuse the same vertices, and therefore would their concatenation not necessarily be a path but merely a walk instead.
+There is no obvious way to solve \textsc{Shortest Bottleneck Path}. One might attempt to find the shortest paths from $s$ to $\from(b)$ and from $\too(b)$ to $t$, but those two paths might overlap and reuse the same vertices, and therefore would their concatenation not necessarily be a path but merely a walk instead.
 
 Instead we create a new graph $H$, by subdividing all edges in $G$ \emph{except} $b$, like seen in \Cref{figure:bottleneck-subdividing}. The key point to see here is that any odd $s$-$t$-path in $H$ must necessarily go through the bottleneck, otherwise it would not be odd. We can visualize it by 'stepping through' the edges in $H$. If we start on our right leg, then in the beginning every time we reach a vertex that is also in $G$, we reach it by stepping on our left leg. That continues until we use the bottleneck edge, and from then on we step on all vertices from $G$ using our right leg. If we require that we must end at $t$ on our right leg, then the path must be odd, and any odd path must go through the bottleneck. Therefore we can simply run our Shortest Odd Path algorithm on $H$, and if such a path exists we can reverse the subdivision of the edges in the path and the result is the Shortest Bottleneck Path in $G$.
 
