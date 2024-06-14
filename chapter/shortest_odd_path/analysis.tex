@@ -28,13 +28,9 @@ We should note, however, that there are also other known polynomial algorithms f
 
 \todo[inline]{Nevn de andre variantene, og hvor fort de kan løses. $O(n+m)$ for uvektede grafer er ganske nice.}
 
-\subsection{Benchmarking}
-\todo{Kanskje ikke ha dette som en egen delseksjon, og bare ha det med i resten. Eller ta det med som et eget delkapittel. Hmmm.}
-In this section we will give an empirical analysis of our algorithm's running time.
-
-\subsubsection{Testing different data structures for the Basis}
+\subsection{Testing different data structures for the Basis}
 \label{subsubsection:testing-basis}
-As explained in \Cref{subsection:basis-code}, we have developed multiple data structures to keep track of the basis of each vertex. One of them is based on the Observer pattern, the other on the well-known UnionFind structure. We have tested both on 6 different real-life graphs, and we show the results below. We ran our shortest odd path algorithm on each graph 40 times, 20 for each structure, and noted the fastest times for each. The vertices with id's 0 and n-1 were chosen as the source and target to find paths for, respectively. \todo{reformat}
+As explained in \Cref{subsection:basis-code}, we have developed multiple data structures to keep track of the basis of each vertex. One of them is based on the Observer pattern, the other on the well-known UnionFind structure. We have tested both on 6 different real-life graphs, and we show the results below. We ran our shortest odd path algorithm on each graph 40 times, 20 for each structure, and noted the fastest times for each. We have run a heuristic search to find the pairs of vertices that are the furthest away from each other in each graph, so that the size of the graph accurately matches the size of the problem.
 \begin{center}
     \begin{tabular}{|l | r | r | r | r | c|} 
      \hline
@@ -61,18 +57,18 @@ As explained in \Cref{subsection:basis-code}, we have developed multiple data st
 
 The results are a little mixed. The UnionFind-based structure spends $4.2\%$ more time on the huge Pokec Social Network graph. However, it also either outperforms or does as well as the Observer-based structure on all the other graphs, at best shaving off $14.2\%$ of the time spent on the San Joaquin County graph. Since the UnionFind-based structure outperforms the Observer-based structure on average, we have chosen to use that one for the remainder of this thesis.
 
-\subsubsection{Running times on Delaunay graphs}
+\subsection{Running times on Delaunay graphs}
 \label{subsubsection:odd-path-delaunay-testing}
 To test how well the algorithm scales, we generate 200 Delaunay graphs of sizes 1000, 2000, 3000 and so on until 200 000. We explain how these graphs are generated in \Cref{subsection:delaunay}. For each graph, we have estimated a source and target with the maximum shortest path between them, and run our \textsc{Shortest Odd Path} algorithm. We take the mediam running time of 10 runs, and plot the results below.
 
 The theoretical running time is $O(m \log n)$, and we have tried our best to come up with constants to create a running time function that matches our algorithm. In Delaunay graphs we have that $m \leq 3n$, so we have set $m := 3n$ in this function.
 
-\includegraphics[width=15cm]{figures/bench_plots/shortest odd path.png}
-
-\todo{bench again with the newer graphs, and write about how fast it is}
+\begin{center}
+    \includesvg[width=0.9\textwidth]{figures/bench_plots/shortest odd path.svg}
+\end{center}
 
 As we can see, the running times grow almost linearly as the inputs grow larger. The slight upwards curve is barely noticable. This is to be expected with a linearithmic theoretical running time.
 
 The focus of this thesis is to create an algorithm that performs well on sparse graphs, especially planar graphs, which is why we consider the running times mainly on sparse graphs. If we instead had implemented an algorithm for denser graphs, or just graphs in general, then testing on graphs with more edges would be more appropriate.
 
-With that said, we are very happy with these results. \todo{update this sentence with new data} Being able to solve graphs of millions of nodes in seconds is exactly the performance we were hoping for.
+With that said, we are very happy with these results. Being able to solve \textsc{Shortest Odd Path} on graphs of 100000 vertices in a fifth of a second is exactly the kind of performance we were hoping for.

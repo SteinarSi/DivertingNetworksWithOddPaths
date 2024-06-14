@@ -86,7 +86,6 @@ Our reduction from \textsc{Shortest Odd Path} to \textsc{Shortest Alternating Pa
 \end{enumerate}
 
 For example, if our input $G$ for \textsc{Shortest Odd Path} is \Cref{figure:input-graph}, then $H$ and $F$ could look like \Cref{figure:mirror-graph}. One of the two possible alternating paths is $P' := [(s,a), (a, a'), (a',b'), (b',b)$, $(b,c), (c,c'), (c',d'), (d',d), (d,t)]$. When we filter out mirror edges and replace edges from the mirror side with their real counterparts, we end up with $P := [(s,a),(a,b),(b,c),(c,d),(d,t)]$, which is the shortest odd $s$-$t$-path in $G$. 
-\todo{dette kan kanskje formuleres bedre?}
 
 Now that we have two copies of most vertices in $H$, we run the risk of accidentally using the same vertex multiple times and ending up with a walk rather than a path in $G$. The key is that $F$ is an (almost) perfect matching, and when we step on a vertex $u$ we have to take the mirror edge and step on $\mirror(u)$ next. So both copies have to be used directly after each other, and when we filter out the mirror edges the copies are effectively merged to just a single step in the path. Therefore, vertices are never repeated and we end up with a path.
 

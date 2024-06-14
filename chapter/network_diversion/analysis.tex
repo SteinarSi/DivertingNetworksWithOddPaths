@@ -1,12 +1,12 @@
 \section{Analysis}
 
-Whether \textsc{Network Diversion} in the general case can be solved in polynomial time is still an open problem. This algorithm does not solve the general case, but rather the special case where the input graph...
-\begin{itemize}
-    \item is planar,
-    \item is undirected,
-    \item has edges of either non-negative weights or no weights at all.
-\end{itemize}
-\todo{Vurder å flytte dette et annet sted}
+% Whether \textsc{Network Diversion} in the general case can be solved in polynomial time is still an open problem. This algorithm does not solve the general case, but rather the special case where the input graph...
+% \begin{itemize}
+%     \item is planar,
+%     \item is undirected,
+%     \item has edges of either non-negative weights or no weights at all.
+% \end{itemize}
+% \todo{Vurder å flytte dette et annet sted}
 
 \begin{theorem}
     Let $(G, s, t, d)$ be an instance of \textsc{Network Diversion}, and let $n := |V|$. \\
@@ -27,16 +27,39 @@ Whether \textsc{Network Diversion} in the general case can be solved in polynomi
 
 Note that here we have assumed that the dual graph $G^\star$ has already been computed prior to starting the algorithm. If we have a straight-line embedding of $G$ we can compute $G^\star$ in $O(n+m)$, which would not change the overall running time. However, if we do not have such an embedding the total running time might be considerably more.
 
-We compare the theoretical and practical running times on Delaunay graphs, like we did in \Cref{subsubsection:odd-path-delaunay-testing}. For each graph, we have estimated a source and target vertex of maximum distance between each other, and picked three edges in the graph as diversion edges. We pick whichever diversion edge leads to the worst running time over 20 attempts, and plot the median over those 20 attempts.
+We compare the theoretical and practical running times on Delaunay graphs, like we did in \Cref{subsubsection:odd-path-delaunay-testing}. For each graph, we have estimated a source and target vertex of maximum distance between each other, and picked three edges in the graph as diversion edges. We pick whichever diversion edge leads to the worst running time over 10 runs, and plot the median over those 10 runs.
 
-Here too have we tried to create a function out of the theoretical running time of $O(n \log n)$, this time with different constants. We have set $m := 3n$ in the plot.
+Here too have we tried to create a function out of the theoretical running time of $O(n \log n)$, this time with different constants. We have set $m := 3n$ in the plot, since the graphs are planar.
 
-\includegraphics[width=12cm]{figures/bench_plots/network diversion.png}
+\begin{center}
+    \includesvg[width=0.9\textwidth]{figures/bench_plots/network diversion.svg}    
+\end{center}
 
-As we can see, the running times grow just barely more than linearly compared to the input size. This is not surprising considering the linearithmic theoretical running time.
+As we can see, the running times grow just barely more than linearly compared to the input size. This is not surprising considering the linearithmic theoretical running time. The algorithm easily solves \textsc{Network Diversion} on planar graphs of 100000 vertices in less than a second. Now compare that to the existing algorithms that will need more than a second to solve for more than 30 vertices, and it is clear why a polynomial running time matters so much.
 
-\todo[inline]{Benchmarking on real graphs}
+See \Cref{figure:network-diversion-on-delaunay} for an yet another example of what a diversion set may look like, this time on a Delaunay graph of 35 vertices.
 
-\todo[inline]{Visualize the diversion set}
-
-\todo[inline]{Write some kickass discussion here}
+\noindent
+\begin{figure}
+    \centering
+    \begin{subfigure}{.32\textwidth}
+        \centering
+        \includesvg[width=\textwidth]{figures/diversions/delaunay35-Full.svg}
+        \caption{$s$ and $t$ are marked in blue, the diversion edge in red}
+        \label{subfigure:network-diversion-input}
+    \end{subfigure}\hfill%
+    \begin{subfigure}{.32\textwidth}
+        \centering
+        \includesvg[width=\textwidth]{figures/diversions/delaunay35-Partial.svg}
+        \caption{One possible diversion set marked in orange}
+        \label{subfigure:network-diversion-diversion}
+    \end{subfigure}\hfill%
+    \begin{subfigure}{.32\textwidth}
+        \centering
+        \includesvg[width=\textwidth]{figures/diversions/delaunay35-Diverted.svg}
+        \caption{The diversion set removed, all $s$-$t$-paths must go through the diversion edge}
+        \label{subfigure:network-diversion-diverted}
+    \end{subfigure}\hfill%
+    \caption{Example of a solution for \textsc{Network Diversion}}
+    \label{figure:network-diversion-on-delaunay}
+\end{figure}
