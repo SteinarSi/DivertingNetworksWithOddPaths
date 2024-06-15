@@ -12,72 +12,76 @@ Before we reveal the algorithm for Network Diversion, we will first look at a cu
 
 There is no obvious way to solve \textsc{Shortest Bottleneck Path}. One might attempt to find the shortest paths from $s$ to $\from(b)$ and from $\too(b)$ to $t$, but those two paths might overlap and reuse the same vertices, and therefore would their concatenation not necessarily be a path but merely a walk instead.
 
-Instead we create a new graph $H$, by subdividing all edges in $G$ \emph{except} $b$, like seen in \Cref{figure:bottleneck-subdividing}. The key point to see here is that any odd $s$-$t$-path in $H$ must necessarily go through the bottleneck, otherwise it would not be odd. We can visualize it by 'stepping through' the edges in $H$. If we start on our right leg, then in the beginning every time we reach a vertex that is also in $G$, we reach it by stepping on our left leg. That continues until we use the bottleneck edge, and from then on we step on all vertices from $G$ using our right leg. If we require that we must end at $t$ on our right leg, then the path must be odd, and any odd path must go through the bottleneck. Therefore we can simply run our Shortest Odd Path algorithm on $H$, and if such a path exists we can reverse the subdivision of the edges in the path and the result is the Shortest Bottleneck Path in $G$.
+Instead we create a new graph $H$, by subdividing all edges in $G$ \emph{except} $b$, like seen in \Cref{figure:bottleneck-subdividing}. The key point to see here is that any odd $s$-$t$-path in $H$ must necessarily go through the bottleneck, otherwise it would not be odd. We can visualize it by 'stepping through' the edges in $H$. If we start on our right leg, then in the beginning every time we reach a vertex that is also in $G$, we reach it by stepping on our left leg. That continues until we use the bottleneck edge, and from then on we step on all vertices from $G$ using our right leg. If we require that we must end at $t$ on our right leg, then the path must be odd, and any odd path must go through the bottleneck. Therefore we can simply run our \textsc{Shortest Odd Path} algorithm on $H$, and if such a path exists we can reverse the subdivision of the edges in the path and the result is the \textsc{Shortest Bottleneck Path} in $G$.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
-    \begin{subfigure}{.80\textwidth}
+    \begin{subfigure}{.45\textwidth}
         \centering
-        \begin{tikzpicture}
-            \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
-            \tikzstyle{edge}=[gray, line width=1.5mm]
-        
-            \node (s) at (0,0) {$s$};
-            \node (a) at (2,2) {};
-            \node (b) at (4,0) {};
-            \node (c) at (2,-2) {};
-            \node (d) at (6,-2) {};
-            \node (e) at (8,0) {};
-            \node (f) at (6,2) {};
-            \node (t) at (10,2) {$t$};
-        
-            \draw[edge] (s) -- (a) -- (b) -- (e);
-            \draw[edge] (c) -- (b) -- (d) -- (e) -- (f) -- (t);
-            \draw[edge] (a) -- (f);
-        
-            \tikzstyle{edge}=[red, line width=1.5mm]
-            \draw[edge] (c) -- (d);
-        \end{tikzpicture}
+        \scalebox{0.88}{
+            \begin{tikzpicture}
+                \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+                \tikzstyle{edge}=[gray, line width=1.5mm]
+            
+                \node (s) at (0,0) {$s$};
+                \node (a) at (1.5,1.5) {};
+                \node (b) at (3,0) {};
+                \node (c) at (1.5,-1.5) {};
+                \node (d) at (4.5,-1.5) {};
+                \node (e) at (6,0) {};
+                \node (f) at (4.5,1.5) {};
+                \node (t) at (7.5,1.5) {$t$};
+            
+                \draw[edge] (s) -- (a) -- (b) -- (e);
+                \draw[edge] (c) -- (b) -- (d) -- (e) -- (f) -- (t);
+                \draw[edge] (a) -- (f);
+            
+                \tikzstyle{edge}=[red, line width=1.5mm]
+                \draw[edge] (c) -- (d);
+            \end{tikzpicture}
+        }
         \caption{An instance of \textsc{Shortest Bottleneck Path}, bottleneck marked in red.}
         \label{figure:bottleneck}
     \end{subfigure}\hfill%
-    \begin{subfigure}{.80\textwidth}
+    \begin{subfigure}{.45\textwidth}
         \centering
-        \begin{tikzpicture}
-            \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
-            \tikzstyle{edge}=[gray, line width=1.5mm]
-        
-            \node (s) at (0,0) {$s$};
-            \node (a) at (2,2) {};
-            \node (b) at (4,0) {};
-            \node (c) at (2,-2) {};
-            \node (d) at (6,-2) {};
-            \node (e) at (8,0) {};
-            \node (f) at (6,2) {};
-            \node (t) at (10,2) {$t$};
-        
-            \draw[edge] (s) -- (a) -- (b) -- (e);
-            \draw[edge] (c) -- (b) -- (d) -- (e) -- (f) -- (t);
-            \draw[edge] (a) -- (f);
-        
-            \tikzstyle{edge}=[red, line width=1.5mm]
-            \draw[edge] (c) -- (d);
+        \scalebox{0.88}{
+            \begin{tikzpicture}
+                \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+                \tikzstyle{edge}=[gray, line width=1.5mm]
+            
+                \node (s) at (0,0) {$s$};
+                \node (a) at (1.5,1.5) {};
+                \node (b) at (3,0) {};
+                \node (c) at (1.5,-1.5) {};
+                \node (d) at (4.5,-1.5) {};
+                \node (e) at (6,0) {};
+                \node (f) at (4.5,1.5) {};
+                \node (t) at (7.5,1.5) {$t$};
+            
+                \draw[edge] (s) -- (a) -- (b) -- (e);
+                \draw[edge] (c) -- (b) -- (d) -- (e) -- (f) -- (t);
+                \draw[edge] (a) -- (f);
+            
+                \tikzstyle{edge}=[red, line width=1.5mm]
+                \draw[edge] (c) -- (d);
 
-            \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1em, font=\footnotesize, text=black]
-            \node (sa) at (1,1) {};
-            \node (af) at (4,2) {};
-            \node (ab) at (3,1) {};
-            \node (bc) at (3,-1) {};
-            \node (bd) at (5,-1) {};
-            \node (be) at (6,0) {};
-            \node (de) at (7,-1) {};
-            \node (ef) at (7,1) {};
-            \node (ft) at (8,2) {};
-        \end{tikzpicture}
+                \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1em, font=\footnotesize, text=black]
+                \node (sa) at (0.75,0.75) {};
+                \node (af) at (3,1.5) {};
+                \node (ab) at (2.25,0.75) {};
+                \node (bc) at (2.25,-0.75) {};
+                \node (bd) at (3.75,-0.75) {};
+                \node (be) at (4.5,0) {};
+                \node (de) at (5.25,-0.75) {};
+                \node (ef) at (5.25,0.75) {};
+                \node (ft) at (6,1.5) {};
+            \end{tikzpicture}
+        }
         \caption{All edges except the bottleneck have been subdivided, to create an instance of \textsc{Shortest Odd Path}.}
         \label{figure:subdivided-bottleneck}
     \end{subfigure}%
-    \caption{\textsc{Shortest Bottleneck Path} reduced to \textsc{Shortest Odd Path} by subdividing edges.}
+    \caption{\textsc{Shortest Bottleneck Path} reduced to \textsc{Shortest Odd Path} by subdividing all edges except the bottleneck.}
     \label{figure:bottleneck-subdividing}
 \end{figure}
 
