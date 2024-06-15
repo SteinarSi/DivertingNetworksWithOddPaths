@@ -13,12 +13,13 @@ Derigs observed that \textsc{Shortest Odd Path} can be reduced to a special case
 
 \begin{definition}[Mirror graph]
     \label{def:mirror-graph}
-    Let $G = (V, E)$ be a graph, and $s,t \in V$ be two vertices.
-    We construct a new graph $H \sqsupset G$, where for each vertex $u \in V \setminus \{s,t\}$ we add a 'mirror' vertex $u'$, and a connecting 'mirror' edge between them. 
-    The vertices in $V(H)$ that are also in $V(G)$ are referred to as the 'real' vertices, and the newly added vertices are referred to as the 'mirror' vertices. In addition, for any vertex $u \in V(H) \setminus \{s,t\}$, real or not, we define $\mirror(u)$ as $u$'s mirror on the other side. We usually label mirror vertices with an $'$ at the end of the real counterpart's label.
-    For example, if $G$ is the graph in \Cref{figure:input-graph}, then \Cref{figure:mirror-graph} would be its corresponding mirror graph $H$.
+    Let $G$ be a graph, and $s,t \in V(G)$ be two vertices. We construct a supergraph $M \sqsupset G$, by adding an extra copy of everything in the graph not directly related to $s$ and $t$. For each vertex $u \in V(G) \setminus \{s,t\}$, we add a 'mirror' vertex $u'$, and a connecting 'mirror' edge of weight 0 between~$u$~and~$u'$. For each edge $e \in E(G) \setminus (G[s] \cup G[t])$ from $u$ to $v$ we add an edge $e'$ of the same weight between the 'mirror' copies of its endpoints, from~$u'$~to~$v'$.
+    Now $M$ is the mirror graph of $G$ with respect to $s$ and $t$.
 \end{definition}
-\todo[inline]{We have to standardize what we call the different edges in a mirror graph. And also actually add the edges to the mirror graph at all in the definition.}
+
+See \Cref{figure:mirror-construction} for an example. If $G$ is the graph in \Cref{figure:input-graph}, then the mirror graph could look like \Cref{figure:mirror-graph}. The part of the mirror graph $M$ that is also present in $G$ is referred to as the 'real' side of the graph, while the new vertices are on the 'mirror' side. Vertices and edges from the mirror side are usually labeled with an $'$. For convenience, we define the function~$\mirror~:~V(M)~\setminus~\{s,t\}~\rightarrow~V(M)~\setminus~\{s,t\}$ to go from a vertex to its counterpart on the other side of the mirror. Furthermore, in an abuse of notation, we also define~$\mirror~:~E(M)~\setminus~(G[s]~\cup~G[t])~\rightarrow~E(M)~\setminus~(G[s]~\cup~G[t])$ as the same but for edges.
+
+The edges in $M$ that 'cross' the mirror by going between vertices and their counterparts form a matching in $M$. We refer to these edges as \emph{the edges in the matching}, or sometimes simply as just \emph{the matching}. Note that with the exception of $s$ and $t$, this is an almost perfect matching in $M$.
 
 \begin{figure}[H]
     \centering
@@ -69,38 +70,39 @@ Derigs observed that \textsc{Shortest Odd Path} can be reduced to a special case
             \draw[edge] (c) -- (c');
             \draw[edge] (d) -- (d');
         \end{tikzpicture}
-        \caption{The mirror graph $H$ of $G$, mirror edges marked in red}
+        \caption{The mirror graph $M$ of $G$, with the matching marked in red}
         \label{figure:mirror-graph}
     \end{subfigure}
     \caption{Reduction from \textsc{Shortest Odd Path} to \textsc{Shortest Alternating Path}.}
+    \label{figure:mirror-construction}
  \end{figure}
 
 Our reduction from \textsc{Shortest Odd Path} to \textsc{Shortest Alternating Path} follows:
 \begin{enumerate}
     \item Let $(G, s, t)$ be an instance of \textsc{Shortest Odd Path}.
-    \item Construct $H$ as the mirror graph of $G$, and let $F$ be the set of mirror edges in $H$. Now $(H, s, t, F)$ is an instance of \textsc{Shortest Alternating Path}.
-    \item Let $P'$ be the shortest alternating path of $(H, s, t, F)$, if one exists. If none exist, then we do not have any odd $s$-$t$-paths in $G$ either.
-    \item Construct $P$ by filtering out mirror edges from $P'$, and for each edge $(u',v') \in E(H) \setminus (F \cup E(G))$ from the mirror side of $H$ we replace it by the corresponding edge $(u,v) \in E(G)$ from the real side.
+    \item Construct $M$ as the mirror graph of $G$, and let $F$ be the matching in $M$. Now $(M, s, t, F)$ is an instance of \textsc{Shortest Alternating Path}.
+    \item Let $P'$ be the shortest alternating path of $(M, s, t, F)$, if one exists. If none exist, then we do not have any odd $s$-$t$-paths in $G$ either and are already done.
+    \item Construct $P$ by filtering out the edges in the matching from $P'$, and for each edge $e' \in E(M)$ from the mirror side of $M$ we replace it by the corresponding edge $\mirror(e') \in E(G)$ from the real side.
     \label{point:translate_alternating_path}
     \item Now $P$ is the shortest odd $s$-$t$-path in $G$.
 \end{enumerate}
 
-For example, if our input $G$ for \textsc{Shortest Odd Path} is \Cref{figure:input-graph}, then $H$ and $F$ could look like \Cref{figure:mirror-graph}. One of the two possible alternating paths is $P' := [(s,a), (a, a'), (a',b'), (b',b)$, $(b,c), (c,c'), (c',d'), (d',d), (d,t)]$. When we filter out mirror edges and replace edges from the mirror side with their real counterparts, we end up with $P := [(s,a),(a,b),(b,c),(c,d),(d,t)]$, which is the shortest odd $s$-$t$-path in $G$. 
+For example, if our input $G$ for \textsc{Shortest Odd Path} is \Cref{figure:input-graph}, then $M$ and $F$ could look like \Cref{figure:mirror-graph}. The only alternating $s$-$t$-path is $P' := [(s,a), (a, a'), (a',b'), (b',b)$, $(b,c), (c,c'), (c',d'), (d',d), (d,t)]$. When we translate it to a path in $G$, we end up with $P := [(s,a),(a,b),(b,c),(c,d),(d,t)]$, which is the shortest odd $s$-$t$-path in $G$. 
 
-Now that we have two copies of most vertices in $H$, we run the risk of accidentally using the same vertex multiple times and ending up with a walk rather than a path in $G$. The key is that $F$ is an (almost) perfect matching, and when we step on a vertex $u$ we have to take the mirror edge and step on $\mirror(u)$ next. So both copies have to be used directly after each other, and when we filter out the mirror edges the copies are effectively merged to just a single step in the path. Therefore, vertices are never repeated and we end up with a path.
+Now that we have two copies of most vertices in $M$, we run the risk of accidentally using the same vertex multiple times and ending up with a walk rather than a path in $G$. The key is that $F$ is an (almost) perfect matching, and when we step on a vertex $u$ we have to cross the mirror and step on $\mirror(u)$ next. We will never visit $u$, go somewhere else, and then later come back to visit $\mirror(u)$. So both copies must be used directly after each other, and when we translate the path in to $M$ to a path in $G$ the two copies are effectively merged to just a single step in the path. Therefore, vertices are never repeated and we always end up with a path.
 
-To see why the reduction necessarily yields an \emph{odd} path, simply observe that for each step we take in the graph, we have to go to the other side of the mirror. If we take another step, we get back to the same side again. It is only when we reach the target vertex $t$ that we do not have to go to the other side. Therefore, to reach a neighbour of $t$, we must have used an even number of mirror edges and an even number of non-mirror edges, and when we take the last step to reach $t$ we have used an odd number of edges and thus found an odd path. If this alternating $s$-$t$-path in $H$ is the shortest such path, then the corresponding path in $G$ must also be the shortest odd $s$-$t$-path in $G$. 
+To see why the reduction necessarily yields an \emph{odd} path, simply observe that for each step we take in the graph, we have to go to the other side of the mirror. If we take another step, we get back to the same side again. It is only when we reach the target vertex $t$ that we can stop and not have to go to the other side. Therefore, to reach a neighbour of $t$, we must have used an even number of edges from the matching, and an even number of edges not in the matching, and when we take the last step to reach $t$ we have used an odd number of edges and thus found an odd path. If this alternating $s$-$t$-path in $M$ is the shortest such path, then the corresponding path in $G$ must also be the \emph{shortest} odd $s$-$t$-path in $G$. 
 
-\todo{May not have to write this, if we define mirror graphs better}
-The reduction works also in the weighted case, as long as each edge on the mirror side get the same weight as their real counterpart, and all the mirror edges get the same (usually 0) weight. The interested reader may see \cite{source:derigs_shortest_odd_path} for more details on this reduction.
+The interested reader may see \cite{source:derigs_shortest_odd_path} for more details on this reduction.
 
-Ball and Derigs \cite{source:shortest_alternating_path} have shown how to efficiently solve \textsc{Shortest Alternating Path}. In their algorithms, subgraphs are shrunk into pseudonodes whenever possible, to make the graph smaller. The drawback is that certain pseudonodes must later be expanded again, which is the most complicated and expensive part of their algorithms. In our case, however, we have a special case of \textsc{Shortest Alternating Path}. The set $F$ is, with the exception of $s$ and $t$, a perfect matching of $H$, and we will therefore never have to expand pseudonodes after shrinking them. The curious reader may visit \cite{source:shortest_alternating_path} for more on these algorithms and why our almost-perfect matching is a simpler case.
+\todo{Here we should mention that SAP is NP-complete, and who proved it, and it does not matter to us.}
+Ball and Derigs \cite{source:shortest_alternating_path} have shown how to efficiently solve \textsc{Shortest Alternating Path}. In their algorithms, subgraphs are shrunk into pseudonodes whenever possible, to make the graph smaller. The drawback is that certain pseudonodes must later be expanded again, which is the most complicated and expensive part of their algorithms. In our case, however, we have a special case of \textsc{Shortest Alternating Path}. The set $F$ is, with the exception of $s$ and $t$, a perfect matching of $M$, and we will therefore never have to expand pseudonodes after shrinking them. The curious reader may visit \cite{source:shortest_alternating_path} for more on these algorithms and why our almost-perfect matching is a simpler case.
 
 \section{The idea for our \textsc{Shortest Alternating Path} algorithm}
-We will explain the general idea of our algorithm by following an example, and solve for the graph in \Cref{figure:input-graph}. First we construct the mirror graph like explained in \Cref{subsection:reduction}, to produce the graph in \Cref{figure:mirror-graph}. Then we initialize an empty priority queue of vertices and edges to be scanned. For each vertex $u \in V(H)$, we denote
+We will explain the general idea of our algorithm by following an example, and solve for the graph in \Cref{figure:input-graph}. First we construct the mirror graph like explained in \Cref{subsection:reduction}, to produce the graph in \Cref{figure:mirror-graph}. Then we initialize an empty priority queue of vertices and edges to be scanned. For each vertex $u \in V(M)$, we denote
 \begin{itemize}
-    \item $d^+_u :=$ the length of the shortest alternating $s$-$u$-path ending on a mirror edge
-    \item $d^-_u :=$ the length of the shortest alternating $s$-$u$-path ending on a non-mirror edge
+    \item $d^+_u :=$ the length of the shortest alternating $s$-$u$-path ending on a matched edge
+    \item $d^-_u :=$ the length of the shortest alternating $s$-$u$-path ending on a non-matched edge
     \item $\pred_u :=$ the last edge used to find $u$'s most recent value for $d^-_u$
 \end{itemize}
 
@@ -315,7 +317,7 @@ Next up is to scan this blossom edge, and compute its corresponding odd cycle by
     \end{itemize}
 \end{minipage}
 
-The first reason why we care about this blossom is because now we can immediately set the final, optimal $d^-$ and $d^+$ for all the vertices in the blossom. That is because we now have two alternating paths to each vertex, one goes around the cycle while the other takes the shortcut. One of these ends up on a mirror edge, and the other on a normal edge. For example, to go from $s$ to $c'$, we can either go through [$s,a,a',c'$] with a cost of $d^-_c$, or go along [$s,a,a',b',b,c,c'$] with a cost of $d^+_c$.
+The first reason why we care about this blossom is because now we can immediately set the final, optimal $d^-$ and $d^+$ for all the vertices in the blossom. That is because we now have two alternating paths to each vertex, one goes around the cycle while the other takes the shortcut. One of these ends up on a matched edge, and the other on a normal edge. Furthermore, both of these are the optimal paths and can be used to set final values for $d^+$ and $d^-$. For example, to go from $s$ to $c'$, we can either go through [$s,a,a',c'$] with a cost of $d^-_c$, or go along [$s,a,a',b',b,c,c'$] with a cost of $d^+_c$.
 
 More specifically, for each $u \in \mathbb{B}$: \begin{itemize}
     \item If $d^+_u = \infty$, we set $d^+_u = d^-_{\mirror(u)}$.
@@ -401,3 +403,5 @@ If the reader is familiar with the more general \textsc{Shortest Alternating Pat
 \end{minipage}
 
 Let us now skip a few steps, until $t$ eventually reaches the front of the queue. At that point we have that $d^-_t = 5$, and that is also the cost of the shortest odd path in our original input graph. To compute the exact path we can backtrack from $t$ to $s$ and then translate that path as described in Step \ref{point:translate_alternating_path} of our reduction in \Cref{subsection:reduction}. We end up with the path [$(s,a),(a,b),(b,c),(c,d),(d,t)$], which is the shortest odd $s$-$t$-path in the graph.
+
+\todo[inline]{Would be nice with a figure of a larger blossom, to better show what the structure is, and how those values are set.}

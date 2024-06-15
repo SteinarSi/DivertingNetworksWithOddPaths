@@ -10,7 +10,7 @@ The algorithm does not solve \textsc{Shortest Odd Path} in the absolute general 
     Let $(G,s,t)$ be an instance of \textsc{Shortest Odd Path}, let $n := |V|$ and let $m := |E|$. \\
     Claim: the algorithm runs in time at most $O(m \cdot \log m)$, or $O(m \cdot \log n)$ of the graph is simple.
     \begin{proof}  
-        First of all, we construct the mirror graph $H$ with $2n-2 \in O(n)$ vertices and $2m - \deg(s) - \deg(t) \in O(m)$ edges, in time $O(n+m)$.
+        First of all, we construct the mirror graph $M$ with $2n-2 \in O(n)$ vertices and $2m - \deg(s) - \deg(t) \in O(m)$ edges, in time $O(n+m)$.
         
         With our \pyth{completed} array we can guarantee that each vertex is scanned at most once, and the scanning operation just loops through all the neighbours. Therefore, the total cost of all the scans is $O(n + \sum_{u \in V} \deg(u)) = O(n + 2m) = O(n + m)$.
     
