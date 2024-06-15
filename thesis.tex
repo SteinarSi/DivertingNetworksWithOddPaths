@@ -10,9 +10,16 @@
 \usepackage{subcaption}
 \usepackage{newunicodechar}
 \usepackage{caption}
-\usepackage{cleveref}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks = true,
+    linkcolor = blue
+}
+\usepackage[noabbrev,capitalise]{cleveref}
 \setlength {\marginparwidth }{2cm}
 \setlength{\parindent}{0pt}
+% \presetkeys{todonotes}{disable}{}
 \usepackage{todonotes}
 \newunicodechar{∞}{$\infty$}
 \theoremstyle{definition}
@@ -68,8 +75,7 @@
 
 \chapter{The Codebase}
 \label{chapter:codebase}
-\input{chapter/codebase/language}
-\input{chapter/codebase/algorithms}
+\input{chapter/codebase/functionality.tex}
 \input{chapter/codebase/data_structures}
 \input{chapter/codebase/testing}
 \input{chapter/codebase/benchmarking}
