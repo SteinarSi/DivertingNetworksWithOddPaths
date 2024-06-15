@@ -9,7 +9,7 @@
 % \todo{Vurder å flytte dette et annet sted}
 
 \begin{theorem}
-    Let $(G, s, t, d)$ be an instance of \textsc{Network Diversion}, and let $n := |V|$. \\
+    Let $(G, s, t, d)$ be an instance of \textsc{Network Diversion}, and let $n~:= |V|$. \\
     Claim: our algorithm runs in time $O(n \log n)$.
     
     \begin{proof}
@@ -27,9 +27,9 @@
 
 Note that here we have assumed that the dual graph $G^\star$ has already been computed prior to starting the algorithm. If we have a straight-line embedding of $G$ we can compute $G^\star$ in $O(n+m)$, which would not change the overall running time. However, if we do not have such an embedding the total running time might be considerably more.
 
-We compare the theoretical and practical running times on Delaunay graphs, like we did in \Cref{subsubsection:odd-path-delaunay-testing}. For each graph, we have estimated a source and target vertex of maximum distance between each other, and picked three edges in the graph as diversion edges. We pick whichever diversion edge leads to the worst running time over 10 runs, and plot the median over those 10 runs.
+We compare the theoretical and practical running times on Delaunay graphs as we did in \Cref{subsubsection:odd-path-delaunay-testing}. For each graph, we have estimated a source and target vertex of maximum distance between each other and picked three edges in the graph as diversion edges. We pick whichever diversion edge leads to the worst running time over 10 runs, and plot the median over those 10 runs.
 
-Here too have we tried to create a function out of the theoretical running time of $O(n \log n)$, this time with different constants. We have set $m := 3n$ in the plot, since the graphs are planar.
+Here too have we tried to create a function out of the theoretical running time of $O(n \log n)$, this time with different constants. We have set $m~:= 3n$ in the plot since the graphs are planar.
 
 \begin{center}
     \includesvg[width=0.9\textwidth]{figures/bench_plots/network diversion.svg}    

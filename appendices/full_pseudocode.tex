@@ -44,11 +44,11 @@ fn backtrack() {
     path = [current_edge];
     while from(current_edge) != s {
         current_edge = pred[mirror(from(current_edge))];
-        if from(current_edge) < input_graph.n() {
-            path.push(current_edge);
+        if current_edge is from the mirror side {
+            path.push(mirror(current_edge));
         }
         else {
-            path.push(shift_edge_by(current_edge, -input_graph.n()));
+            path.push(current_edge);
         }
     }
     return path;

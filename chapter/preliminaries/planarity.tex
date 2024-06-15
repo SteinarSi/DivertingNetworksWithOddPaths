@@ -14,7 +14,7 @@ A fascinating and important class of graphs that we will focus on in \Cref{chapt
 Many real-life graphs, especially those based on physical structures, are either planar or almost so. Two edges crossing often entails an inefficiency or extra cost: like having to build a bridge over a road instead of joining the two roads in a crossroad. Many algorithmic problems are much easier to solve in planar graphs, and they are common enough in practical use that the restriction is not too restrictive to be useful.
 
 \begin{definition}[Straight-line embedding]
-    Let $G$ be a graph. A \emph{straight-line embedding} of $G$ is a planar embedding of $G$ where each edge can be drawn as a line segment between its endpoint vertices and still not cross any other edge. In a straight line embedding we can forgo the mappings of the edges altogether and consider the mapping of vertices only. Such embeddings always exist: if $G$ is planar then there is a straight-line embedding of $G$.
+    Let $G$ be a graph. A \emph{straight-line embedding} of $G$ is a planar embedding of $G$ where each edge can be drawn as a line segment between its endpoint vertices and still not cross any other edge. In a straight-line embedding, we can forgo the mappings of the edges altogether and consider the mapping of vertices only. Such embeddings always exist: if $G$ is planar then there is a straight-line embedding of $G$.
 \end{definition}
 
 See \Cref{subfigure:k4-a}, \Cref{subfigure:k4-b} and \Cref{subfigure:k4-c} for an example of a planar graph. \Cref{subfigure:k4-a} and \Cref{subfigure:k4-c} also show planar embeddings of the graph. \Cref{subfigure:k33} shows a graph that is not planar, since no planar embeddings of the graph exist. Note that in all these examples we have drawn all the edges as straight line segments, but that is not necessary: as long as a curve does not cross any other curves it can be as curved as we want.
@@ -48,7 +48,7 @@ See \Cref{subfigure:k4-a}, \Cref{subfigure:k4-b} and \Cref{subfigure:k4-c} for a
     \caption{Examples of planar and non-planar graphs}
 \end{figure}
 
-It is generally complicated to determine whether a given graph is planar in practice, and to compute an appropriate embedding if it is. For all the algorithms we have implemented in this paper, if they take a planar graph as input, we have for simplicity assumed that we are also given a planar embedding of the graph. Furthermore, since all planar graphs also have straight-line embeddings, we have assumed that the given embeddings are straight-line embeddings. Our theoretical results hold for planar graphs in general, but in practice these assumptions make implementing the algorithms less tedious.
+It is generally complicated to determine whether a given graph is planar in practice and to compute an appropriate embedding if it is. For all the algorithms we have implemented in this paper, if they take a planar graph as input, we have for simplicity assumed that we are also given a planar embedding of the graph. Furthermore, since all planar graphs also have straight-line embeddings, we have assumed that the given embeddings are straight-line embeddings. Our theoretical results hold for planar graphs in general, but in practice, these assumptions make implementing the algorithms less tedious.
 
 \subsection{Duality}
 The next topic is easy to visualize and understand, but challenging to formalize. Imagine loading a drawing of a planar graph like the one in \Cref{subfigure:k4-a} into an image editing program, and using the fill tool to cover each region in a different color, like in \Cref{subfigure:k4-c}. Each such region is called a \emph{face} of the graph, including the region 'outside' the graph called the \emph{outer} face. Two faces are adjacent if they are separated by just a single edge: if we were to delete the edge our fill tool would give both the same color. We will now formalize this concept.
@@ -56,7 +56,7 @@ The next topic is easy to visualize and understand, but challenging to formalize
 \begin{definition}[Face]
     Let $G$ be a plane graph. A \emph{face} of $G$ is a region in the embedding bounded by a cycle that contains no other vertices or edges. Equivalently, we can define faces as the connected components that remain in $\mathbb{R}^2$ after we delete all vertices and edges from our embedding. 
 
-    Note that different embeddings of the same planar graph may yield different faces. When we refer to a face of a graph, it is always in relation to a certain embedding of the graph.
+    Note that different embeddings of the same planar graph may yield different faces. When we refer to a face in a graph, it is always in relation to a certain embedding of the graph.
 \end{definition}
 
 \begin{definition}[Duality of planar graphs]
@@ -67,13 +67,13 @@ The next topic is easy to visualize and understand, but challenging to formalize
     \end{itemize}
 \end{definition}
 
-Each edge in $e \in E(G)$ will always have a face on either side, possibly the same face, and thus have a corresponding edge $e^\star \in E(G^\star)$ in the dual graph. We can therefore define two convenience functions $\leftt, \rightt : E(G) \rightarrow V(G^\star)$ to get the left and right faces of an edge, respectively. If $G$ is weighted, we usually set the weights of $E(G^\star)$ according to their counterparts: $\weight(e^\star) := \weight(e)$. See \Cref{subfigure:k4-with-dual} for an example of a dual graph.
+Each edge in $e \in E(G)$ will always have a face on either side, possibly the same face, and thus have a corresponding edge $e^\star \in E(G^\star)$ in the dual graph. We can therefore define two convenience functions $\leftt, \rightt~: E(G) \rightarrow V(G^\star)$ to get the left and right faces of an edge, respectively. If $G$ is weighted, we usually set the weights of $E(G^\star)$ according to their counterparts: $\weight(e^\star)~:= \weight(e)$. See \Cref{subfigure:k4-with-dual} for an example of a dual graph.
 
-Note that the dual graph is also planar, and the dual of the dual is the original graph\footnote{Strictly speaking, there is an embedding of $G^\star$ such that $G^{\star\star} \cong G$.}. We could then for example let $e$ be an edge in the dual graph, and then refer to its real counterpart as $e^\star$. It would not be wrong, but it could possibly lead to confusion. Furthermore, we do not need that fact for any of the results in this thesis. We will therefore give variable names like $G$, $u$ and $e$ for the graphs, vertices and edges that we are 'working on', and use variable names like $G^\star$, $u^\star$ and $e^\star$ for their dual equivalents only in intermediary computations before arriving at results for our original graph.
+Note that the dual graph is also planar, and the dual of the dual is the original graph\footnote{Strictly speaking, there is an embedding of $G^\star$ such that $G^{\star\star} \cong G$.}. We could then for example let $e$ be an edge in the dual graph, and then refer to its real counterpart as $e^\star$. It would not be wrong, but it could possibly lead to confusion. Furthermore, we do not need that fact for any of the results in this thesis. We will therefore give variable names like $G$, $u$, and $e$ for the graphs, vertices, and edges that we are 'working on', and use variable names like $G^\star$, $u^\star$ and $e^\star$ for their dual equivalents only in intermediary computations before arriving at results for our original graph.
 
 \begin{fact}[Cycle--cut duality]
 \label{fact:dual-cycle-is-real-cut}
-    Let $G := (V, E, from, to)$ be a connected planar graph, and let $C^\star$ be a simple cycle in $G^\star$. Then $C^\star$ will always correspond to a minimal cut in $G$. If we define $C := \{e ~ | ~ e^\star \in E(G^\star)\}$ as the edges in $E(G)$ that correspond to edges in $C^\star$, then $(V,E \setminus C, \from, \too)$ is an disconnected graph of exactly two components. If the cycle $C^\star$ is not simple, then we still end up with an disconnected graph, but we may have more than just two components.
+    Let $G~:= (V, E, from, to)$ be a connected planar graph, and let $C^\star$ be a simple cycle in $G^\star$. Then $C^\star$ will always correspond to a minimal cut in $G$. If we define $C~:= \{e ~ | ~ e^\star \in E(G^\star)\}$ as the edges in $E(G)$ that correspond to edges in $C^\star$, then $(V,E \setminus C, \from, \too)$ is a disconnected graph of exactly two components. If the cycle $C^\star$ is not simple, then we still end up with a disconnected graph, but we may have more than just two components.
 
     See \Cref{figure:cycle-cut} for an example. In \Cref{figure:dual-with-cycle} we have found a simple cycle in the dual graph, and if we delete the corresponding edges in the original graph we end up with the disconnected graph in \Cref{subfigure:k4-cut}.
 \end{fact}
@@ -103,14 +103,14 @@ Note that the dual graph is also planar, and the dual of the dual is the origina
 \end{figure}
 
 \begin{theorem}[The relation between the number of vertices, edges and faces]
-    Let $G := (V, E, \from, \too)$ be a connected planar graph, where $n := |V|, m := |E|$, and $f$ is the number of faces in any embedding of $G$. \\
+    Let $G~:= (V, E, \from, \too)$ be a connected planar graph, where $n~:= |V|, m~:= |E|$, and $f$ is the number of faces in any embedding of $G$. \\
     Claim: $n + f - m = 2$.
 
     \begin{proof}
-        Let $H \sqsubseteq G$ be any non-empty connected subgraph that does not have any cycles, and let $n_H := |V(H)|$. Since it does not have any cycles, we have that:
+        Let $H \sqsubseteq G$ be any non-empty connected subgraph that does not have any cycles, and let $n_H~:= |V(H)|$. Since it does not have any cycles, we have that:
         \begin{itemize}
-            \item The outside face must be the only face: $f_H := 1$.
-            \item Each edge must connect a 'new' vertex to the rest of the graph, except the first edge which connects two new vertices. Therefore the number of edges is one less than the number of vertices: $m_H := n_H - 1$.
+            \item The outside face must be the only face: $f_H~:= 1$.
+            \item Each edge must connect a 'new' vertex to the rest of the graph, except the first edge which connects two new vertices. Therefore the number of edges is one less than the number of vertices: $m_H~:= n_H - 1$.
         \end{itemize}
         We now have that $n_H + f_H - m_H = n_H + 1 - (n_H-1) = 2$, so the equality holds for this subgraph.
 

@@ -8,7 +8,7 @@ Now that we know what a graph is, we are ready to formalize the underlying probl
 {a graph $G$, two vertices $s,t \in V$}
 {an $s$-$t$-path in $G$ of minimum cost}
 
-This thesis will focus on a curious variant of the Shortest Path problem, called Shortest Odd Path:
+This thesis will focus on a curious variant of the Shortest Path problem, called \textsc{Shortest Odd Path}:
 
 \problem
 {Shortest Odd Path}
@@ -24,7 +24,7 @@ We will also give an algorithm in \Cref{chapter:odd-walk} for the less restricti
 
 \subsection*{Dijkstra's Algorithm}
 \label{algorithm:dijkstras-algorithm}
-Both our algorithms for \textsc{Shortest Odd Path} and \textsc{Shortest Odd Walk} borrow ideas from the famous Dijkstra's Algorithm. The algorithm solves \textsc{Shortest Path} on graphs with non-negative weights, and handles both directed and undirected graphs. We show it here for reference.
+Both our algorithms for \textsc{Shortest Odd Path} and \textsc{Shortest Odd Walk} borrow ideas from the famous Dijkstra's Algorithm. The algorithm solves \textsc{Shortest Path} on graphs with non-negative weights and handles both directed and undirected graphs. We show it here for reference.
 
 \begin{lstlisting}[caption={Dijkstra's Algorithm for Shortest Path},label=Listing,mathescape=true]
 fn dijkstras_shortest_path(graph, s, t) {

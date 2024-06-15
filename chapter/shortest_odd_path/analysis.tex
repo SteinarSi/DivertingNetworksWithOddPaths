@@ -1,5 +1,5 @@
 \section{Analysis}
-The algorithm does not solve \textsc{Shortest Odd Path} in the absolute general case, but rather has some limitations. These are: 
+The algorithm does not solve \textsc{Shortest Odd Path} in the absolute general case but rather has some limitations. These are: 
 \begin{itemize}
     \item The input graph must be undirected, otherwise we cannot use blossoms the way we do.
     \item The edges must have either non-negative weights or no weights at all, otherwise we cannot guarantee that $d^+_u$ and $d^-_u$ are correct when we scan a vertex $u$.
@@ -7,16 +7,16 @@ The algorithm does not solve \textsc{Shortest Odd Path} in the absolute general 
 \todo{Should this be written somewhere else?}
 
 \begin{theorem}
-    Let $(G,s,t)$ be an instance of \textsc{Shortest Odd Path}, let $n := |V|$ and let $m := |E|$. \\
+    Let $(G,s,t)$ be an instance of \textsc{Shortest Odd Path}, let $n~:= |V|$ and let $m~:= |E|$. \\
     Claim: the algorithm runs in time at most $O(m \cdot \log m)$, or $O(m \cdot \log n)$ of the graph is simple.
     \begin{proof}  
         First of all, we construct the mirror graph $M$ with $2n-2 \in O(n)$ vertices and $2m - \deg(s) - \deg(t) \in O(m)$ edges, in time $O(n+m)$.
         
-        With our \pyth{completed} array we can guarantee that each vertex is scanned at most once, and the scanning operation just loops through all the neighbours. Therefore, the total cost of all the scans is $O(n + \sum_{u \in V} \deg(u)) = O(n + 2m) = O(n + m)$.
+        With our \pyth{completed} array we can guarantee that each vertex is scanned at most once, and the scanning operation just loops through all the neighbors. Therefore, the total cost of all the scans is $O(n + \sum_{u \in V} \deg(u)) = O(n + 2m) = O(n + m)$.
     
         The blossom operation is a little more convoluted. Thanks to the overly complicated code in our \pyth{backtrack_blossom} procedure in \Cref{subsection:backtracking-blossom-edges}, we can backtrack from a blossom edge and determine the vertices in the blossom in time linear to the size of the blossom. Setting their values for $d^+$ and $d^-$ can also be done in linear time, and the potential scans have already been accounted for above. The key point here is that we shrink the blossom into a pseudonode afterwards: each vertex can then only be part of such a blossom procedure at most once. Even though we may compute many blossom edges, the total amount of work will therefore never exceed $O(n)$.
     
-        Finally, we have the main loop, which iteratively pops vertices and blossom edges from the queue. Each of the $O(n)$ vertices may be put into the priority queue many times, at most once for each of its neighbours. That is a total of $O(m)$ vertices in the queue, for a total cost of $O(m)$. Though it is unlikely, in the extreme case all edges may be put in the queue as blossom edges as well, again for a total cost of $O(m)$. In total, enqueueing everything costs $O(m)$, and dequeueing everything costs $O(m \cdot \log m)$.
+        Finally, we have the main loop, which iteratively pops vertices and blossom edges from the queue. Each of the $O(n)$ vertices may be put into the priority queue many times, at most once for each of its neighbors. That is a total of $O(m)$ vertices in the queue, for a total cost of $O(m)$. Though it is unlikely, in the extreme case all edges may be put in the queue as blossom edges as well, again for a total cost of $O(m)$. In total, enqueueing everything costs $O(m)$, and dequeueing everything costs $O(m \cdot \log m)$.
     
         In total, the algorithm runs in time $O(n+m) + O(n+m) + O(n) + O(m) + O(m \cdot \log m) = O(m \cdot \log m)$, which shows the first part of the claim. If the graph is simple, then $O(m \cdot \log m) \subseteq O(m \cdot \log n^2) = O(m \cdot 2 \cdot \log n) = O(m \cdot \log n)$, which shows the second part of the claim.
     \end{proof}        
@@ -30,7 +30,7 @@ We should note, however, that there are also other known polynomial algorithms f
 
 \subsection{Testing different data structures for the Basis}
 \label{subsubsection:testing-basis}
-As explained in \Cref{subsection:basis-code}, we have developed multiple data structures to keep track of the basis of each vertex. One of them is based on the Observer pattern, the other on the well-known UnionFind structure. We have tested both on 6 different real-life graphs, and we show the results below. We ran our shortest odd path algorithm on each graph 40 times, 20 for each structure, and noted the fastest times for each. We have run a heuristic search to find the pairs of vertices that are the furthest away from each other in each graph, so that the size of the graph accurately matches the size of the problem.
+As explained in \Cref{subsection:basis-code}, we have developed multiple data structures to keep track of the basis of each vertex. One of them is based on the Observer pattern, the other on the well-known UnionFind structure. We have tested both on 6 different real-life graphs, and we show the results below. We ran our shortest odd path algorithm on each graph 40 times, 20 for each structure, and noted the fastest times for each. We have run a heuristic search to find the pairs of vertices that are the furthest away from each other in each graph so that the size of the graph accurately matches the size of the problem.
 \begin{center}
     \begin{tabular}{|l | r | r | r | r | c|} 
      \hline
@@ -59,15 +59,15 @@ The results are a little mixed. The UnionFind-based structure spends $4.2\%$ mor
 
 \subsection{Running times on Delaunay graphs}
 \label{subsubsection:odd-path-delaunay-testing}
-To test how well the algorithm scales, we generate 200 Delaunay graphs of sizes 1000, 2000, 3000 and so on until 200 000. We explain how these graphs are generated in \Cref{subsection:delaunay}. For each graph, we have estimated a source and target with the maximum shortest path between them, and run our \textsc{Shortest Odd Path} algorithm. We take the mediam running time of 10 runs, and plot the results below.
+To test how well the algorithm scales, we generate 200 Delaunay graphs of sizes 1000, 2000, 3000, and so on until 200 000. We explain how these graphs are generated in \Cref{subsection:delaunay}. For each graph, we have estimated a source and target with the maximum shortest path between them, and run our \textsc{Shortest Odd Path} algorithm. We take the median running time of 10 runs and plot the results below.
 
-The theoretical running time is $O(m \log n)$, and we have tried our best to come up with constants to create a running time function that matches our algorithm. In Delaunay graphs we have that $m \leq 3n$, so we have set $m := 3n$ in this function.
+The theoretical running time is $O(m \log n)$, and we have tried our best to come up with constants to create a running time function that matches our algorithm. In Delaunay graphs, we have that $m \leq 3n$, so we have set $m~:= 3n$ in this function.
 
 \begin{center}
     \includesvg[width=0.9\textwidth]{figures/bench_plots/shortest odd path.svg}
 \end{center}
 
-As we can see, the running times grow almost linearly as the inputs grow larger. The slight upwards curve is barely noticable. This is to be expected with a linearithmic theoretical running time.
+As we can see, the running times grow almost linearly as the inputs grow larger. The slight upward curve is barely noticeable. This is to be expected with a linearithmic theoretical running time.
 
 The focus of this thesis is to create an algorithm that performs well on sparse graphs, especially planar graphs, which is why we consider the running times mainly on sparse graphs. If we instead had implemented an algorithm for denser graphs, or just graphs in general, then testing on graphs with more edges would be more appropriate.
 

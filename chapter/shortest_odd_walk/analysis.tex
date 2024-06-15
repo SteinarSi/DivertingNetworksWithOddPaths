@@ -20,7 +20,7 @@
 
 Consider \Cref{figure:small2}. There are no odd paths from $s$ to $t$, but we have an infinite amount of odd walks by utilizing the cycles $[a,b,c]$ or $[a,c,b]$ an odd number of times to offset the parity. Our algorithm would perhaps first find an odd walk to $a$, then an even walk to $b$, then an odd walk to $c$, then an even walk to $a$, and lastly an odd walk to $t$. This is one of the two odd $s$-$t$-walks of minimum cost. However, $a$ is visited twice in the walk, once for each parity, and the resulting walk is not a path. Therefore, this algorithm cannot be used to solve \textsc{Shortest Odd Path}.
 
-The main limitation of the algorithm is that the edges in the input graph must have either non-negative weights or no weights at all. Otherwise we cannot guarantee that \pyth{even_dist[u]} and \pyth{odd_dist[u]} have their final, correct values when we scan a vertex $u$. Note that unlike most other algorithms shown in this thesis, this algorithm does not require the input graph to be undirected, it may also be directed.
+The main limitation of the algorithm is that the edges in the input graph must have either non-negative weights or no weights at all. Otherwise, we cannot guarantee that \pyth{even_dist[u]} and \pyth{odd_dist[u]} have their final, correct values when we scan a vertex $u$. Note that unlike most other algorithms shown in this thesis, this algorithm does not require the input graph to be undirected, it may also be directed.
 
 % \begin{theorem}
 %     Let \pyth{(priority, even, u)} be the triple at the front of the queue at any point in the execution of our algorithm.
@@ -48,7 +48,7 @@ The main limitation of the algorithm is that the edges in the input graph must h
     Let $(G,s,t)$ be an instance of \textsc{Shortest Odd Walk}, let $n := |V|$ and let $m := |E|$.\\
     Claim: the algorithm runs in time at most $O(m \cdot \log m)$, or $O(m \cdot \log n)$ if the graph is simple.
     \begin{proof}
-        Because of our \pyth{odd_done} and \pyth{even_done} arrays, we can guarantee that each vertex is scanned at most twice, once for each parity. For each scan, we loop through each of the neighbours in linear time, and consider putting them in the queue. The total cost of the scans is therefore at most $O(m)$. A vertex may be put into the queue many times before it is scanned, in the worst case once for each of its neighbours. That means that we put vertices in the queue at most $O(m)$ times, for a total cost of $O(m)$, and removing all of them takes a total of $O(m \cdot \log m)$. 
+        Because of our \pyth{odd_done} and \pyth{even_done} arrays, we can guarantee that each vertex is scanned at most twice, once for each parity. For each scan, we loop through each of the neighbors in linear time and consider putting them in the queue. The total cost of the scans is therefore at most $O(m)$. A vertex may be put into the queue many times before it is scanned, in the worst case once for each of its neighbors. That means that we put vertices in the queue at most $O(m)$ times, for a total cost of $O(m)$, and removing all of them takes a total of $O(m \cdot \log m)$. 
         
         The algorithm runs in time at most $O(m) + O(m \cdot \log m) = O(m \cdot \log m)$, which shows the first part of the claim.
         
@@ -56,14 +56,14 @@ The main limitation of the algorithm is that the edges in the input graph must h
     \end{proof}
 \end{theorem}
 
-To test how well the algorithm scales, we generate 200 Delaunay graphs of sizes 1000, 2000, 3000 and so on until 200 000. We explain how these graphs are generated in \Cref{subsection:delaunay}. For each graph, we have estimated a source and target with the maximum shortest path between them, and run our \textsc{Shortest Odd Walk} algorithm. We take the mediam running time of 10 runs, and plot the results below.
+To test how well the algorithm scales, we generate 200 Delaunay graphs of sizes 1000, 2000, 3000, and so on until 200 000. We explain how these graphs are generated in \Cref{subsection:delaunay}. For each graph, we have estimated a source and target with the maximum shortest path between them, and run our \textsc{Shortest Odd Walk} algorithm. We take the median running time of 10 runs and plot the results below.
 
-We have also tried to find constants to convert the $O(m \cdot \log n)$ theoretical complexity into a comparable function, and plotted it next to the real practical results.
+We have also tried to find constants to convert the $O(m \cdot \log n)$ theoretical complexity into a comparable function and plotted it next to the real practical results.
 
 \begin{center}
     \includesvg[width=0.9\textwidth]{figures/bench_plots/shortest odd walk.svg}    
 \end{center}
 
-As we can see, the algorithm easily solves \textsc{Shortest Odd Walk} on graphs of 200000+ vertices in less than 100ms. These results are excellent. Despite having a similiar complexity to the other algorithms in this thesis, this algorithm is still by far the fastest in practice.
+As we can see, the algorithm easily solves \textsc{Shortest Odd Walk} on graphs of 200000+ vertices in less than 100ms. These results are excellent. Despite having a similar complexity to the other algorithms in this thesis, this algorithm is still by far the fastest in practice.
 
 Though we discovered it independently, the algorithm is not particularly groundbreaking or in any way creative. Therefore, we do not expect it to be original. It is, however, quite fast, and we are happy with that. The main reason we include it in this thesis is because of its pedagogical value in introducing our main topic: \textsc{Shortest Odd Path}. \todo{Her burde vi finne en eksisterende algoritme og referere til den.}
