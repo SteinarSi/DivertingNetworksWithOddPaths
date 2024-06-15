@@ -18,7 +18,6 @@ Instead we create a new graph $H$, by subdividing all edges in $G$ \emph{except}
     \centering
     \begin{subfigure}{.80\textwidth}
         \centering
-        % \includegraphics[width=6cm]{figures/bottleneck.png}
         \begin{tikzpicture}
             \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
             \tikzstyle{edge}=[gray, line width=1.5mm]
@@ -44,7 +43,6 @@ Instead we create a new graph $H$, by subdividing all edges in $G$ \emph{except}
     \end{subfigure}\hfill%
     \begin{subfigure}{.80\textwidth}
         \centering
-        % \includegraphics[width=6cm]{figures/subdivide-bottleneck.png}
         \begin{tikzpicture}
             \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
             \tikzstyle{edge}=[gray, line width=1.5mm]
@@ -93,9 +91,30 @@ Instead of looking for a minimal cut in $G$, let us instead look for a simple cy
 
 To force $s$ and $t$ to end up in different components after the cut, we need some additional details. First we find any $s$-$t$-path in $G$, not necessarily the shortest path. Then we subdivide all the edges in the dual graph \emph{except} those who cross edges on the found $s$-$t$-path. Now we can look for the shortest \emph{odd} path from and two the left and right faces of $d$ in the subdivided dual graph, and add $d^\star$ at the end to make it a cycle. Like before, this corresponds to a minimum minimal cut in $G$ that uses $d$, but now it must also cross the edges in the found $s$-$t$-path an odd number of times, like explained in \Cref{section:subdividing-bottlenecks}. 
 
-This cycle, and the found $s$-$t$-path, can be interpreted as Jordan curves in our embedding. By the Jordan Curve Theorem, the curve of the cycle divides the plane into an 'inside' and an 'outside'. Since the curve of the $s$-$t$-path crosses the curve of the cycle an odd number of times, exactly one of its endpoints must be on the inside, and the other on the outside. The endpoints are $s$ and $t$, meaning that $s$ and $t$ end up in different components. It follows that this cut is an $s$-$t$-cut in $G$, specifically a minimum minimal cut in $s$-$t$-cut in $G$ that uses $d$.
+This cycle, and the found $s$-$t$-path, can be interpreted as curves in our embedding. The cycle can additionally be interpreted as a Jordan curve, and by the Jordan Curve Theorem, the curve of the cycle divides the plane into an 'inside' and an 'outside'. Since the curve of the $s$-$t$-path crosses the curve of the cycle an odd number of times, exactly one of its endpoints must be on the inside, like illustrated in \Cref{figure:jordan-curve-cuts}. The endpoints are $s$ and $t$, meaning that $s$ and $t$ end up in different components after the cut. It follows that this cut is an $s$-$t$-cut in $G$, specifically a minimum minimal $s$-$t$-cut in $G$ that uses $d$.
 
-This is the main idea for our algorithm. Note that we did not come up with this idea ourselves, but have to thank \cite{source:pål} for his as for now unpublished work on the subject.
+This is the main idea for our algorithm. Note that we did not come up with this idea ourselves, but have to thank Pål Grønås Drange \cite{source:pål} for his as for now unpublished work on the subject.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{.30\textwidth}
+        \centering
+        \includesvg[width = 0.8\textwidth]{figures/jordan_curves/one_crossing.svg}
+        \caption{The path crosses the cycle once, so exactly one of the endpoints are on the inside.}
+    \end{subfigure}\hfill%
+    \begin{subfigure}{.30\textwidth}
+        \centering
+        \includesvg[width = 0.8\textwidth]{figures/jordan_curves/two_crossings.svg}
+        \caption{The path crosses the cycle twice, so both endpoints are on the outside.}
+    \end{subfigure}\hfill%
+    \begin{subfigure}{.30\textwidth}
+        \centering
+        \includesvg[width = 0.8\textwidth]{figures/jordan_curves/three_crossings.svg}
+        \caption{The path crosses the cycle thrice, so the endpoints must end up on either side of the cycle.}
+    \end{subfigure}
+    \caption{The two endpoints of a path end up on different sides of a cycle if and only if it crosses the cycle an odd number of times.}
+    \label{figure:jordan-curve-cuts}
+\end{figure}
 
 \subsection{Example}
 \label{subsection:network-diversion-example}
@@ -272,7 +291,7 @@ Now we subdivide all the edges in the dual graph except those who cross the path
 \end{tikzpicture}
 \end{center}
 
-Last up is to find the shortest odd path in the subdivided dual graph from and to the regions to the left and right of the diversion edge, using our newfound favorite algorithm. If we find such a path, we know that it must cross $s$-$t$-path in green an odd number of times. If we add the dual equivalent of the diversion edge to the path to create a cycle, then we know that this cycle goes around either $s$ or $t$, but not both. We illustrate one of the shortest odd paths in below, this time in orange in an attempt to not run out of colors.
+Last up is to find the shortest odd path in the subdivided dual graph from and to the regions to the left and right of the diversion edge, using our newfound favorite algorithm. If we find such a path, we know that it must cross $s$-$t$-path in green an odd number of times. If we add the dual equivalent of the diversion edge to the path to create a cycle, then we know that this cycle goes around either $s$ or $t$, but not both. We illustrate the cycle below, this time in orange in an attempt to not run out of colors.
 
 \begin{center}
 \begin{tikzpicture}
@@ -333,10 +352,11 @@ Last up is to find the shortest odd path in the subdivided dual graph from and t
 
     \tikzstyle{edge}=[orange, line width=0.9mm]
     \draw[edge] (cehi) -- (ci) -- (cifs) -- (fs) -- (abfs) to [bend right=20] (aces);
+    \draw[edge] (aces) -- (cehi);
 \end{tikzpicture}
 \end{center}
 
-With this, we finally have our diversion set. Simply delete the edges in the original graph that crosses the odd path we found and colored in orange. We end up with a graph where all $s$-$t$-paths must pass through the diversion edge. The problem is solved.
+With this, we finally have our diversion set. Simply delete the edges in the original graph that cross the cycle we found and colored in orange, except for the diversion edge of course. We end up with a graph where all $s$-$t$-paths must pass through the diversion edge. The problem is solved.
 
 \begin{center}
 \begin{tikzpicture}

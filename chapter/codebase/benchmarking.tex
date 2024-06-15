@@ -1,14 +1,16 @@
 \section{Benchmarking}
 \todo{Write about the 'real-life' graphs we benchmarked}
 
-\todo[inline]{Write about marking benches}
+\todo[inline]{Write about the marking of benches}
 
 \subsection{Delaunay triangulations}
 \label{subsection:delaunay}
 To compare the theoretical and practical runtimes of our algorithms, we needed a collection of graphs of easily scalable sizes. Furthermore, as to also be used for benching \textsc{Network Diversion}, the graphs had to be planar graphs with a built-in planar embedding.
 
-Our solution was this: for a given integer $n$, generate $n$ random points in the plane, to be the vertices in our graph. Then, using the \pyth{scipy} library in Python, compute a Delaunay triangulation of the points. Each of the triangles in the triangulation consists of three points, of which we added three edges with random weights. Extra care had to be taken not to add the same edge multiple times, once for each triangle. The result is a straight-line embedding of a graph of size $n$, where each face is a triangle in the triangulation, and the dual graph is a Voronoi diagram of the set of points. We will refer to a graph generated like this as a \emph{Delaunay graph}.
+Our solution was this: for a given integer $n$, generate $n$ random points in the plane, to be the vertices in our graph. Then, using the \pyth{scipy} library in Python, compute a Delaunay triangulation of the points. Each of the triangles in the triangulation consists of three points, of which we added three edges with random weights. Extra care had to be taken not to add the same edge multiple times, once for each of triangles it is adjacent to. The result is a straight-line embedding of a planar graph of size $n$, where each face is a triangle in the triangulation, and the dual graph is a Voronoi diagram of the set of points. Though the term is not common, we like to refer to a graph generated like this as a \emph{Delaunay graph}.
 
-Using this technique, we generated 200 Delaunay graphs of sizes 1000, 2000, 3000 and so on until 200000. Then we used a few heuristic searches to estimate some of the pairs of vertices that were the farthest away from each other, as inputs for our \textsc{Shortest Odd Walk} and \textsc{Shortest Odd Path} algorithms. After that we picked some of the worst diversion edges farthest from these pairs, as inputs for our \textsc{Network Diversion}. The intention is that each graph gets the worst-case or almost worst-case queries, so that the size of the problem roughly matches the size of the graph.
+Now we have a technique to generate straight line embeddings of graphs of arbitrary size, which is exactly what we need for benchmarking. Another advantage is that these graphs often look quite aesthetically pleasing, like seen in \Cref{figure:network-diversion-on-delaunay}.
+
+Using this technique, we generated 200 Delaunay graphs of sizes 1000, 2000, 3000 and so on until 200000. Then we used a few heuristic searches to estimate some of the pairs of vertices that were the farthest away from each other, as inputs for our \textsc{Shortest Odd Walk} and \textsc{Shortest Odd Path} algorithms. Afterwards we picked some of the worst diversion edges farthest away from these pairs, as inputs for our \textsc{Network Diversion}. The intention is that each graph gets queries that are the worst or close to the worst possible case, so that the size of the problem roughly matches the size of the graph.
 
 The interested reader may visit the GitHub repository \cite{source:codebase} to see the graphs and the Python scripts used to generate them.
