@@ -18,9 +18,11 @@ fn network_diversion(graph, s, t, d) {
             dual = subdivide_edges_except(graph$^\star$, p$^\star$);
 
             match shortest_odd_path(dual, left(d), right(d)) {
-                // There are no $s$-$t$-paths that go through $d$,
-                //  and therefore no way to divert the network.
-                None => return None;
+                None => {
+                    // There are no odd $\leftt(d)$-$\rightt(d)$-paths,
+                    //  and therefore no way to divert the network.
+                    return None;
+                }
                 
                 Some(cost, odd_path) {
                     diversion = [e for e$^\star$ in un_subdivide_edges(odd_path)];
