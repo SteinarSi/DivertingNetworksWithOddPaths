@@ -3,10 +3,11 @@
 \label{section:subdividing-bottlenecks}
 Before we reveal the algorithm for Network Diversion, we will first look at a curious little problem that we call \textsc{Shortest Bottleneck Path}:
 
-\noindent\fbox{\parbox{0.94\textwidth}{\textsc{Shortest Bottleneck Path}\\
-    \textbf{Input:} A graph $G$, two vertices $s,t \in V$, and a 'bottleneck' edge $b \in E$\\
-    \textbf{Output:} the shortest $s$-$t$-path in $G$ that goes through the bottleneck $b$
-}}
+\problem
+{Shortest Bottleneck Path}
+{a graph $G$, two vertices $s,t \in V$, and a 'bottleneck' edge $b \in E$}
+{the shortest $s$-$t$-path in $G$ that goes through the bottleneck $b$}
+
 \todo{Velg et annet begrep. Shortest Detour Path, Shortest Checkpoint Path, eller noe fra det 2013-papiret.}
 
 There is no obvious way to solve \textsc{Shortest Bottleneck Path}. One might attempt to find the shortest paths from $s$ to $\from(b)$ and from $\too(b)$ to $t$, but those two paths might overlap and reuse the same vertices, and therefore would their concatenation not necessarily be a path but merely a walk instead.

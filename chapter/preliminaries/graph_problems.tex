@@ -3,24 +3,24 @@
 
 Now that we know what a graph is, we are ready to formalize the underlying problem of the example we started with in this chapter. Both problems can be represented by the quest to find the shortest path from one vertex to another in an abstract graph. From a computational perspective, it does not matter whether the edges are roads or flights, or whether the vertices are crossroads or airports. Vertices and edges can represent whatever we want them to. We call the problem \textsc{Shortest Path}, and it is defined as:
 
-\noindent\fbox{\parbox{0.94\textwidth}{\textsc{Shortest Path}\\
-    \textbf{Input:} a graph $G$, two vertices $s,t \in V$\\
-    \textbf{Output:} an $s$-$t$-path in $G$ of minimum cost
-}}
+\problem
+{Shortest Path}
+{a graph $G$, two vertices $s,t \in V$}
+{an $s$-$t$-path in $G$ of minimum cost}
 
 This thesis will focus on a curious variant of the Shortest Path problem, called Shortest Odd Path:
 
-\noindent\fbox{\parbox{0.94\textwidth}{\textsc{Shortest Odd Path}\\
-    \textbf{Input:} a graph $G$, two vertices $s,t \in V$\\
-    \textbf{Output:} an $s$-$t$-path in $G$ of minimum cost, that uses an odd number of edges
-}}
+\problem
+{Shortest Odd Path}
+{a graph $G$, two vertices $s,t \in V$}
+{an $s$-$t$-path in $G$ of minimum cost, that uses an odd number of edges}
 
 We will also give an algorithm in \Cref{chapter:odd-walk} for the less restrictive variation called \textsc{Shortest Odd Walk}:
 
-\noindent\fbox{\parbox{0.94\textwidth}{\textsc{Shortest Odd Walk}\\
-    \textbf{Input:} a graph $G$, two vertices $s,t \in V$\\
-    \textbf{Output:} an $s$-$t$-walk in $G$ of minimum cost, that uses an odd number of edges
-}}
+\problem
+{Shortest Odd Walk}
+{a graph $G$, two vertices $s,t \in V$}
+{an $s$-$t$-walk in $G$ of minimum cost, that uses an odd number of edges.}
 
 \subsection*{Dijkstra's Algorithm}
 \label{algorithm:dijkstras-algorithm}
