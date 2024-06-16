@@ -404,4 +404,88 @@ If the concerned reader is familiar with the more general \textsc{Shortest Alter
 
 Let us now skip a few steps, until $t$ eventually reaches the front of the queue. At that point, we have that $d^-_t = 5$, and that is also the cost of the shortest odd path in our original input graph. To compute the exact path we can backtrack from $t$ to $s$ and then translate that path as described in Step \ref{point:translate_alternating_path} of our reduction in \Cref{subsection:reduction}. We end up with the path [$(s,a),(a,b),(b,c),(c,d),(d,t)$], which is the shortest odd $s$-$t$-path in the graph.
 
-\todo[inline]{Would be nice with a figure of a larger blossom, to better show what the structure is, and how those values are set.}
+The previous example had only two small blossoms, none of which illustrated vertices receiving values for $d^-$. See \Cref{figure:larger-blossom} for an example of a larger blossom. Notice how clear the structure is: we always have an odd cycle, where every other edge is in the matching, except for the two edges to the base. In this case every other vertex is missing values for either $d^+$ or $d^-$, as is common, though it may happen that a vertex in a blossom already has another tentative value for $d^-$.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{.9\textwidth}
+        \begin{tikzpicture}{text centered}
+            \tikzstyle{every node}=[rectangle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+            \tikzstyle{edge}=[gray, line width=1mm]
+    
+            \node (b) at (8,0)    {\begin{tabular}{c} $b$  \\ $d^+:10$      \\ $d^-:\infty$      \end{tabular}};
+            \node (c) at (8,2)    {\begin{tabular}{c} $c$  \\ $d^+:10$      \\ $d^-:\infty$      \end{tabular}};
+            \node (d) at (10,2)   {\begin{tabular}{c} $d$  \\ $d^+:\infty$  \\ $d^-:11$      \end{tabular}};
+            \node (e) at (10,0)   {\begin{tabular}{c} $e$  \\ $d^+:\infty$  \\ $d^-:11$ \end{tabular}};
+            \node (f) at (16,0)   {\begin{tabular}{c} $f$  \\ $d^+:12$  \\ $d^-:13$ \end{tabular}};
+            \node (g) at (16,2)   {\begin{tabular}{c} $g$  \\ $d^+:12$  \\ $d^-:13$ \end{tabular}};
+
+            \node (a') at (4,1)   {\begin{tabular}{c} $a'$ \\ $d^+:9$       \\ $d^-:\infty$ \end{tabular}};
+            \node (b') at (6,0)   {\begin{tabular}{c} $b'$ \\ $d^+:\infty$  \\ $d^-:10$      \end{tabular}};
+            \node (c') at (6,2)   {\begin{tabular}{c} $c'$ \\ $d^+:\infty$  \\ $d^-:10$      \end{tabular}};
+            \node (d') at (12,2)  {\begin{tabular}{c} $d'$ \\ $d^+:11$      \\ $d^-:\infty$ \end{tabular}};
+            \node (e') at (12,0)  {\begin{tabular}{c} $e'$ \\ $d^+:11$      \\ $d^-:\infty$ \end{tabular}};
+            \node (f') at (14,0)  {\begin{tabular}{c} $f'$ \\ $d^+:\infty$      \\ $d^-:12$ \end{tabular}};
+            \node (g') at (14,2)  {\begin{tabular}{c} $g'$ \\ $d^+:\infty$      \\ $d^-:12$ \end{tabular}};
+    
+            \draw[edge] (b') -- (a') -- (c');
+            \draw[edge] (c) -- (d);
+            \draw[edge] (d') -- (g');
+            \draw[edge] (e') -- (f');
+            \draw[edge] (b) -- (e);
+
+            \tikzstyle{edge}=[red, line width=1.5mm]
+            \draw[edge] (b) -- (b');
+            \draw[edge] (c) -- (c');
+            \draw[edge] (d) -- (d');
+            \draw[edge] (e) -- (e');
+            \draw[edge] (f) -- (f');
+            \draw[edge] (g) -- (g');
+
+            \tikzstyle{edge}=[green, line width=1.5mm]
+            \draw[edge] (g) -- (f);
+        \end{tikzpicture}
+        \caption{A larger blossom with $a'$ as its base and the blossom edge marked in green.}
+    \end{subfigure}\\[1cm]
+    \begin{subfigure}{.9\textwidth}
+        \begin{tikzpicture}{text centered}
+            \tikzstyle{every node}=[rectangle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
+            \tikzstyle{edge}=[gray, line width=1mm]
+    
+            \node (b) at (8,0)    {\begin{tabular}{c} $b$  \\ $d^+:10$      \\ $d^-:\textcolor{blue}{\mathbf{15}}$      \end{tabular}};
+            \node (c) at (8,2)    {\begin{tabular}{c} $c$  \\ $d^+:10$      \\ $d^-:\textcolor{blue}{\mathbf{15}}$      \end{tabular}};
+            \node (d) at (10,2)   {\begin{tabular}{c} $d$  \\ $d^+:\textcolor{blue}{\mathbf{14}}$  \\ $d^-:11$      \end{tabular}};
+            \node (e) at (10,0)   {\begin{tabular}{c} $e$  \\ $d^+:\textcolor{blue}{\mathbf{14}}$  \\ $d^-:11$ \end{tabular}};
+            \node (f) at (16,0)   {\begin{tabular}{c} $f$  \\ $d^+:12$  \\ $d^-:13$ \end{tabular}};
+            \node (g) at (16,2)   {\begin{tabular}{c} $g$  \\ $d^+:12$  \\ $d^-:13$ \end{tabular}};
+
+            \node (a') at (4,1)   {\begin{tabular}{c} $a'$ \\ $d^+:9$       \\ $d^-:\infty$ \end{tabular}};
+            \node (b') at (6,0)   {\begin{tabular}{c} $b'$ \\ $d^+:\textcolor{blue}{\mathbf{15}}$  \\ $d^-:10$      \end{tabular}};
+            \node (c') at (6,2)   {\begin{tabular}{c} $c'$ \\ $d^+:\textcolor{blue}{\mathbf{15}}$  \\ $d^-:10$      \end{tabular}};
+            \node (d') at (12,2)  {\begin{tabular}{c} $d'$ \\ $d^+:11$      \\ $d^-:\textcolor{blue}{\mathbf{14}}$ \end{tabular}};
+            \node (e') at (12,0)  {\begin{tabular}{c} $e'$ \\ $d^+:11$      \\ $d^-:\textcolor{blue}{\mathbf{14}}$ \end{tabular}};
+            \node (f') at (14,0)  {\begin{tabular}{c} $f'$ \\ $d^+:\textcolor{blue}{\mathbf{13}}$      \\ $d^-:12$ \end{tabular}};
+            \node (g') at (14,2)  {\begin{tabular}{c} $g'$ \\ $d^+:\textcolor{blue}{\mathbf{13}}$      \\ $d^-:12$ \end{tabular}};
+    
+            \draw[edge] (b') -- (a') -- (c');
+            \draw[edge] (c) -- (d);
+            \draw[edge] (d') -- (g');
+            \draw[edge] (e') -- (f');
+            \draw[edge] (b) -- (e);
+
+            \tikzstyle{edge}=[red, line width=1.5mm]
+            \draw[edge] (b) -- (b');
+            \draw[edge] (c) -- (c');
+            \draw[edge] (d) -- (d');
+            \draw[edge] (e) -- (e');
+            \draw[edge] (f) -- (f');
+            \draw[edge] (g) -- (g');
+
+            \tikzstyle{edge}=[green, line width=1.5mm]
+            \draw[edge] (g) -- (f);
+        \end{tikzpicture}
+        \caption{Every other vertex gets a chance to update their values for $d^+$ or $d^-$, here marked in blue.}
+    \end{subfigure}
+    \label{figure:larger-blossom}
+    \caption{A larger blossom computed.}
+\end{figure}

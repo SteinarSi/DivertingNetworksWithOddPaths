@@ -280,7 +280,7 @@ fn get_base(u) {
     return basis[u];
 }
 \end{lstlisting}
-This would search through all vertices in the graph in linear time. We have found two potential improvements to this. The first version is to use an observer pattern, where each vertex $u$ keeps a record of the vertices that have $u$ as its base. Initially $dependents[u] = [~]$ for all of them. Then, when we update $u$'s base to $base$:
+This would search through all vertices in the graph in linear time. We have found two potential improvements to this. The first version is to use an Observer pattern, where each vertex $u$ keeps a record of the vertices that have $u$ as its base. Initially $dependents[u] = [~]$ for all of them. Then, when we update $u$'s base to $base$:
 
 \begin{lstlisting}[caption={Observer basis},label=Listing,mathescape=true]
 fn set_base(base, u) {
