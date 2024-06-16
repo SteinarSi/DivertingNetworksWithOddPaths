@@ -1,4 +1,4 @@
-Now that we have tried out some algorithms for \textsc{Shortest Odd Walk}, we are finally ready to add the restriction that each vertex is used at most once, and thus solve \textsc{Shortest Odd Path}. The algorithm we are about to present is based on Derigs' algorithm \cite{source:derigs_shortest_odd_path}, \todo{Improvements? Simplifications? Modifications? Improved presentation?}though with some improvements.
+Now that we have tried out some algorithms for \textsc{Shortest Odd Walk}, we are finally ready to add the restriction that each vertex is used at most once, and thus solve \textsc{Shortest Odd Path}. The algorithm we are about to present is based on Derigs' algorithm \cite{source:derigs_shortest_odd_path}, though with some minor improvements.
 
 \section{Reduction to \textsc{Shortest Alternating Path}}
 \label{subsection:reduction}
@@ -9,7 +9,7 @@ Consider first another related problem:
 {a weighted graph $G~:= (V, E, \from, \too, \weight)$, two vertices $s,t \in V$, and a set~$F \subseteq E$}
 {an $s$-$t$-path in $G$ of minimum cost, where every other edge used is in $F$}
 
-Derigs observed that \textsc{Shortest Odd Path} can be reduced to a special case of \textsc{Shortest Alternating Path}, by constructing what we will refer to as a $\emph{mirror graph}$. \todo{Dobbelsjekk dette, men \textsc{Shortest Alternating Path} er antagelig NP-komplett og vi burde nevne det før vi sier at vi skal løse et spesialtilfelle.}
+Derigs observed that \textsc{Shortest Odd Path} can be reduced to a special case of \textsc{Shortest Alternating Path}, by constructing what we will refer to as a \emph{mirror graph}. \todo{Dobbelsjekk dette, men \textsc{Shortest Alternating Path} er antagelig NP-komplett og vi burde nevne det før vi sier at vi skal løse et spesialtilfelle.}
 
 \begin{definition}[Mirror graph]
     \label{def:mirror-graph}

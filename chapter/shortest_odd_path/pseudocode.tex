@@ -307,7 +307,6 @@ fn get_base(u) {
     }
     return basis[u];
 }
-
 \end{lstlisting}
 
-Now we can update a base in constant time, with the tradeoff of potentially slower queries. Is this faster? Sometimes it is. We benchmark both versions and discuss the results in \Cref{subsubsection:testing-basis}.
+Now we can update a base in constant time, with the tradeoff of potentially slower queries. Is this faster? Well, sometimes it is. Contrary to Observer-based version, now we can set the new base of a vertex very quickly, but we spend more time on looking up the endpoints of potential blossom edges. It can therefore be preferred in sparse graphs, where the number of edges is small compared to the number of vertices. We benchmark both versions and discuss the results in \Cref{subsubsection:testing-basis}.

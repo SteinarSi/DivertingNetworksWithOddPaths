@@ -22,44 +22,52 @@
     \end{proof}        
 \end{theorem}
 
+\subsection{Other variants}
 A running time of $O(m \cdot \log n)$ means that the algorithm generally performs well on sparse graphs. We chose this algorithm with this running time because in \Cref{chapter:network-diversion} we will use it on planar graphs, where $m \leq 3n-6$, as shown in \Cref{corollary:m-leq-3n}. That means it runs in $O(n \log n)$ on planar graphs.
 
 We should note, however, that there are also other known polynomial algorithms for \textsc{Odd Shortest Path}. In the same paper that Derigs gave the algorithm of this chapter, he also gave another variant \cite{source:derigs_shortest_odd_path}. The main difference is that we drop the priority queues and use a list instead, and in the control loop instead search through the entire list and pop the element with the lowest priority. That search takes time at most $O(n)$, and can be done at most $n$ times, for a total running time of $O(n^2)$. If the input graphs are dense, then this $O(n^2)$ algorithm may be preferable to our $O(m \log n)$ algorithm.
 
 \todo[inline]{Nevn de andre variantene, og hvor fort de kan løses. $O(n+m)$ for uvektede grafer er ganske nice.}
 
-\subsection{Testing different data structures for the Basis}
+\subsection{Benchmarking different data structures for the Basis}
 \label{subsubsection:testing-basis}
-As explained in \Cref{subsection:basis-code}, we have developed multiple data structures to keep track of the basis of each vertex. One of them is based on the Observer pattern, the other on the well-known UnionFind structure. We have tested both on 6 different real-life graphs, and we show the results below. We ran our shortest odd path algorithm on each graph 40 times, 20 for each structure, and noted the fastest times for each. We have run a heuristic search to find the pairs of vertices that are the furthest away from each other in each graph so that the size of the graph accurately matches the size of the problem.
+As explained in \Cref{subsection:basis-code}, we have developed multiple data structures to keep track of the basis of each vertex. One of them is based on the Observer pattern, the other on the well-known UnionFind structure. We have tested both on seven sparse graphs from the real world, as well as on four synthetic Delaunay graphs, and show the results below. We ran our shortest odd path algorithm on each graph 40 times, 20 for each structure, and noted the average times for each. See \Cref{section:benchmarking} for more specific information about how these benchmarks are done.
 \begin{center}
     \begin{tabular}{|l | r | r | r | r | c|} 
-     \hline
-     Graph & n & m & Observer & UF & Change \\ [0.5ex] 
-     \hline\hline
-     Oldenburg & 6105 & 7035 & 5.1555 ms & 4.6955 ms & -11.277\%\\ 
-     \hline
-     San Joaquin County & 18263 & 23874 & 6.7046 ms & 5.7347 ms & -14.212\%\\
-     \hline
-     Cali Road Network & 21048 & 21693 & 19.280 ms & 19.119 ms & +0.1590\%\\
-     \hline
-     Musae Github \cite{graph:musae-github} & 37700 & 289003 & 21.375 ms & 19.438 ms & -2.4708\%\\
-     \hline
-     SF Road Network & 174956 & 223001 & 93.494 ms & 87.570 ms & -6.3364\%\\ [1ex] 
-     \hline
-     Pokec Social Network \cite{graph:soc-pokec} & 1632804 & 30622565 & 13.225 s & 13.774 s & +4.1543\%\\ [1ex] 
-     \hline
+        \hline
+        Graph & n & m & Observer & UF & Change \\ [0.5ex] 
+        \hline\hline
+        Power BCSPWR09 \cite{graph:bcspwr09} & 1723 & 2394 & 1.7ms & 1.5ms & -12\% \\
+        \hline
+        Oldenburg \cite{graph:oldenburg-sf-cal-san-roads-etc} & 6106 & 7035 & 5.6ms & 4.8ms & -14\%\\ 
+        \hline
+        San Joaquin County \cite{graph:oldenburg-sf-cal-san-roads-etc} & 18263 & 23874 & 22ms & 18ms & -18\%\\
+        \hline
+        Cali Road Network \cite{graph:oldenburg-sf-cal-san-roads-etc} & 21048 & 21693 & 21ms & 18ms & -14\%\\
+        \hline
+        Musae Github \cite{graph:musae-github} & 37700 & 289003 & 125ms & 123ms & -1.5\%\\
+        \hline
+        SF Road Network \cite{graph:oldenburg-sf-cal-san-roads-etc} & 174956 & 223001 & 225ms & 191ms & -15\%\\
+        \hline
+        Ca Citeseer \cite{graph:ca-citeseer} & 227321 & 814137 & 629ms & 608ms & -3\%\\
+        \hline
+        \hline
+        Delaunay 50k & 50000 & 149961 & 106ms & 96ms & -9\%\\
+        \hline
+        Delaunay 100k & 100000 & 299959 & 219ms & 205ms & -6\%\\
+        \hline
+        Delaunay 150k & 150000 & 449965 & 346ms & 315ms & -9\%\\
+        \hline
+        Delaunay 200k & 200000 & 599961 & 476ms & 449ms & -6\%\\
+        \hline
     \end{tabular}
 \end{center}
-\todo{Fjern desimaler og sånt, det er ikke så nøyaktig}
-\todo{cite the rest of the graphs}
 
-\todo[inline]{Also test on Delaunay graphs}
-
-The results are a little mixed. The UnionFind-based structure spends $4.2\%$ more time on the huge Pokec Social Network graph. However, it also either outperforms or does as well as the Observer-based structure on all the other graphs, at best shaving off $14.2\%$ of the time spent on the San Joaquin County graph. Since the UnionFind-based structure outperforms the Observer-based structure on average, we have chosen to use that one for the remainder of this thesis.
+As we can see, the UnionFind-based structure either outperforms or does as well as the Observer-based structure on all the graphs we tested. Most notably, we have an 18\% decrease in time spent on the graph of San Joaquin County. There seems to be pattern where it performs better if the graphs are sparser. This makes sense: the UnionFind-based structure updates the base of vertices very fast and spends more time to lookup bases for each potential blossom edge, while the Observer-based structure does the exact opposite. The focus of this thesis is to create an algorithm that performs well on sparse graphs, especially planar graphs, which is why we mostly test on sparse graphs. If we instead had implemented an algorithm for denser graphs, or just graphs in general, then testing on graphs with more edges would be more appropriate. Therefore we will use the UnionFind-based structure as the default in our codebase, as well as in the remainder of this thesis, and note to the reader that the other option might be better in denser graphs.
 
 \subsection{Running times on Delaunay graphs}
 \label{subsubsection:odd-path-delaunay-testing}
-To test how well the algorithm scales, we generate 200 Delaunay graphs of sizes 1000, 2000, 3000, and so on until 200 000. We explain how these graphs are generated in \Cref{subsection:delaunay}. For each graph, we have estimated a source and target with the maximum shortest path between them, and run our \textsc{Shortest Odd Path} algorithm. We take the median running time of 10 runs and plot the results below.
+To test how well the algorithm scales, we generate 200 Delaunay graphs of sizes 1000, 2000, 3000, and so on until 200k. We explain how these graphs are generated in \Cref{section:benchmarking}. For each graph, we have estimated a source and target with the maximum shortest path between them, and run our \textsc{Shortest Odd Path} algorithm. We take the median running time of 10 runs and plot the results below.
 
 The theoretical running time is $O(m \log n)$, and we have tried our best to come up with constants to create a running time function that matches our algorithm. In Delaunay graphs, we have that $m \leq 3n$, so we have set $m~:= 3n$ in this function.
 
@@ -67,8 +75,4 @@ The theoretical running time is $O(m \log n)$, and we have tried our best to com
     \includesvg[width=0.9\textwidth]{figures/bench_plots/shortest odd path.svg}
 \end{center}
 
-As we can see, the running times grow almost linearly as the inputs grow larger. The slight upward curve is barely noticeable. This is to be expected with a linearithmic theoretical running time.
-
-The focus of this thesis is to create an algorithm that performs well on sparse graphs, especially planar graphs, which is why we consider the running times mainly on sparse graphs. If we instead had implemented an algorithm for denser graphs, or just graphs in general, then testing on graphs with more edges would be more appropriate.
-
-With that said, we are very happy with these results. Being able to solve \textsc{Shortest Odd Path} on graphs of 100000 vertices in a fifth of a second is exactly the kind of performance we were hoping for.
+As we can see, the running times grow almost linearly as the inputs grow larger. The slight upward curve is barely noticeable, and this is to be expected with a linearithmic theoretical running time. We are very happy with these results. Being able to solve \textsc{Shortest Odd Path} on sparse graphs of 100k vertices in a fifth of a second is exactly the kind of performance we were hoping for. Now we can take this algorithm with us and solve our next challenge: \textsc{Network Diversion}.
