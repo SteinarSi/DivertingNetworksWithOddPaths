@@ -5,7 +5,7 @@ Now that we have tried out some algorithms for \textsc{Shortest Odd Walk}, we ar
 {a weighted graph $G$, two vertices $s,t \in V$}
 {an $s$-$t$-path in $G$ of minimum cost, that uses an odd number of edges}
 
-Even though it is deceptively simple to state the problem, solving it in practice is no easy task. In fact, \cite{source:even-cycles-in-directed-graphs} have shown that the problem is NP-complete in directed graphs, even without weights. Undirected graphs are also a challenge: \cite{source:odd-paths-cycles-and-tjoins} have proved that even if the weights are restricted to just $\{-1,1\}$, and even if we know that they do not form any negative cycles, the problem is still NP-complete in undirected graphs. 
+Even though it is deceptively simple to state the problem, solving it in practice is no easy task. In fact, \cite{source:even-cycles-in-directed-graphs} has shown that the problem is NP-complete in directed graphs, even without weights. Undirected graphs are also a challenge: \cite{source:odd-paths-cycles-and-tjoins} have proven that even if the weights are restricted to just $\{-1,1\}$, and even if we know that they do not form any negative cycles, \textsc{Shortest Odd Path} is still NP-complete in undirected graphs. 
 
 Knowing this, we instead direct our focus to a simpler variant: \textsc{Shortest Odd Path} on undirected graphs of non-negative weights. Unlike the other variants, this one \emph{is} possible to solve in polynomial time, as shown by \cite{source:even-cycles-in-directed-graphs}, \cite{source:odd-paths-cycles-and-tjoins}, \cite{source:derigs_shortest_odd_path} and others. The algorithm we are about to present is based on Derigs' algorithm \cite{source:derigs_shortest_odd_path}, along with some minor improvements.
 
@@ -18,7 +18,7 @@ Consider first another related problem:
 {a weighted graph $G~:= (V, E, \from, \too, \weight)$, two vertices $s,t \in V$, and a set~$F \subseteq E$}
 {an $s$-$t$-path in $G$ of minimum cost, where every other edge used is in $F$}
 
-Derigs observed that \textsc{Shortest Odd Path} can be reduced to a special case of \textsc{Shortest Alternating Path}, by constructing what we will refer to as a \emph{mirror graph}. \todo{Dobbelsjekk dette, men \textsc{Shortest Alternating Path} er antagelig NP-komplett og vi burde nevne det før vi sier at vi skal løse et spesialtilfelle.}
+Derigs observed that \textsc{Shortest Odd Path} can be reduced to a special case of \textsc{Shortest Alternating Path}, by constructing what we will refer to as a \emph{mirror graph}.
 
 \begin{definition}[Mirror graph]
     \label{def:mirror-graph}
@@ -100,11 +100,8 @@ For example, if our input $G$ for \textsc{Shortest Odd Path} is \Cref{figure:inp
 
 Now that we have two copies of most vertices in $M$, we run the risk of accidentally using the same vertex multiple times and ending up with a walk rather than a path in $G$, like with our algorithm in \Cref{chapter:odd-walk}. The key to note here is that $F$ is an (almost) perfect matching, and when we step on a vertex $u$ we have to cross the mirror and step on $\mirror(u)$ next. We will never visit $u$, go somewhere else, and then later come back to visit $\mirror(u)$. So both copies must be used directly after each other, and when we translate the path in $M$ into a path in $G$ the two copies are effectively merged into just a single step in the path. Therefore, vertices are never repeated and we always end up with a path.
 
-To see why the reduction necessarily yields an \emph{odd} path, simply observe that for each step we take in the graph, we have to go to the other side of the mirror. If we take another step, we get back to the same side again. It is only when we reach the target vertex $t$ that we can stop and not have to go to the other side. Therefore, to reach a neighbor of $t$, we must have used an even number of edges from the matching and an even number of edges not in the matching. When we take the last step to reach $t$ we have used an odd number of edges and thus found an odd path. If this alternating $s$-$t$-path in $M$ is the shortest such path, then the corresponding path in $G$ must also be the \emph{shortest} odd $s$-$t$-path in $G$. 
+To see why the reduction necessarily yields an \emph{odd} path, simply observe that for each step we take in the graph, we have to go to the other side of the mirror. If we take another step, we get back to the same side again. It is only when we reach the target vertex $t$ that we can stop and not have to go to the other side. Therefore, to reach a neighbor of $t$, we must have used an even number of edges from the matching and an even number of edges not in the matching. When we take the last step to reach $t$ we have used an odd number of edges and thus found an odd path. If this alternating $s$-$t$-path in $M$ is the shortest such path, then the corresponding path in $G$ must also be the \emph{shortest} odd $s$-$t$-path in $G$. The interested reader may see \cite{source:derigs_shortest_odd_path} for more details on this reduction.
 
-The interested reader may see \cite{source:derigs_shortest_odd_path} for more details on this reduction.
-
-\todo{Here we should mention that SAP is NP-complete, and who proved it, and it does not matter to us.}
 Ball and Derigs \cite{source:shortest_alternating_path} have shown how to efficiently solve \textsc{Shortest Alternating Path}. In their algorithms, subgraphs are shrunk into pseudonodes whenever possible, to make the graph smaller. The drawback is that certain pseudonodes must later be expanded again, which is the most complicated and expensive part of their algorithms. In our case, however, we have a special case of \textsc{Shortest Alternating Path}. The set $F$ is, except for $s$ and $t$, a perfect matching of $M$, and we will therefore never have to expand pseudonodes after shrinking them. The curious reader may visit \cite{source:shortest_alternating_path} for more on these algorithms and why our almost-perfect matching is a simpler case.
 
 \section{The idea for our \textsc{Shortest Alternating Path} algorithm}
@@ -376,9 +373,7 @@ After all these values have been set, we immediately scan all the vertices in $\
     \end{itemize}
 \end{minipage}
 
-The second reason we compute the blossom is that we no longer care much about the individual vertices in $\mathbb{B}$, and can shrink it into just the base $a'$. We will still scan vertices like $c$ from the queue as before, but whenever we are backtracking to compute blossoms we can skip the vertices in $\mathbb{B}$ entirely and go straight to the base $a'$ instead. In this example, in a few iterations, the algorithm will find either $(d',a')$ or $(d,a')$ as a blossom edge, with just $\{d,d'\}$ as its blossom and $a'$ as the base here as well. If we didn't contract the previous blossom, this new blossom would instead consist of $\{c',c,b,b',d,d'\}$, but we are already completely done with most of those vertices and computing all of it again would be a waste. Therefore we shrink them. 
-
-If the concerned reader is familiar with the more general \textsc{Shortest Alternating Path} algorithm \cite{source:shortest_alternating_path} or the original blossom algorithm \cite{source:blossom}, and worry that such pseudonodes often have to be expanded again, then remember that in our case the set $F$ is an almost-perfect matching and those cases never happen. \todo{trenger vi si dette? Droppe det? Formulere det annerledes?}
+The second reason we compute the blossom is that we no longer care much about the individual vertices in $\mathbb{B}$, and can shrink them into just the base $a'$. We will still scan vertices like $c$ from the queue as before, but whenever we are backtracking to compute blossoms we can skip the vertices in $\mathbb{B}$ entirely and go straight to the base $a'$ instead. In this example, in a few iterations, the algorithm will find either $(d',a')$ or $(d,a')$ as a blossom edge, with just $\{d,d'\}$ as its blossom and $a'$ as the base here as well. If we didn't contract the previous blossom, this new blossom would instead consist of $\{c',c,b,b',d,d'\}$, but we are already completely done with most of those vertices and computing all of it again would be a waste. Therefore we shrink them. 
 
 \begin{minipage}{.7\linewidth}
     \begin{tikzpicture}{text centered}
@@ -411,9 +406,11 @@ If the concerned reader is familiar with the more general \textsc{Shortest Alter
     \end{itemize}
 \end{minipage}
 
+If the concerned reader is familiar with the more general \textsc{Shortest Alternating Path} algorithm \cite{source:shortest_alternating_path} or the original blossom algorithm \cite{source:blossom}, and worry that such pseudonodes often have to be expanded again, then remember that in our case the set $F$ is an almost-perfect matching and those cases never happen.
+
 Let us now skip a few steps, until $t$ eventually reaches the front of the queue. At that point, we have that $d^-_t = 5$, and that is also the cost of the shortest odd path in our original input graph. To compute the exact path we can backtrack from $t$ to $s$ and then translate that path as described in Step \ref{point:translate_alternating_path} of our reduction in \Cref{subsection:reduction}. We end up with the path [$(s,a),(a,b),(b,c),(c,d),(d,t)$], which is the shortest odd $s$-$t$-path in the graph.
 
-The previous example had only two small blossoms, none of which illustrated vertices receiving values for $d^-$. See \Cref{figure:larger-blossom} for an example of a larger blossom. Notice how clear the structure is: we always have an odd cycle, where every other edge is in the matching, except for the two edges to the base. In this case every other vertex is missing values for either $d^+$ or $d^-$, as is common, though it may happen that a vertex in a blossom already has another tentative value for $d^-$.
+This example had only two small blossoms, none of which illustrated vertices receiving values for $d^-$. See \Cref{figure:larger-blossom} for another, larger example of a blossom. Observe how clear the structure is: we always have an odd cycle, where every other edge is in the matching, except for the two edges to the base. In this case every other vertex is missing values for either $d^+$ or $d^-$, as is common, though it may happen that a vertex in a blossom already has another tentative value for $d^-$.
 
 \begin{figure}[H]
     \centering

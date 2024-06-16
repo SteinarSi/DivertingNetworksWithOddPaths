@@ -1,6 +1,6 @@
 \section{Pseudocode}
 \label{section:odd-path-pseudocode}
-Here we give a detailed pseudocode of the algorithm, along with explanations of some of the finer details should the interested reader consider implementing the algorithm on their own. For all of the code in one piece without comments or alternatives, see \Cref{appendix:full-pseudocode}. And of course, to see the code implemented in Rust, see the GitHub repository \cite{source:codebase}.
+Here we show a detailed pseudocode of the algorithm, along with explanations of some of the finer details should the interested reader consider implementing the algorithm on their own. For the entirety of the code in one piece without comments or alternatives, see \Cref{appendix:full-pseudocode}. And of course, to see the code implemented in Rust, see the GitHub repository \cite{source:codebase}.
 
 \subsection{Initialization}
 First, we initialize the arrays we need, with appropriate default values for all vertices. The mirror graph is constructed as described in \Cref{def:mirror-graph}.
@@ -44,7 +44,7 @@ fn main(input_graph, s, t){
 }
 \end{lstlisting}
 
-Here is how to backtrack once we know we have the shortest odd path to $t$. Each of the edges from the mirror side must be replaced by their equivalents on the real side of the input graph. Note that unlike when backtracking blossoms, here we do not consider the base of the vertices. Here we pretend we never shrunk the blossoms into pseudonodes so that we find the entire path.
+Here is how to backtrack once we know we have the shortest odd path to $t$. Each of the edges from the mirror side must be replaced by their equivalents on the real side of the input graph. Note that unlike when backtracking blossoms, here we do \emph{not} consider the base of the vertices. Here we pretend that we never shrunk the blossoms into pseudonodes so that we find the entire path.
 \begin{lstlisting}[caption={Backtracking},label=Listing,mathescape=true]
 fn backtrack() {
     current_edge = pred[t];
@@ -63,7 +63,9 @@ fn backtrack() {
 \end{lstlisting}
 
 \subsection{The control loop}
-This is the main loop of the algorithm. Each iteration of the outer loop will either scan a vertex, handle a blossom edge, or conclude that we are done. Each vertex can be put on the queue many times, but we only want to scan it once, so we discard those that have already been scanned. Each blossom consists of many edges, each of which can be put on the queue, and those too we want to handle only once. If the two endpoints of a blossom edge already have the same basis, then we know they have already been computed as part of the same blossom and the edge may safely be discarded.
+This is the main loop of the algorithm. Each iteration of the outer loop will either scan a vertex, handle a blossom edge, or conclude that we are done. Each vertex can be put on the queue many times, but we only want to scan it once, so we discard those that have already been scanned. Likewise, each blossom consists of many edges, each of which can be put on the queue, but we only want to compute each blossom once. If the two endpoints of a potential blossom edge already have the same basis, then we know they have already been computed as part of the same blossom and the edge may safely be discarded.
+
+An important detail that is not clear in the pseudocode is that in the event of a tie in priority, a vertex should always be prioritized before a blossom edge. Otherwise we may get incorrect results. One way to ensure that is to give a specific implementation of how the Vertex and Blossom sum type is ordered.
 \begin{lstlisting}[caption={Control, the main loop},label=Listing,mathescape=true]
 fn control() -> bool {
     loop {
@@ -138,24 +140,24 @@ fn scan(u) {
 
 \subsection{Backtracking a blossom edge}
 \label{subsection:backtracking-blossom-edges}
-When we compute a blossom edge $e$, we need to compute the vertices and edges that make up the blossom. We do this by creating two paths, one from $\from(e)$ and one from $\too(e)$, and backtracking towards the source while alternating between matched and non-matched edges until the paths meet up at a common ancestor $b$. Then we set $b$ as the base, and the two paths make up our blossom.
+When we compute a blossom edge $e$, we need to compute the vertices and edges that make up the blossom. We do this by creating two paths, one starting in $\from(e)$, and the other starting in $\too(e)$. We backtrack both of them towards the source while alternating between matched and non-matched edges until the paths meet up at a common ancestor $b$. Then we set $b$ as the base, and the two paths make up our blossom.
 
-The naïve way would be to backtrack both paths individually all the way to the source, and only then see where they start to overlap. That would run in time linear to all the vertices in the graph and is a waste of time. A slightly better idea is to backtrack one path all the way to the source, and then backtrack the other only until it reaches a vertex in the other's path. That is better, but this too would run in linear time even if we somehow know beforehand which path needs the fewest edges.
+The naïve way would be to backtrack both paths individually all the way to the source, and only then see where they start to overlap. That would run in time linear to all the vertices in the graph and is a waste of time. A slightly better idea is to backtrack one path all the way to the source, and then backtrack the other only until it reaches a vertex in the other's path. That is better, but even if we somehow know beforehand which path needs the fewest edges this too would run in linear time.
 
-Instead, we iteratively backtrack both paths at the same time, and mark each vertex when added to a path. Whenever one path reaches a vertex that is already marked by the other, we mark that vertex as the base and delete the vertices in the other path that came after it. Now we can compute the vertices in the blossom in time linear to the number of vertices in the blossom, rather than the entire graph.
+Instead, we alternatingly backtrack both paths at the same time, and mark each vertex when added to a path. Whenever one path reaches a vertex that is already marked by the other, we mark that vertex as the base and delete the vertices in the other path that came after it. Now we can compute the vertices in the blossom in time linear to the number of vertices in the blossom, rather than the entire graph.
 
-Implementing this may sound difficult, tedious, and error-prone, but is actually way worse. Here are some reasons why this is the most complex part of any algorithm in this thesis, and why any programmer should take particular care when implementing this:
+Implementing this may sound difficult, tedious, and error-prone, but it is actually way worse. Here are some reasons why this is the most complex part of any algorithm in this thesis, and why any programmer should take particular care when implementing this:
 \begin{itemize}
     \item It is difficult to alternate through matched and non-matched edges, while simultaneously alternating between computing two separate paths.
-    \item The paths may not be of equal length, even if the graph is unweighted.
-    \item The endpoints we start backtracking from may already be the base if the blossom edge itself is adjacent to it.
-    \item The blossom edge should end up in both, either, or neither of the paths, depending on where it is in relation to the base.
-    \item The paths may not have any edges at all.
     \item We have to consider the basis of each vertex found on the paths rather than the vertex itself because we shrink each blossom into a pseudonode after computing it.
+    \item The paths may not have the same number of edges, even if the graph is unweighted.
+    \item The endpoints we start backtracking from may already be the base if the blossom edge is adjacent to it.
+    \item The blossom edge itself should end up in both, either, or neither of the paths, depending on where it is in relation to the base.
+    \item The paths may not have any edges at all.
     \item One path may reach the source vertex before the other path has reached $b$. Then we have to stop backtracking that path and focus on the other.
 \end{itemize}
 
-Here is our solution. The procedure returns the base and two lists of all the non-matched edges that make up blossom. That usually includes the blossom edge itself, which is part of both paths unless it is adjacent to the base itself.
+Here is our solution. The procedure returns the base and two lists of all the non-matched edges that make up the blossom. That usually includes the blossom edge itself, which is part of both paths unless it is adjacent to the base.
 \begin{lstlisting}[caption={Backtrack blossom},label=Listing,mathescape=true]
 fn backtrack_blossom(edge) {
     p1 = [ reverse(edge) ];
@@ -173,7 +175,7 @@ fn backtrack_blossom(edge) {
             u = get_basis(from(e));
             p1.push(e);
 
-            // Ff true, then $u$ is the base
+            // If true, then $u$ is the base
             if in_current_blossom[u] { 
                 p1.pop();
                 in_current_blossom[u] = false;
@@ -200,7 +202,7 @@ fn backtrack_blossom(edge) {
 The last if-statement closely resembles the first, except with other variables, so we have omitted it here for brevity. See \Cref{appendix:full-pseudocode} for the full version.
 
 \subsection{Computing blossoms}
-To compute a blossom, we first have to determine its base and its edges, as discussed in the previous section. Then we can use the edges in the paths to potentially improve values for $d^+$ and $d^-$, and to set the new base for all the involved vertices. Afterward, we scan all the vertices that we now gave $d^+$ values.
+To compute a blossom, we first have to determine its base and its edges, as discussed in the previous section. Then we can use the edges in the paths to potentially improve values for $d^+$ and $d^-$, and to set the new base for all the vertices involved. Afterward, we scan all the vertices that we now gave $d^+$ values.
 
 Two lists of edges can be processed simultaneously without issues, but we treat them separately here to avoid spending time on concatenating them. Setting blossom values and setting the basis can also be done at the same time, but we split it into two separate functions to improve readability. However, the scans may only be performed after all the vertices in both lists have received their new basis.
 \begin{lstlisting}[caption={Blossom},label=Listing,mathescape=true]
@@ -309,4 +311,4 @@ fn get_base(u) {
 }
 \end{lstlisting}
 
-Now we can update a base in constant time, with the tradeoff of potentially slower queries. Is this faster? Well, sometimes it is. Contrary to Observer-based version, now we can set the new base of a vertex very quickly, but we spend more time on looking up the endpoints of potential blossom edges. It can therefore be preferred in sparse graphs, where the number of edges is small compared to the number of vertices. We benchmark both versions and discuss the results in \Cref{subsubsection:testing-basis}.
+Now we can update a base in constant time, with the tradeoff of potentially slower queries. Is this faster? Well, sometimes it is. Contrary to Observer-based version, now we can set the new base of a vertex very quickly, but we spend more time looking up the endpoints of potential blossom edges. It may therefore be preferable in sparse graphs, where the number of edges is small compared to the number of vertices. We benchmark both versions and discuss the results in \Cref{subsubsection:testing-basis}.

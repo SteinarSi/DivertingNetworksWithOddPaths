@@ -1,6 +1,6 @@
 \section{Graphs}
 \label{section:graphs}
-In the study of algorithms, we often use graphs as an abstract structure to represent the fundamental algorithmic problem without distractions. For example, when you want to find the fastest route to walk to the study hall, or if you want the cheapest combination of flights to take you to Kuala Lumpur, then both questions are the same problem. If we remove all the details that are unnecessary to solve the problem, like the names of the airports and whether we are walking or flying, then we end up with a graph. This section defines various concepts related to graphs, and \Cref{section:graph-problems} will formalize the underlying problem of this example as well as some other graph problems. Later, \Cref{section:planar-graphs} defines the concept of \emph{planar} graphs.
+In the study of algorithms, we often use graphs as an abstract structure to represent the fundamental algorithmic problem without distractions. For example, maybe we want to find the fastest route to walk to the study hall, or perhaps we want the cheapest combination of flights to take you to Kuala Lumpur. Both questions are really the same problem. If we remove all the details that are unnecessary to solve it, like the names of the airports and whether we are walking or flying, then we end up with a graph. This section defines various concepts related to graphs, and \Cref{section:graph-problems} will formalize the underlying problem of both of these examples as well as some other graph problems. Later, \Cref{section:planar-graphs} defines the concept of \emph{planar} graphs.
 
 \begin{definition}[Graph]
     A \emph{graph} $G := (V, E, \from, \too)$ is given by
@@ -12,9 +12,9 @@ In the study of algorithms, we often use graphs as an abstract structure to repr
 \end{itemize}
 \end{definition}
 
-We also define the convenience function $\reverse~: E \rightarrow E$. For an edge $e \in E$, $\reverse(e)$ is the edge going in the opposite direction, where $\from(e) = \too(\reverse(e))$, and $\too(e) = \from(\reverse(e))$.
+For convenience, we also define the function $\reverse~: E \rightarrow E$. For an edge $e \in E$, $\reverse(e)$ is the edge going in the opposite direction, where $\from(e) = \too(\reverse(e))$ and $\too(e) = \from(\reverse(e))$.
 
-This definition of a graph is a little unusual. A more common definition is to instead define $G~:= (V, E)$, where the edges are a subset of the cartesian product of the vertices: $E \subseteq V \times V$. The problem with this definition is that we cannot consider graphs with parallel edges, which we will need to do later in the thesis.
+This definition of a graph is a little unusual. A more common definition is to instead define $G~:= (V, E)$, where the edges are a subset of the cartesian product of the vertices: $E \subseteq V \times V$. A problem with this definition is that we cannot consider graphs with parallel edges, which is something we will need to be able to do later in the thesis.
 
 If we are working with multiple graphs at once, say two graphs $G$ and $H$, then writing just $V$ is ambiguous. In such cases, we instead denote $V(G)$ and $V(H)$ as $G$'s and $H$'s vertices, respectively. The same goes for $E(G)$ and $E(H)$ for their edges.
 
@@ -44,7 +44,7 @@ In code, it is usually more useful to consider neighborhoods in terms of edges. 
     If $s := \from(e_1)$ and $t := \too(e_k)$, we say that $P$ is an \emph{$s$-$t$-walk} in $G$.
 \end{definition}
 
-Another way to denote a walk is to give a sequence of vertices in the order they are visited: $[u_1, u_2, ..., u_n]$, for $u_i \in V$. This works as long as the graph is simple, if there are multiple edges from $u_i$ to $u_{i+1}$, then the walk is ambiguous.
+Another way to denote a walk is to use a sequence of vertices in the order they are visited: $[u_1, u_2, ..., u_n]$, for $u_i \in V$. This works as long as the graph is simple, if there are multiple edges from $u_i$ to $u_{i+1}$, then the walk is ambiguous.
 
 \begin{definition}[Path]
     A \emph{path} $P~:= [e_1, e_2, ..., e_k]$ in a graph $G$ is a walk with the extra requirement that each vertex is used at most once: $\forall i, j \in \{1,2,..,k\}~: j \neq {i+1} \rightarrow \too(e_i) \neq \from(e_j)$.

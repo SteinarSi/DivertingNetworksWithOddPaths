@@ -1,14 +1,14 @@
 \section{Intuition}
 \subsection{Detour paths}
 \label{section:subdividing-detours}
-Before we reveal the algorithm for Network Diversion, we will first look at a curious little problem that we call \textsc{Shortest Detour Path}. Instead of deleting edges to force all paths to go through a certain edge, we want to purposefully pass through that edge and look for the shortest path that does. Perhaps we are going on a road trip, and we want to stop at a specific gas station along a road to say hi to our friend Mike who works there. And because this is a road trip, we do not want to drive along the same roads multiple times, that would be boring.
+Before we reveal the algorithm for Network Diversion, we will first look at a curious little problem that we call \textsc{Shortest Detour Path}. Instead of deleting edges to force all paths to go through a certain edge, we want to purposefully pass through that edge and look for the shortest path that does. Perhaps we are going on a road trip, and we want to stop at a specific gas station along the road to say hi to our friend Mike who works there. And because this is a road trip, we do not want to drive along the same roads multiple times, that would be boring.
 
 \problem
 {Shortest Detour Path}
 {a graph $G$, two vertices $s,t \in V$, and a 'detour' edge $d \in E$}
 {an $s$-$t$-path in $G$ of minimum cost, that goes through the detour $d$}
 
-There is no obvious way to solve \textsc{Shortest Detour Path}. One might attempt to concatenate the shortest $s$-$\from(d)$-path and the shortest $\too(d)$-$t$-path, but those two paths might overlap and reuse the same vertices, and therefore would their concatenation not necessarily be a path but instead merely a walk. The classical solution is to use a maximum flow algorithm like Edmonds-Karp \cite{source:edmonds-karp-algorithn} to find those two paths, to enforce that they are vertex-disjoint. It works, but is slower and more complicated compared to what we are about to do.
+There is no obvious way to solve \textsc{Shortest Detour Path}. One might attempt to concatenate the shortest $s$-$\from(d)$-path and the shortest $\too(d)$-$t$-path, but those two paths might overlap and reuse the same vertices, and therefore would their concatenation not necessarily be a path but instead a mere walk. The classical solution is to use a maximum flow algorithm like Edmonds-Karp \cite{source:edmonds-karp-algorithn} to find those two paths, to enforce that they are vertex-disjoint. It works, but is slower and more complicated compared to what we are about to do.
 
 Instead, we create a new graph $H$, by subdividing all edges in $G$ \emph{except} $d$, as seen in \Cref{figure:subdividing-detours}. The key point to see here is that any odd $s$-$t$-path in $H$ must necessarily go through the detour, otherwise it would not be odd. We can visualize it by 'stepping through' the edges in $H$. If we start on our right leg, then in the beginning every time we reach a vertex that is also in $G$, we reach it by stepping on our left leg. That continues until we use the detour edge, and from then on we step on all vertices from $G$ using our right leg. If we require that we end at $t$ on our right leg, then the path must be odd, and any odd path must go through the detour. Therefore we can simply run our \textsc{Shortest Odd Path} algorithm on $H$, and if such a path exists we can reverse the subdivision of the edges in the path and the result is the \textsc{Shortest Detour Path} in $G$.
 
@@ -89,13 +89,13 @@ The problem is that we have no way of knowing whether we have used the marked ed
 \subsection{From a dual path to a real diversion}
 Remember, we want to find a minimum minimal $s$-$t$-cut in $G$ that includes the diversion edge~$d$.
 
-Instead of looking for a minimal cut in $G$, let us look for a simple cycle in the dual graph $G^\star$, as is explained to be equivalent in \Cref{fact:dual-cycle-is-real-cut}. We can do this by finding a path in $G^\star$ from and to the left and right faces of $d$, without using $d^\star$ itself, and then adding $d^\star$ at the end to complete the cycle. If the path found is also the shortest such path, then it corresponds to the \emph{minimum} minimal cut in $G$ that uses $d$, though it is not necessarily an $s$-$t$-cut.
+Instead of looking for a minimal cut in $G$, let us look for a simple cycle in the dual graph $G^\star$, as is explained to be equivalent in \Cref{fact:dual-cycle-is-real-cut}. We can do this by finding a path in $G^\star$ that goes from and to the left and right faces of $d$, without using $d^\star$ itself, and then adding $d^\star$ at the end to complete the cycle. If the path found is also the shortest such path, then it corresponds to the \emph{minimum} minimal cut in $G$ that uses $d$, though it is not necessarily an $s$-$t$-cut.
 
-To force $s$ and $t$ to end up in different components after the cut, we need some additional details. First, we find any $s$-$t$-path in $G$, not necessarily the shortest path. Then we subdivide all the edges in the dual graph \emph{except} those who cross edges on the found $s$-$t$-path. Now we can look for the shortest \emph{odd} path from and two the left and right faces of $d$ in the subdivided dual graph, and add $d^\star$ at the end to make it a cycle. Like before, this corresponds to a minimum minimal cut in $G$ that uses $d$, but now it must also cross the edges in the found $s$-$t$-path an odd number of times, as explained in \Cref{section:subdividing-detours}. 
+To force $s$ and $t$ to end up in different components after the cut, we need some additional details. First, we find any $s$-$t$-path in $G$, not necessarily the shortest path. Then we subdivide all the edges in the dual graph \emph{except} those who cross edges on the found $s$-$t$-path. Now we can look for the shortest \emph{odd} path that goes from and to the left and right faces of $d$ in the subdivided dual graph, and add $d^\star$ at the end to make it a cycle. Like before, this corresponds to a minimum minimal cut in $G$ that uses $d$, but now it must also cross the edges in the found $s$-$t$-path an odd number of times, as explained in \Cref{section:subdividing-detours}. 
 
 This cycle, and the found $s$-$t$-path, can be interpreted as curves in our embedding. The cycle can additionally be interpreted as a Jordan curve, and by the Jordan Curve Theorem, the cycle divides the plane into an 'inside' and an 'outside'. Since the curve of the $s$-$t$-path crosses the curve of the cycle an odd number of times, exactly one of its endpoints must be on the inside, as illustrated in \Cref{figure:jordan-curve-cuts}. The endpoints are $s$ and $t$, meaning that $s$ and $t$ end up in different components after the cut. It follows that this cut is an $s$-$t$-cut in $G$, specifically a minimum minimal $s$-$t$-cut in $G$ that uses $d$.
 
-This is the main idea for our algorithm. Note that we did not come up with this idea ourselves, but have to thank Pål Grønås Drange \cite{source:pål} for his as for now unpublished work on the subject.
+This is the main idea for our algorithm. It should be noted that we did not come up with this idea ourselves, but have to thank Pål Grønås Drange \cite{source:pål} for his as for now unpublished work on the subject.
 
 \begin{figure}[H]
     \centering
@@ -184,7 +184,7 @@ First, we find any $s$-$t$-path that does not use the diversion edge. It does no
 \end{tikzpicture}
 \end{center}
 
-Next up is to compute the dual graph. We delete the dual edge that crosses the diversion edge and color the rest in blue here. Note that we have omitted the outside face and its edges in this visualization, otherwise we would have a much too cluttered illustration.
+Next up is to compute the dual graph. We delete the dual edge that crosses the diversion edge and color the rest in blue. Note that we have omitted the outside face and its edges in this visualization, otherwise we would have a much too cluttered illustration.
 
 \begin{center}
 \begin{tikzpicture}
@@ -293,7 +293,7 @@ Now we subdivide all the edges in the dual graph except those that cross the pat
 \end{tikzpicture}
 \end{center}
 
-The last step is to find the shortest odd path in the subdivided dual graph from and to the regions to the left and right of the diversion edge, using our newfound favorite algorithm. If we find such a path, we know that it must cross the $s$-$t$-path in green an odd number of times. If we add the dual equivalent of the diversion edge to the path to create a cycle, then we know that this cycle goes around either $s$ or $t$, but not both. We illustrate the cycle below, this time in orange in an attempt to not run out of colors.
+The last step is to find the shortest odd path in the subdivided dual graph from and to the regions to the left and right of the diversion edge, using our newfound favorite algorithm. If we find such a path, we know that it must cross the $s$-$t$-path in green an odd number of times. If we add the dual equivalent of the diversion edge to the path to create a cycle, then we know that this cycle goes around either $s$ or $t$, but not both. We illustrate the cycle in orange below.
 
 \begin{center}
 \begin{tikzpicture}
@@ -358,7 +358,7 @@ The last step is to find the shortest odd path in the subdivided dual graph from
 \end{tikzpicture}
 \end{center}
 
-With this, we finally have our diversion set. Simply delete the edges in the original graph that cross the cycle we found and colored in orange, except for the diversion edge of course. We end up with a graph where all $s$-$t$-paths must pass through the diversion edge. The problem is solved.
+With this, we finally have our diversion set. Simply delete the edges in the original graph that cross the cycle in orange, except for the diversion edge of course. We end up with a graph where all $s$-$t$-paths must pass through the diversion edge. The problem is solved.
 
 \begin{center}
 \begin{tikzpicture}
