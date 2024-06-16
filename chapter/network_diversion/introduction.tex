@@ -16,7 +16,7 @@ See \Cref{figure:diversion-attempts} for examples. \Cref{subfigure:invalid-diver
     \begin{subfigure}{.3\textwidth}
         \begin{tikzpicture}
             \tikzstyle{every node}=[circle, fill=lightgray, draw=black, inner sep=2pt, minimum size=1.5em, font=\footnotesize, text=black]
-            \tikzstyle{edge}=[gray, line width=1.5mm]
+            \tikzstyle{edge}=[gray, line width=1mm]
        
             \node (s) at (0,1) {$s$};
             \node (a) at (1,2) {};
@@ -29,14 +29,14 @@ See \Cref{figure:diversion-attempts} for examples. \Cref{subfigure:invalid-diver
             \draw[edge] (b) -- (s) -- (a) -- (b) -- (t) -- (c) -- (e);
             \draw[edge] (c) -- (a) -- (d);
        
-            \tikzstyle{edge}=[red, line width=1mm]
+            \tikzstyle{edge}=[red, line width=1.3mm]
             \draw[edge] (d) -- (e);
 
-            \tikzstyle{edge}=[blue, line width=1mm]
+            \tikzstyle{edge}=[orange, line width=1.3mm]
             \draw[edge] (s) -- (b);
             \draw[edge] (a) -- (b) -- (t);
         \end{tikzpicture}
-        \caption{Invalid, there are still paths that don't go through the diversion edge}
+        \caption{Invalid, there are still paths that don't go through the diversion edge after deletion}
         \label{subfigure:invalid-diversion1}
     \end{subfigure}\hfill%
     \begin{subfigure}{.3\textwidth}
@@ -55,14 +55,14 @@ See \Cref{figure:diversion-attempts} for examples. \Cref{subfigure:invalid-diver
             \draw[edge] (b) -- (s) -- (a) -- (b) -- (t) -- (c) -- (e);
             \draw[edge] (c) -- (a) -- (d);
        
-            \tikzstyle{edge}=[red, line width=1mm]
+            \tikzstyle{edge}=[red, line width=1.3mm]
             \draw[edge] (d) -- (e);
 
-            \tikzstyle{edge}=[blue, line width=1mm]
+            \tikzstyle{edge}=[orange, line width=1.3mm]
             \draw[edge] (b) -- (t);
             \draw[edge] (c) -- (t);
         \end{tikzpicture}
-        \caption{Invalid, the diversion set also blocks all paths that use the diversion edge}
+        \caption{Invalid, deleting the diversion set also blocks all paths that use the diversion edge}
         \label{subfigure:invalid-diversion2}
     \end{subfigure}\hfill%
     \begin{subfigure}{.3\textwidth}
@@ -81,17 +81,17 @@ See \Cref{figure:diversion-attempts} for examples. \Cref{subfigure:invalid-diver
             \draw[edge] (b) -- (s) -- (a) -- (b) -- (t) -- (c) -- (e);
             \draw[edge] (c) -- (a) -- (d);
        
-            \tikzstyle{edge}=[red, line width=1mm]
+            \tikzstyle{edge}=[red, line width=1.3mm]
             \draw[edge] (d) -- (e);
 
-            \tikzstyle{edge}=[blue, line width=1mm]
+            \tikzstyle{edge}=[orange, line width=1.3mm]
             \draw[edge] (b) -- (t);
             \draw[edge] (a) -- (c);
         \end{tikzpicture}
-        \caption{Valid, the diversion set funnels all traffic through the diversion}
+        \caption{Valid, deleting the diversion set funnels all traffic through the diversion}
         \label{subfigure:valid-diversion}
     \end{subfigure}
-    \caption{Valid and invalid diversions, attempting to force all $s$-$t$ paths to go through the diversion edge in red by deleting the diversion set in blue.}
+    \caption{Valid and invalid diversions, attempting to force all $s$-$t$ paths to go through the diversion edge in red by deleting the diversion set in orange.}
     \label{figure:diversion-attempts}
 \end{figure}
 

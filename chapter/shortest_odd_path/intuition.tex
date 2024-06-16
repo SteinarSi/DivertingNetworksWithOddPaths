@@ -147,7 +147,7 @@ We visualize it in the diagram below.
     \end{itemize}
 \end{minipage}
 
-The first and only vertex in the queue is $a$. We pop it, set $d^+_{a'}~:= d^-_a$, and 'scan'~$a'$. By that, we mean to look at each neighbor $e \in G[a']$, and see if our new value $d^+_{a'} + \weight(e)$ is better than the previous value $d^-_{\too(edge)}$. That is the case for both~$b'$ and~$c'$, so we update their values and add them to the queue. Their priorities in the queue are equal to twice their $d^-$ values, which is $2 \cdot 2 = 4$ for both of them.
+The first and only vertex in the queue is $a$. We pop it, set $d^+_{a'}~:= d^-_a$, and 'scan'~$a'$. By that, we mean to look at each neighbor $e \in G[a']$, and see if our new value $d^+_{a'} + \weight(e)$ is better than the previous value $d^-_{\too(e)}$. That is the case for both~$b'$ and~$c'$, so we update their values and add them to the queue. Their priorities in the queue are equal to twice their $d^-$ values, which is $2 \cdot 2 = 4$ for both of them.
 
 \begin{minipage}{.75\linewidth}
     \begin{tikzpicture}{text centered}
@@ -161,9 +161,9 @@ The first and only vertex in the queue is $a$. We pop it, set $d^+_{a'}~:= d^-_a
         \node (d) at (8,0)    {\begin{tabular}{c} $d$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
         \node (t) at (10,1)   {\begin{tabular}{c} $t$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
 
-        \node (a') at (2,5)   {\begin{tabular}{c} $a'$ \\ $d^+:1$       \\ $d^-:\infty$ \end{tabular}};
-        \node (b') at (4,3.5) {\begin{tabular}{c} $b'$ \\ $d^+:\infty$  \\ $d^-:2$      \end{tabular}};
-        \node (c') at (6,5)   {\begin{tabular}{c} $c'$ \\ $d^+:\infty$  \\ $d^-:2$      \end{tabular}};
+        \node (a') at (2,5)   {\begin{tabular}{c} $a'$ \\ $d^+:\textcolor{blue}{\mathbf{1}}$       \\ $d^-:\infty$ \end{tabular}};
+        \node (b') at (4,3.5) {\begin{tabular}{c} $b'$ \\ $d^+:\infty$  \\ $d^-:\textcolor{blue}{\mathbf{2}}$      \end{tabular}};
+        \node (c') at (6,5)   {\begin{tabular}{c} $c'$ \\ $d^+:\infty$  \\ $d^-:\textcolor{blue}{\mathbf{2}}$      \end{tabular}};
         \node (d') at (8,3)   {\begin{tabular}{c} $d'$ \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
    
         \draw[edge] (s) -- (a) -- (c) -- (d) -- (t);
@@ -197,8 +197,8 @@ The next vertex in the queue is $b'$, so we set $d^+_b~:= d^-_{b'}$ and scan $b'
    
         \node (s) at (0,1)    {\begin{tabular}{c} $s$  \\ $d^+:0$       \\ $d^-:\infty$ \end{tabular}};
         \node (a) at (2,2)    {\begin{tabular}{c} $a$  \\ $d^+:\infty$  \\ $d^-:1$      \end{tabular}};
-        \node (b) at (4,0)    {\begin{tabular}{c} $b$  \\ $d^+:2$       \\ $d^-:\infty$ \end{tabular}};
-        \node (c) at (6,2)    {\begin{tabular}{c} $c$  \\ $d^+:\infty$  \\ $d^-:3     $ \end{tabular}};
+        \node (b) at (4,0)    {\begin{tabular}{c} $b$  \\ $d^+:\textcolor{blue}{\mathbf{2}}$       \\ $d^-:\infty$ \end{tabular}};
+        \node (c) at (6,2)    {\begin{tabular}{c} $c$  \\ $d^+:\infty$  \\ $d^-:\textcolor{blue}{\mathbf{3}}     $ \end{tabular}};
         \node (d) at (8,0)    {\begin{tabular}{c} $d$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
         \node (t) at (10,1)   {\begin{tabular}{c} $t$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
 
@@ -239,8 +239,8 @@ Now $c'$ is the next in the queue, we set $d^+_c~:= d^-c'$ and scan $c'$. This i
         \node (s) at (0,1)    {\begin{tabular}{c} $s$  \\ $d^+:0$       \\ $d^-:\infty$ \end{tabular}};
         \node (a) at (2,2)    {\begin{tabular}{c} $a$  \\ $d^+:\infty$  \\ $d^-:1$      \end{tabular}};
         \node (b) at (4,0)    {\begin{tabular}{c} $b$  \\ $d^+:2$       \\ $d^-:3$      \end{tabular}};
-        \node (c) at (6,2)    {\begin{tabular}{c} $c$  \\ $d^+:2$       \\ $d^-:3$      \end{tabular}};
-        \node (d) at (8,0)    {\begin{tabular}{c} $d$  \\ $d^+:\infty$  \\ $d^-:4$      \end{tabular}};
+        \node (c) at (6,2)    {\begin{tabular}{c} $c$  \\ $d^+:\textcolor{blue}{\mathbf{2}}$       \\ $d^-:3$      \end{tabular}};
+        \node (d) at (8,0)    {\begin{tabular}{c} $d$  \\ $d^+:\infty$  \\ $d^-:\textcolor{blue}{\mathbf{4}}$      \end{tabular}};
         \node (t) at (10,1)   {\begin{tabular}{c} $t$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
 
         \node (a') at (2,5)   {\begin{tabular}{c} $a'$ \\ $d^+:1$       \\ $d^-:\infty$ \end{tabular}};
@@ -338,9 +338,9 @@ After all these values have been set, we immediately scan all the vertices in $\
         \node (t) at (11,4)   {\begin{tabular}{c} $t$  \\ $d^+:\infty$  \\ $d^-:\infty$ \end{tabular}};
 
         \node (a') at (4,1)   {\begin{tabular}{c} $a'$ \\ $d^+:1$       \\ $d^-:\infty$ \end{tabular}};
-        \node (b') at (6,0)   {\begin{tabular}{c} $b'$ \\ $d^+:3$       \\ $d^-:2$      \end{tabular}};
-        \node (c') at (6,2)   {\begin{tabular}{c} $c'$ \\ $d^+:3$       \\ $d^-:2$      \end{tabular}};
-        \node (d') at (7,4)   {\begin{tabular}{c} $d'$ \\ $d^+:\infty$  \\ $d^-:4$      \end{tabular}};
+        \node (b') at (6,0)   {\begin{tabular}{c} $b'$ \\ $d^+:\textcolor{blue}{\mathbf{3}}$       \\ $d^-:2$      \end{tabular}};
+        \node (c') at (6,2)   {\begin{tabular}{c} $c'$ \\ $d^+:\textcolor{blue}{\mathbf{3}}$       \\ $d^-:2$      \end{tabular}};
+        \node (d') at (7,4)   {\begin{tabular}{c} $d'$ \\ $d^+:\infty$  \\ $d^-:\textcolor{blue}{\mathbf{4}}$      \end{tabular}};
    
         \draw[edge] (s) -- (a) -- (a') -- (c') -- (d');
         \draw[edge] (a') -- (b');
@@ -369,7 +369,7 @@ After all these values have been set, we immediately scan all the vertices in $\
 
 The second reason we compute the blossom is that we no longer care much about the individual vertices in $\mathbb{B}$, and can shrink it into just the base $a'$. We will still scan vertices like $c$ from the queue as before, but whenever we are backtracking to compute blossoms we can skip the vertices in $\mathbb{B}$ entirely and go straight to the base $a'$ instead. In this example, in a few iterations, the algorithm will find either $(d',a')$ or $(d,a')$ as a blossom edge, with just $\{d,d'\}$ as its blossom and $a'$ as the base here as well. If we didn't contract the previous blossom, this new blossom would instead consist of $\{c',c,b,b',d,d'\}$, but we are already completely done with most of those vertices and computing all of it again would be a waste. Therefore we shrink them. 
 
-If the reader is familiar with the more general \textsc{Shortest Alternating Path} algorithm \cite{source:shortest_alternating_path} or the original blossom algorithm \cite{source:blossom}, and worry that such pseudonodes often have to be expanded again, then remember that in our case the set $F$ is an almost-perfect matching and those cases never happen. \todo{trenger vi si dette? Droppe det? Formulere det annerledes?}
+If the concerned reader is familiar with the more general \textsc{Shortest Alternating Path} algorithm \cite{source:shortest_alternating_path} or the original blossom algorithm \cite{source:blossom}, and worry that such pseudonodes often have to be expanded again, then remember that in our case the set $F$ is an almost-perfect matching and those cases never happen. \todo{trenger vi si dette? Droppe det? Formulere det annerledes?}
 
 \begin{minipage}{.7\linewidth}
     \begin{tikzpicture}{text centered}
