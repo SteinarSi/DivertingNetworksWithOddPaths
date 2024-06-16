@@ -1,11 +1,4 @@
 \section{Analysis}
-% The algorithm does not solve \textsc{Shortest Odd Path} in the absolute general case but rather has some limitations. These are: 
-% \begin{itemize}
-%     \item The input graph must be undirected, otherwise we cannot use blossoms the way we do.
-%     \item The edges must have either non-negative weights or no weights at all, otherwise we cannot guarantee that $d^+_u$ and $d^-_u$ are correct when we scan a vertex $u$.
-% \end{itemize}
-% \todo{Should this be written somewhere else?}
-
 \begin{theorem}
     Let $(G,s,t)$ be an instance of \textsc{Shortest Odd Path}, let $n~:= |V|$ and let $m~:= |E|$. \\
     Claim: the algorithm runs in time at most $O(m \cdot \log m)$, or $O(m \cdot \log n)$ of the graph is simple.
@@ -25,9 +18,11 @@
 \subsection{Other variants}
 A running time of $O(m \cdot \log n)$ means that the algorithm generally performs well on sparse graphs. We chose this algorithm with this running time because in \Cref{chapter:network-diversion} we will use it on planar graphs, where $m \leq 3n-6$, as shown in \Cref{corollary:m-leq-3n}. That means it runs in $O(n \log n)$ on planar graphs.
 
-We should note, however, that there are also other known polynomial algorithms for \textsc{Odd Shortest Path}. In the same paper that Derigs gave the algorithm of this chapter, he also gave another variant \cite{source:derigs_shortest_odd_path}. The main difference is that we drop the priority queues and use a list instead, and in the control loop instead search through the entire list and pop the element with the lowest priority. That search takes time at most $O(n)$, and can be done at most $n$ times, for a total running time of $O(n^2)$. If the input graphs are dense, then this $O(n^2)$ algorithm may be preferable to our $O(m \log n)$ algorithm.
+We should note, however, that there are also other known polynomial algorithms for \textsc{Shortest Odd Path}. In the same paper that Derigs gave the algorithm of this chapter, he also gave another variant \cite{source:derigs_shortest_odd_path}. The main difference is that we drop the priority queues and use a list instead, and in the control loop instead search through the entire list and pop the element with the lowest priority. That search takes time at most $O(n)$, and can be done at most $n$ times, for a total running time of $O(n^2)$. If the input graphs are dense, then this $O(n^2)$ algorithm may be preferable to our $O(m \log n)$ algorithm.
 
-\todo[inline]{Nevn de andre variantene, og hvor fort de kan løses. $O(n+m)$ for uvektede grafer er ganske nice.}
+In the case where the graphs are unweighted, there is an even better algorithm. \cite{source:the-even-path-problem-for-graphs-and-digraphs} give an algorithm that runs in the lightning fast $O(n + m)$ in undirected unweighted graphs.
+
+All this talk about odd paths might cause the curious reader to ask, what about even paths? The problem of \textsc{Shortest Even Path} is, in fact, equivalent: to find the shortest \emph{even} $s$-$t$-path in a graph, simply add a new vertex $t'$ along with an edge from $t$ to $t'$, and then find the shortest odd $s$-$t'$-path. The same reduction can of course be used the other way around, should we prefer to solve \textsc{Shortest Even Path} instead. The reason we choose to focus on odd paths is simple, each time we write the name of the problem we save one entire character.
 
 \subsection{Benchmarking different data structures for the Basis}
 \label{subsubsection:testing-basis}
@@ -37,7 +32,7 @@ As explained in \Cref{subsection:basis-code}, we have developed multiple data st
         \hline
         Graph & n & m & Observer & UF & Change \\ [0.5ex] 
         \hline\hline
-        Power BCSPWR09 \cite{graph:bcspwr09} & 1723 & 2394 & 1.7ms & 1.5ms & -12\% \\
+        Power BCSPWR09 \cite{graph:bcspwr09-ca-citeseer} & 1723 & 2394 & 1.7ms & 1.5ms & -12\% \\
         \hline
         Oldenburg \cite{graph:oldenburg-sf-cal-san-roads-etc} & 6106 & 7035 & 5.6ms & 4.8ms & -14\%\\ 
         \hline
@@ -49,7 +44,7 @@ As explained in \Cref{subsection:basis-code}, we have developed multiple data st
         \hline
         SF Road Network \cite{graph:oldenburg-sf-cal-san-roads-etc} & 174956 & 223001 & 225ms & 191ms & -15\%\\
         \hline
-        Ca Citeseer \cite{graph:ca-citeseer} & 227321 & 814137 & 629ms & 608ms & -3\%\\
+        Ca Citeseer \cite{graph:bcspwr09-ca-citeseer} & 227321 & 814137 & 629ms & 608ms & -3\%\\
         \hline
         \hline
         Delaunay 50k & 50000 & 149961 & 106ms & 96ms & -9\%\\
@@ -75,4 +70,6 @@ The theoretical running time is $O(m \log n)$, and we have tried our best to com
     \includesvg[width=0.9\textwidth]{figures/bench_plots/shortest odd path.svg}
 \end{center}
 
-As we can see, the running times grow almost linearly as the inputs grow larger. The slight upward curve is barely noticeable, and this is to be expected with a linearithmic theoretical running time. We are very happy with these results. Being able to solve \textsc{Shortest Odd Path} on sparse graphs of 100k vertices in a fifth of a second is exactly the kind of performance we were hoping for. Now we can take this algorithm with us and solve our next challenge: \textsc{Network Diversion}.
+As we can see, the running times grow almost linearly as the inputs grow larger. The slight upward curve is barely noticeable, and this is to be expected with a linearithmic theoretical running time. We are very happy with these results. Being able to solve \textsc{Shortest Odd Path} on sparse graphs of 100k vertices in a fifth of a second is exactly the kind of performance we were hoping for. 
+
+Now we take this algorithm with us and confidently tackle the next challenge: \textsc{Network Diversion}.

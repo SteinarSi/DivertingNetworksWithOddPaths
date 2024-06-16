@@ -1,7 +1,7 @@
 \pagenumbering{roman}
 
 \begin{abstract} 
-    The problem of \textsc{Shortest Odd Path} is to find a path from one vertex to another in a graph, where the number of edges in the path must be odd. Although the problem might seem like merely a curiosity, its utility is that many more useful problems are easier to solve if we know how to solve \textsc{Shortest Odd Path}.\\[3mm]
+    The problem of \textsc{Shortest Odd Path} is to find a path from one vertex to another in a graph, where the number of edges in the path is odd. Although the problem might seem like merely a curiosity, its utility is that many more useful problems are easier to solve if we know how to solve \textsc{Shortest Odd Path}.\\[3mm]
     One of these problems is \textsc{Network Diversion}: given a graph, two vertices, and a marked edge, compute the cheapest set of edges to delete from the graph such that all paths from one vertex to another must pass through the marked edge. Many of its variants are NP-complete, but its complexity on planar graphs remains an open problem. \\[3mm]
     We implement an efficient algorithm based on \cite{source:derigs_shortest_odd_path} to solve \textsc{Shortest Odd Path} on undirected graphs, and use that to implement the first-ever efficient algorithm for \textsc{Network Diversion} on planar graphs.
 \end{abstract}

@@ -1,4 +1,13 @@
-Now that we have tried out some algorithms for \textsc{Shortest Odd Walk}, we are finally ready to add the restriction that each vertex is used at most once, and thus solve \textsc{Shortest Odd Path}. The algorithm we are about to present is based on Derigs' algorithm \cite{source:derigs_shortest_odd_path}, though with some minor improvements.
+Now that we have tried out some algorithms for \textsc{Shortest Odd Walk}, we are finally ready to add the restriction that each vertex is used at most once, and thus solve \textsc{Shortest Odd Path}:
+
+\problem
+{Shortest Odd Path}
+{a weighted graph $G$, two vertices $s,t \in V$}
+{an $s$-$t$-path in $G$ of minimum cost, that uses an odd number of edges}
+
+Even though it is deceptively simple to state the problem, solving it in practice is no easy task. In fact, \cite{source:even-cycles-in-directed-graphs} have shown that the problem is NP-complete in directed graphs, even without weights. Undirected graphs are also a challenge: \cite{source:odd-paths-cycles-and-tjoins} have proved that even if the weights are restricted to just $\{-1,1\}$, and even if we know that they do not form any negative cycles, the problem is still NP-complete in undirected graphs. 
+
+Knowing this, we instead direct our focus to a simpler variant: \textsc{Shortest Odd Path} on undirected graphs of non-negative weights. Unlike the other variants, this one \emph{is} possible to solve in polynomial time, as shown by \cite{source:even-cycles-in-directed-graphs}, \cite{source:odd-paths-cycles-and-tjoins}, \cite{source:derigs_shortest_odd_path} and others. The algorithm we are about to present is based on Derigs' algorithm \cite{source:derigs_shortest_odd_path}, along with some minor improvements.
 
 \section{Reduction to \textsc{Shortest Alternating Path}}
 \label{subsection:reduction}

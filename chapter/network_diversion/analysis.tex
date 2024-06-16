@@ -13,7 +13,7 @@
     
         Lastly, if we are interested in the specific set of edges in the diversion and not just the cost, we un-subdivide the odd path in time $O(n') = O(n)$.
     
-        In total, we have a running time of $O(n+m) + O(m \log n) + O(n) = O(m \log n)$. Since $G$ is planar we have that $m \in O(n)$, and we can simplify the complexity to just $O(n \log n)$, which completes the proof.
+        In total, we have a running time of $O(n+m) + O(m \log n) + O(n) = O(m \log n)$. Since $G$ is planar we have that $m \in O(n)$, so we can simplify the complexity to just $O(n \log n)$ and complete the proof.
     \end{proof}
 \end{theorem}
 
@@ -51,7 +51,7 @@ See \Cref{figure:network-diversion-on-delaunay} for yet another example of what 
         \includesvg[width=\textwidth]{figures/diversions/delaunay35-Diverted.svg}
         \caption{With the diversion set removed, all $s$-$t$-paths must go through the diversion edge}
         \label{subfigure:network-diversion-diverted}
-    \end{subfigure}\hfill%
-    \caption{Example of a solution for \textsc{Network Diversion}}
+    \end{subfigure}
+    \caption{Example of a solution for \textsc{Network Diversion} on a Delaunay graph of 35 vertices}
     \label{figure:network-diversion-on-delaunay}
 \end{figure}
